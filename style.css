@@ -1,0 +1,19 @@
+/* Custom Wavy Background Pattern */
+.hero-pattern {
+	background-color: #0D2133;
+	background-image:
+		radial-gradient(circle at 10% 50%, rgba(0, 151, 167, 0.12), transparent 40%),
+		radial-gradient(circle at 90% 30%, rgba(0, 194, 168, 0.08), transparent 40%);
+	position: relative;
+}
+
+/* Subtle Grid Overlay */
+.hero-pattern::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+	background-size: 50px 50px;
+	pointer-events: none;
+}

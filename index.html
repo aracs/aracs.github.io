@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARACS Technologies | End-to-end solutions</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png">
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="./style.css">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#006B8D',
+                            teal: '#0097A7',
+                            lightTeal: '#00C2A8',
+                            light: '#F2F7F8',
+                            navy: '#0D2133',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans text-brand-navy bg-brand-light antialiased selection:bg-brand-lightTeal selection:text-white">
+
+    <!-- Header / Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 backdrop-blur-xl bg-white/90 border-b border-gray-100" id="navbar">
+        <!-- Max width expanded for PC, standard padding for mobile -->
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <!-- Increased height for cleaner spacing -->
+            <div class="flex justify-between items-center h-24">
+                
+                <!-- Logo Area -->
+                <a href="#" class="flex-shrink-0 flex items-center gap-3.5 group cursor-pointer">
+                    <!-- Custom Image Logo -->
+                    <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS Logo" class="w-10 h-10 lg:w-[46px] lg:h-[46px] transform group-hover:scale-105 transition-transform duration-300 object-contain">
+                    <!-- Text aligned and spaced properly -->
+                    <div class="flex flex-col justify-center pt-1">
+                        <span class="text-[22px] lg:text-[26px] font-bold tracking-wide text-brand-blue leading-none">ARACS</span>
+                        <span class="text-[9px] lg:text-[10px] font-semibold tracking-[0.22em] text-brand-teal uppercase mt-1">Technologies</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-12">
+                    <a href="#services" class="text-[15px] font-medium text-brand-navy hover:text-brand-teal transition-colors">Services</a>
+                    <a href="#process" class="text-[15px] font-medium text-brand-navy hover:text-brand-teal transition-colors">Process</a>
+                    <a href="#values" class="text-[15px] font-medium text-brand-navy hover:text-brand-teal transition-colors">Values</a>
+                    <a href="#contact" class="px-8 py-3 rounded-full bg-brand-blue text-white text-[15px] font-semibold hover:bg-brand-teal hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="p-2 text-brand-navy hover:text-brand-teal focus:outline-none transition-colors">
+                        <i class="ph ph-list text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-2xl absolute w-full left-0 origin-top transform transition-all">
+            <div class="px-6 py-8 flex flex-col space-y-4">
+                <a href="#services" class="text-lg font-medium text-brand-navy hover:text-brand-teal border-b border-gray-50 pb-4">Services</a>
+                <a href="#process" class="text-lg font-medium text-brand-navy hover:text-brand-teal border-b border-gray-50 pb-4">Process</a>
+                <a href="#values" class="text-lg font-medium text-brand-navy hover:text-brand-teal border-b border-gray-50 pb-4">Values</a>
+                <a href="#contact" class="mt-4 py-4 text-center text-lg font-semibold bg-brand-blue text-white rounded-xl hover:bg-brand-teal transition-colors">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Mobile & PC Optimized) -->
+    <section class="hero-pattern min-h-screen flex items-center pt-28 pb-16 px-6 lg:px-12">
+        <div class="max-w-[1400px] mx-auto w-full grid lg:grid-cols-2 gap-16 lg:gap-12 items-center relative z-10">
+            
+            <!-- Hero Text -->
+            <div class="text-center lg:text-left space-y-8 animate-fade-in-up flex flex-col items-center lg:items-start">
+                
+                <!-- Main Headline -->
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-[80px] font-bold text-white leading-[1.1] tracking-tight">
+                    Engineering <br class="hidden sm:block">
+                    <span class="text-brand-lightTeal relative inline-block">
+                        Your Vision.
+                        <svg class="absolute w-full h-3 -bottom-1 lg:-bottom-2 left-0 text-brand-teal/60" fill="currentColor" viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0 5 Q 50 10 100 5 L 100 10 L 0 10 Z"></path>
+                        </svg>
+                    </span><br class="hidden sm:block">
+                    Together.
+                </h1>
+                
+                <!-- Subheadline -->
+                <p class="text-lg sm:text-xl text-gray-300 max-w-xl font-light leading-relaxed">
+                    ARACS Technologies architects and delivers robust end-to-end solutions. From initial hardware prototypes (Arduino, ESP32, Raspberry Pi) to scalable cloud deployments, we build the systems that drive your business.
+                </p>
+                
+                <!-- Buttons (Stacked on mobile, inline on PC) -->
+                <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-4 pt-4">
+                    <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-brand-teal to-brand-lightTeal text-brand-navy font-bold text-center hover:shadow-[0_0_20px_rgba(0,194,168,0.4)] hover:-translate-y-1 transition-all duration-300">
+                        Explore Solutions
+                    </a>
+                    <a href="#process" class="w-full sm:w-auto px-8 py-4 rounded-full bg-transparent border-2 border-brand-blue text-white font-semibold text-center hover:bg-brand-blue/20 hover:border-brand-lightTeal transition-all duration-300">
+                        Our Process
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Visual (Creative IDE Mockup) -->
+            <div class="hidden lg:flex justify-end relative h-[600px] items-center w-full">
+                <!-- Subtle Glowing backdrop -->
+                <div class="absolute w-[400px] h-[400px] bg-brand-teal rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse-slow"></div>
+                
+                <!-- IDE Window -->
+                <div class="relative w-full max-w-2xl shadow-[0_0_50px_rgba(0,107,141,0.25)] rounded-xl overflow-hidden border border-gray-700/50 bg-[#1e1e1e]">
+                    
+                    <!-- IDE Central Progress Overlay (Hidden by default) -->
+                    <div id="ide-overlay" class="absolute inset-0 bg-[#1e1e1e]/80 backdrop-blur-sm z-30 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none">
+                        <div id="ide-modal" class="bg-[#252526] border border-gray-600/50 shadow-2xl rounded-xl p-8 w-4/5 max-w-sm flex flex-col items-center transform scale-95 transition-transform duration-500 relative overflow-hidden">
+                            <!-- Subtle glow effect inside modal -->
+                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-teal/20 rounded-full blur-2xl"></div>
+                            
+                            <!-- Icon/Spinner Area -->
+                            <div class="relative w-16 h-16 mb-5 flex items-center justify-center">
+                                <svg id="badge-spinner" class="animate-spin text-brand-lightTeal w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5"></circle>
+                                    <path class="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <i id="badge-icon" class="ph ph-terminal-window text-2xl text-white absolute"></i>
+                            </div>
+                            
+                            <!-- Text -->
+                            <h4 id="badge-title" class="text-white font-bold text-lg mb-1 tracking-wide">Compiling Engine...</h4>
+                            <p id="badge-desc" class="text-gray-400 text-xs mb-6 font-mono text-center w-full line-clamp-1">Initializing build process</p>
+                            
+                            <!-- Detailed Progress Bar -->
+                            <div class="w-full bg-[#1e1e1e] rounded-full h-2 overflow-hidden relative shadow-inner border border-white/5">
+                                <div id="badge-progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-teal to-brand-lightTeal w-0 transition-all shadow-[0_0_10px_#00C2A8]"></div>
+                            </div>
+                            
+                            <!-- Metrics -->
+                            <div class="w-full flex justify-between mt-3 px-1">
+                                <span class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">Status: <span id="badge-status-text" class="text-brand-lightTeal ml-1 font-bold">Running</span></span>
+                                <span id="badge-percentage" class="text-[10px] text-white font-mono font-bold tracking-widest">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Animated Mouse Cursor SVG -->
+                    <svg id="mock-cursor" class="absolute z-50 w-6 h-6 opacity-0 pointer-events-none drop-shadow-lg transition-all" style="top: 80%; left: 80%; transition-duration: 800ms; transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1); transform-origin: top left;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.43c.45 0 .67-.54.35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z" fill="white" stroke="#0D2133" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+
+                    <!-- IDE Header -->
+                    <div class="bg-[#2d2d2d] px-4 py-3 flex items-center justify-between border-b border-black/50 relative z-10">
+                        <div class="flex space-x-2 w-24">
+                            <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                            <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                            <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+                        </div>
+                        <div class="text-xs text-gray-400 font-mono tracking-wider flex items-center gap-2">
+                            <i class="ph ph-file-code text-brand-teal"></i> solution.ts
+                        </div>
+                        <div class="w-24 flex justify-end">
+                            <!-- Run Button -->
+                            <button id="ide-run-btn" class="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-brand-lightTeal bg-brand-lightTeal/10 px-3 py-1.5 rounded border border-brand-lightTeal/20 transition-all duration-150 origin-center">
+                                <i class="ph ph-play-fill text-[11px]"></i> Run
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- IDE Body -->
+                    <div class="p-6 text-[15px] font-mono leading-relaxed flex overflow-hidden h-[320px] relative z-10">
+                        <!-- Line Numbers -->
+                        <div class="text-gray-600 text-right pr-6 select-none flex flex-col border-r border-gray-700/50 mr-6">
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                        </div>
+                        <!-- Code Content with Authentic IDE Syntax Highlighting -->
+                        <div class="text-gray-300 whitespace-pre flex-1 relative"><span id="code-block"><span class="text-[#c678dd]">import</span> { <span class="text-[#e5c07b]">Engine</span>, <span class="text-[#e5c07b]">Solution</span> } <span class="text-[#c678dd]">from</span> <span class="text-[#98c379]">'@aracs/core'</span>;
+
+<span class="text-[#56b6c2]">const</span> <span class="text-[#e06c75]">project</span> <span class="text-[#56b6c2]">=</span> <span class="text-[#c678dd]">new</span> <span class="text-[#e5c07b]">Solution</span>({
+  <span class="text-[#d19a66]">client</span>: <span class="text-[#98c379]">'Your Vision'</span>,
+  <span class="text-[#d19a66]">type</span>: <span class="text-[#98c379]">'End-to-End'</span>,
+  <span class="text-[#d19a66]">hardware</span>: [<span class="text-[#98c379]">'ESP32'</span>, <span class="text-[#98c379]">'Raspberry Pi'</span>, <span class="text-[#98c379]">'Arduino'</span>],
+  <span class="text-[#d19a66]">stack</span>: [<span class="text-[#98c379]">'Ideate'</span>, <span class="text-[#98c379]">'Develop'</span>, <span class="text-[#98c379]">'Deploy'</span>],
+  <span class="text-[#d19a66]">scalable</span>: <span class="text-[#d19a66]">true</span>
+});
+
+<span class="text-[#5c6370] italic">// Initializing architecture...</span>
+<span class="text-[#c678dd]">await</span> <span class="text-[#e5c07b]">Engine</span>.<span class="text-[#61afef]">build</span>(<span class="text-[#e06c75]">project</span>);
+<span class="text-[#e06c75]">project</span>.<span class="text-[#61afef]">launch</span>();</span><span id="ide-cursor" class="animate-pulse inline-block w-2.5 h-[1.2em] bg-brand-lightTeal align-middle ml-[2px]"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services / Iconography -->
+    <section id="services" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <h2 class="text-sm font-bold tracking-[0.2em] text-brand-teal uppercase mb-4">— Expertise —</h2>
+                <h3 class="text-3xl md:text-5xl font-bold text-brand-navy mb-6">Comprehensive Capabilities</h3>
+                <p class="text-gray-500 text-lg md:text-xl">Covering every angle of the development lifecycle—from custom software to hardware prototyping (Arduino, ESP32, Raspberry Pi)—to ensure your product performs and inspires.</p>
+            </div>
+
+            <!-- Responsive Grid: 2 cols mobile, 3 tablet, 5 PC -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-10">
+                
+                <!-- Service Item Template -->
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-code text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Development</h4>
+                </div>
+                
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-cube text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Hardware MVP</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-gear text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Automation</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-cloud text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Cloud</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-cpu text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Embedded & IoT</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-monitor text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">UI/UX</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-database text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Data</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-check-square text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Testing</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-shield-check text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Security</h4>
+                </div>
+
+                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
+                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
+                        <i class="ph ph-headset text-4xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Support</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section (Responsive Timeline) -->
+    <section id="process" class="py-24 lg:py-32 bg-brand-light relative overflow-hidden">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+            
+            <div class="text-center mb-20 lg:mb-28">
+                <div class="flex items-center justify-center gap-4 mb-6">
+                    <div class="h-px w-16 bg-brand-teal"></div>
+                    <h2 class="text-xl font-medium text-brand-blue italic tracking-wide">end-to-end solutions</h2>
+                    <div class="h-px w-16 bg-brand-teal"></div>
+                </div>
+                <h3 class="text-4xl md:text-5xl font-bold text-brand-navy">Idea to Deployment</h3>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="relative flex flex-col lg:flex-row justify-between items-center lg:items-start gap-16 lg:gap-4">
+                
+                <!-- Desktop Horizontal Line -->
+                <div class="hidden lg:block absolute top-14 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue/30 via-brand-teal/50 to-brand-lightTeal/30 z-0"></div>
+
+                <!-- Mobile Vertical Line -->
+                <div class="lg:hidden absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-brand-blue/30 via-brand-teal/50 to-brand-lightTeal/30 -translate-x-1/2 z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
+                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
+                        <i class="ph ph-lightbulb text-5xl"></i>
+                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">01</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Ideate</h4>
+                    <p class="text-[15px] text-gray-500 leading-relaxed">Conceptualizing and planning the perfect technical strategy.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
+                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
+                        <i class="ph ph-code text-5xl"></i>
+                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">02</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Develop</h4>
+                    <p class="text-[15px] text-gray-500 leading-relaxed">Engineering robust architectures and writing clean code.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
+                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
+                        <i class="ph ph-cube text-5xl"></i>
+                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">03</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Prototype</h4>
+                    <p class="text-[15px] text-gray-500 leading-relaxed">Creating functional models, PCBs, and hardware builds for rapid testing.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
+                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
+                        <i class="ph ph-rocket-launch text-5xl"></i>
+                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">04</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Deploy</h4>
+                    <p class="text-[15px] text-gray-500 leading-relaxed">Launching your solution securely into the live environment.</p>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
+                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
+                        <i class="ph ph-chart-line-up text-5xl"></i>
+                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">05</div>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Optimize</h4>
+                    <p class="text-[15px] text-gray-500 leading-relaxed">Continuous monitoring, scaling, and performance upgrades.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Values -->
+    <section id="values" class="py-24 bg-white border-y border-gray-100">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand-navy mb-4">Brand Values</h2>
+            </div>
+
+            <!-- Responsive Flex Layout for Values -->
+            <div class="flex flex-wrap justify-center gap-10 md:gap-16 lg:gap-24">
+                <div class="flex flex-col items-center text-center w-28 md:w-32">
+                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                        <i class="ph ph-lightbulb text-5xl md:text-6xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Innovate</h4>
+                </div>
+                
+                <div class="flex flex-col items-center text-center w-28 md:w-32">
+                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                        <i class="ph ph-gear text-5xl md:text-6xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Engineer</h4>
+                </div>
+                
+                <div class="flex flex-col items-center text-center w-28 md:w-32">
+                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                        <i class="ph ph-users text-5xl md:text-6xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Collaborate</h4>
+                </div>
+                
+                <div class="flex flex-col items-center text-center w-28 md:w-32">
+                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                        <i class="ph ph-rocket text-5xl md:text-6xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Deliver</h4>
+                </div>
+                
+                <div class="flex flex-col items-center text-center w-28 md:w-32">
+                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
+                        <i class="ph ph-chart-bar text-5xl md:text-6xl"></i>
+                    </div>
+                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Elevate</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action / Footer Connect -->
+    <section class="hero-pattern py-28 lg:py-36 relative overflow-hidden" id="contact">
+        <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center relative z-10">
+            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight tracking-tight">
+                Ideas. <span class="text-brand-teal">Engineered.</span> <br>
+                Delivered.
+            </h2>
+            <div class="flex items-center justify-center gap-6 mb-12">
+                <div class="h-px w-12 bg-brand-lightTeal"></div>
+                <h3 class="text-xl md:text-2xl font-medium text-brand-lightTeal italic">end-to-end solutions</h3>
+                <div class="h-px w-12 bg-brand-lightTeal"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto bg-white/5 p-8 md:p-12 rounded-3xl backdrop-blur-md border border-white/10 text-center">
+                <div class="mb-8">
+                    <h4 class="text-2xl md:text-3xl font-bold text-white mb-3">Project Inquiry</h4>
+                    <p class="text-gray-400">Tell us about your vision, and our engineering team will get back to you within 24 hours.</p>
+                </div>
+                
+                <!-- Product Inquiry Form -->
+                <form id="contact-form" class="w-full text-left space-y-6">
+                    <!-- Name Row -->
+                    <div>
+                        <label class="block text-sm font-semibold text-white mb-2">Name <span class="text-red-500">*</span></label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <input type="text" name="first_name" required 
+                                    class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm">
+                                <span class="block text-[11px] text-gray-500 mt-1 ml-1">First Name</span>
+                            </div>
+                            <div>
+                                <input type="text" name="last_name" required 
+                                    class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm">
+                                <span class="block text-[11px] text-gray-500 mt-1 ml-1">Last Name</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email & Project Type Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-semibold text-white mb-2">Email <span class="text-red-500">*</span></label>
+                            <input type="email" name="email" required 
+                                class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm">
+                            <span class="block text-[11px] text-gray-500 mt-1 ml-1">example@example.com</span>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-white mb-2">Project Type <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="project_type" required 
+                                    class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white focus:outline-none transition-all duration-300 text-sm appearance-none pr-10">
+                                    <option value="Business Landing Page" class="bg-brand-navy text-white">Business Landing Page</option>
+                                    <option value="Web application" class="bg-brand-navy text-white">Web application</option>
+                                    <option value="Mobile application" selected class="bg-brand-navy text-white">Mobile application</option>
+                                    <option value="E-commerce store" selected class="bg-brand-navy text-white">E-commerce store</option>
+                                    <option value="API development and integration" class="bg-brand-navy text-white">API development and integration</option>
+                                    <option value="Hardware Prototyping" class="bg-brand-navy text-white">Hardware Prototyping</option>
+                                    <option value="Automation Solutions" class="bg-brand-navy text-white">Automation Solutions</option>
+                                    <option value="Cloud & Infrastructure" class="bg-brand-navy text-white">Cloud & Infrastructure</option>
+                                    <option value="Consulting & Technical Architecture" class="bg-brand-navy text-white">Consulting & Technical Architecture</option>
+                                    <option value="Quality assurance & Testing" class="bg-brand-navy text-white">Quality assurance & Testing</option>
+                                    <option value="UI/UX Design" class="bg-brand-navy text-white">UI/UX Design</option>
+                                    <option value="Other" class="bg-brand-navy text-white">Other</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
+                                    <i class="ph ph-caret-down text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Description Row -->
+                    <div>
+                        <label class="block text-sm font-semibold text-white mb-2">Project Description <span class="text-red-500">*</span></label>
+                        <textarea name="project_description" required rows="5" 
+                            class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm resize-y"></textarea>
+                    </div>
+
+                    <!-- Submit Button Row -->
+                    <div class="text-center pt-2">
+                        <button type="submit" 
+                            class="px-12 py-3.5 rounded-lg bg-brand-lightTeal text-brand-navy font-bold text-[17px] hover:bg-brand-teal hover:text-white transition-all duration-300 shadow-lg hover:shadow-brand-lightTeal/20">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Success Message Container -->
+                <div id="form-success-message" class="hidden flex-col items-center justify-center p-8 bg-brand-teal/10 border border-brand-lightTeal/30 rounded-2xl text-center transition-all duration-500">
+                    <div class="w-16 h-16 rounded-full bg-brand-lightTeal/20 flex items-center justify-center text-brand-lightTeal mb-4">
+                        <i class="ph ph-check-circle text-4xl"></i>
+                    </div>
+                    <h5 class="text-2xl font-bold text-white mb-2">Inquiry Submitted!</h5>
+                    <p class="text-gray-300 max-w-md">Thank you for reaching out. Our engineering team will review your project details and get back to you within 24 hours.</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Clean Footer -->
+    <footer class="bg-brand-navy border-t border-white/5 pt-20 pb-10">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
+                
+                <!-- Brand Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-3.5 mb-8">
+                        <!-- Custom Image Logo -->
+                        <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS Logo" class="w-10 h-10 object-contain">
+                        <div class="flex flex-col text-white justify-center">
+                            <span class="text-2xl font-bold tracking-wide leading-none">ARACS</span>
+                            <span class="text-[10px] font-semibold tracking-[0.2em] text-brand-lightTeal uppercase mt-1">Technologies</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-400 text-[15px] max-w-md mb-8 leading-relaxed">
+                        Delivering end-to-end solutions in development and prototyping — from idea to deployment and beyond.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.linkedin.com/in/aracs-technologies-646984419/" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="LinkedIn">
+                            <i class="ph ph-linkedin-logo text-2xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="Instagram">
+                            <i class="ph ph-instagram-logo text-2xl"></i>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61591379255784" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="Facebook">
+                            <i class="ph ph-facebook-logo text-2xl"></i>
+                        </a>
+                        <a href="https://www.github.com/aracs" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="GitHub">
+                            <i class="ph ph-github-logo text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-sm">Company</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#services" class="text-gray-400 hover:text-brand-lightTeal text-[15px] transition-colors">Services</a></li>
+                        <li><a href="#process" class="text-gray-400 hover:text-brand-lightTeal text-[15px] transition-colors">Process</a></li>
+                        <li><a href="#values" class="text-gray-400 hover:text-brand-lightTeal text-[15px] transition-colors">Values</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-sm">Contact</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4 text-gray-400 text-[15px]">
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-phone"></i></div>
+                            0674009476
+                        </li>
+                        <li class="flex items-center gap-4 text-gray-400 text-[15px]">
+                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-envelope-simple"></i></div>
+                            aracstechnologies@gmail.com
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <a href="https://neochipclub.oneapp.dev" target="_blank" rel="noopener noreferrer" class="text-gray-500 text-[14px] hover:text-brand-lightTeal transition-colors">
+                    &copy; <span id="year"></span> ARACS TECHNOLOGIES | NeoChip Dev | NeoChip Club - All Rights Reserved.
+                </a>
+                <div class="flex items-center">
+                    <span class="text-brand-teal text-[11px] font-semibold tracking-[0.2em] uppercase">end-to-end solutions</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script src="./main.js"></script>
+</body>
+</html>
