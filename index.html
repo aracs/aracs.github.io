@@ -305,78 +305,148 @@
         </div>
     </section>
 
-    <!-- Process Section (Responsive Timeline) -->
+    <!-- Process Section (Simple Vertical Timeline) -->
     <section id="process" class="py-24 lg:py-32 bg-brand-light relative overflow-hidden">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
             
-            <div class="text-center mb-20 lg:mb-28">
+            <div class="text-center mb-20 lg:mb-24">
                 <div class="flex items-center justify-center gap-4 mb-6">
                     <div class="h-px w-16 bg-brand-teal"></div>
-                    <h2 class="text-xl font-medium text-brand-blue italic tracking-wide">end-to-end solutions</h2>
+                    <h2 class="text-xl font-medium text-brand-blue italic tracking-wide">our process</h2>
                     <div class="h-px w-16 bg-brand-teal"></div>
                 </div>
-                <h3 class="text-4xl md:text-5xl font-bold text-brand-navy">Idea to Deployment</h3>
+                <h3 class="text-4xl md:text-5xl font-bold text-brand-navy">A beautiful timeline.</h3>
             </div>
 
-            <!-- Timeline Container -->
-            <div class="relative flex flex-col lg:flex-row justify-between items-center lg:items-start gap-16 lg:gap-4">
-                
-                <!-- Desktop Horizontal Line -->
-                <div class="hidden lg:block absolute top-14 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-brand-blue/30 via-brand-teal/50 to-brand-lightTeal/30 z-0"></div>
-
-                <!-- Mobile Vertical Line -->
-                <div class="lg:hidden absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-brand-blue/30 via-brand-teal/50 to-brand-lightTeal/30 -translate-x-1/2 z-0"></div>
-
-                <!-- Step 1 -->
-                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
-                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
-                        <i class="ph ph-lightbulb text-5xl"></i>
-                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">01</div>
+            <!-- Timeline: Vertical on mobile, Horizontal on PC -->
+            <div class="relative max-w-full mx-auto">
+                <!-- Mobile: Vertical Timeline -->
+                <div class="lg:hidden relative">
+                    <div class="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-brand-blue/30 via-brand-teal/50 to-brand-lightTeal/30 -translate-x-1/2 z-0"></div>
+                    <div class="relative z-10 flex flex-col items-center">
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-lightbulb text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Idea</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-magnifying-glass text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Research</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-strategy text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Strategy</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-trademark text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Brand</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-palette text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Design</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-code text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Development</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-cube text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Prototype</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-check-square text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Testing</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-presentation-chart text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Presentation</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-rocket-launch text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Launch</h4>
+                            <div class="text-brand-teal text-2xl mt-2">↓</div>
+                        </div>
+                        <div class="flex flex-col items-center text-center py-6 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-chart-line-up text-2xl"></i></div>
+                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Growth</h4>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Ideate</h4>
-                    <p class="text-[15px] text-gray-500 leading-relaxed">Conceptualizing and planning the perfect technical strategy.</p>
                 </div>
 
-                <!-- Step 2 -->
-                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
-                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
-                        <i class="ph ph-code text-5xl"></i>
-                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">02</div>
+                <!-- PC: Horizontal Timeline with arrows between bubbles -->
+                <div class="hidden lg:flex flex-col items-center gap-y-12">
+                    <!-- Row 1: 5 steps -->
+                    <div class="flex flex-row items-start justify-center">
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-lightbulb text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Idea</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-magnifying-glass text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Research</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-strategy text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Strategy</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-trademark text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Brand</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-palette text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Design</h4>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Develop</h4>
-                    <p class="text-[15px] text-gray-500 leading-relaxed">Engineering robust architectures and writing clean code.</p>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
-                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
-                        <i class="ph ph-cube text-5xl"></i>
-                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">03</div>
+                    <!-- Row 2: 6 steps -->
+                    <div class="flex flex-row items-start justify-center">
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-code text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Development</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-cube text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Prototype</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-check-square text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Testing</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-presentation-chart text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Presentation</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-rocket-launch text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Launch</h4>
+                        </div>
+                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
+                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
+                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-chart-line-up text-2xl"></i></div>
+                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Growth</h4>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Prototype</h4>
-                    <p class="text-[15px] text-gray-500 leading-relaxed">Creating functional models, PCBs, and hardware builds for rapid testing.</p>
                 </div>
+            </div>
 
-                <!-- Step 4 -->
-                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
-                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
-                        <i class="ph ph-rocket-launch text-5xl"></i>
-                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">04</div>
-                    </div>
-                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Deploy</h4>
-                    <p class="text-[15px] text-gray-500 leading-relaxed">Launching your solution securely into the live environment.</p>
-                </div>
-
-                <!-- Step 5 -->
-                <div class="relative z-10 flex flex-col items-center text-center max-w-[240px] group bg-brand-light lg:bg-transparent p-4 lg:p-0">
-                    <div class="w-28 h-28 rounded-full bg-white border-4 border-brand-light shadow-xl flex items-center justify-center text-brand-blue group-hover:border-brand-teal group-hover:text-brand-teal group-hover:scale-110 transition-all duration-300 mb-8 relative">
-                        <i class="ph ph-chart-line-up text-5xl"></i>
-                        <div class="absolute -bottom-4 bg-brand-navy text-white text-sm font-bold px-4 py-1.5 rounded-full shadow-lg">05</div>
-                    </div>
-                    <h4 class="text-xl font-bold text-brand-navy mb-3 uppercase tracking-wider">Optimize</h4>
-                    <p class="text-[15px] text-gray-500 leading-relaxed">Continuous monitoring, scaling, and performance upgrades.</p>
-                </div>
-
+            <div class="text-center mt-16">
+                <p class="text-lg text-gray-500 italic">Simple. Clean. Easy to understand.</p>
             </div>
         </div>
     </section>
