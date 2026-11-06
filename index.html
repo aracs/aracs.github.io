@@ -519,6 +519,13 @@
                 
                 <!-- Product Inquiry Form -->
                 <form id="contact-form" class="w-full text-left space-y-6">
+                    <!-- Spam honeypot: invisible to humans, filled by bots -->
+                    <div style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
+                        <label>Website
+                            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+                        </label>
+                    </div>
+
                     <!-- Name Row -->
                     <div>
                         <label class="block text-sm font-semibold text-white mb-2">Name <span class="text-red-500">*</span></label>
