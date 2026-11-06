@@ -40,11 +40,64 @@ window.addEventListener('scroll', () => {
 document.addEventListener("DOMContentLoaded", () => {
 	
 	// --- CONTACT FORM SUBMISSION ---
-	const SUPABASE_URL = "https://iucwldheyynpfpmiigrc.supabase.co/functions/v1/super-worker";
-	const SUPABASE_ANON_KEY = "sb_publishable_3Vd9pA5uzFpVYSjscuSiPg_e8alhTSG";
+	// ARACS website -> the NeoChip bot (one bot handles both NeoChip and ARACS).
+	// 1. Deploy the bot in neochip-bot-main.
+	// 2. Paste its public URL below (example: https://neochip-bot.onrender.com).
+	// 3. INQUIRY_API_SECRET must match ARACS_WEBHOOK_SECRET in neochip-bot-main/.env
+	const INQUIRY_API_URL = "https://neochip-bot.onrender.com";
+	const INQUIRY_API_SECRET = "38eeb8e90b6553df77b368438791082db4d4b968a821dad90eb5dfeb3a4142aa";
+
+	// Existing website backend (kept so nothing that already worked stops working).
+	const LEGACY_INQUIRY_URL = "https://iucwldheyynpfpmiigrc.supabase.co/functions/v1/super-worker/functions/v1/contact";
+	const LEGACY_ANON_KEY = "sb_publishable_3Vd9pA5uzFpVYSjscuSiPg_e8alhTSG";
 
 	const contactForm = document.getElementById('contact-form');
 	const formSuccessMessage = document.getElementById('form-success-message');
+
+	async function fetchWithTimeout(url, options = {}, timeoutMs = 20000) {
+		const controller = new AbortController();
+		const timer = setTimeout(() => controller.abort(), timeoutMs);
+		try {
+			return await fetch(url, { ...options, signal: controller.signal });
+		} finally {
+			clearTimeout(timer);
+		}
+	}
+
+	async function sendInquiryToBot(data) {
+		const response = await fetchWithTimeout(`${INQUIRY_API_URL.replace(/\/$/, '')}/api/contact`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"x-webhook-secret": INQUIRY_API_SECRET
+			},
+			body: JSON.stringify(data)
+		});
+
+		if (!response.ok) {
+			const detail = await response.text().catch(() => "");
+			throw new Error(`Bot returned ${response.status}${detail ? ` - ${detail}` : ""}`);
+		}
+
+		return response.json().catch(() => ({}));
+	}
+
+	async function sendInquiryToLegacy(data) {
+		const response = await fetchWithTimeout(LEGACY_INQUIRY_URL, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				"apikey": LEGACY_ANON_KEY
+			},
+			body: JSON.stringify(data)
+		});
+
+		if (!response.ok) {
+			throw new Error(`Legacy server returned status: ${response.status}`);
+		}
+
+		return response;
+	}
 
 	if (contactForm && formSuccessMessage) {
 		contactForm.addEventListener('submit', async (e) => {
@@ -63,25 +116,40 @@ document.addEventListener("DOMContentLoaded", () => {
 				last_name: formData.get('last_name'),
 				email: formData.get('email'),
 				project_type: formData.get('project_type'),
-				project_description: formData.get('project_description')
+				project_description: formData.get('project_description'),
+				_gotcha: formData.get('_gotcha') || '',
+				source: 'website',
+				page: window.location.href
 			};
 
 			try {
-				if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-					throw new Error("Supabase URL and Anon Key must be configured in the script.");
+				// Keep the existing Supabase submission AND notify the NeoChip bot.
+				// The form succeeds if at least one of the two accepted the inquiry.
+				const botConfigured = INQUIRY_API_URL && !INQUIRY_API_URL.includes('YOUR-BOT');
+
+				const legacyPromise = sendInquiryToLegacy(payload)
+					.then(() => true)
+					.catch((legacyError) => {
+						console.warn('Legacy backend failed:', legacyError);
+						return false;
+					});
+
+				const botPromise = botConfigured
+					? sendInquiryToBot(payload)
+						.then(() => true)
+						.catch((botError) => {
+							console.warn('Bot webhook failed:', botError);
+							return false;
+						})
+					: Promise.resolve(false);
+
+				const [legacyOk, botOk] = await Promise.all([legacyPromise, botPromise]);
+
+				if (!legacyOk && !botOk) {
+					throw new Error('Both the website backend and the Telegram bot were unreachable.');
 				}
-
-				const response = await fetch(`${SUPABASE_URL}/functions/v1/contact`, {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						"apikey": SUPABASE_ANON_KEY
-					},
-					body: JSON.stringify(payload)
-				});
-
-				if (!response.ok) {
-					throw new Error(`Server returned status: ${response.status}`);
+				if (!botConfigured) {
+					console.warn('INQUIRY_API_URL is not configured in main.js — the website backend worked, but Telegram was not notified.');
 				}
 
 				// Hide form, show success message
@@ -93,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				formSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 			} catch (error) {
 				console.error('Error submitting form:', error);
-				alert(`Failed to submit inquiry: ${error.message}`);
+				alert("Sorry, we couldn't send your inquiry right now. Please try again in a moment.");
 				
 				// Reset button state
 				submitBtn.disabled = false;
