@@ -4,30 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ARACS Technologies | End-to-end solutions</title>
-    
+    <meta name="description" content="ARACS Technologies delivers end-to-end solutions in development and prototyping — from Arduino, ESP32 and Raspberry Pi hardware to scalable cloud deployments.">
+    <meta name="theme-color" content="#0D2133">
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png">
-    
+
     <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="./style.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
                     colors: {
                         brand: {
                             blue: '#006B8D',
@@ -49,16 +50,11 @@
 
     <!-- Header / Navbar -->
     <nav class="fixed w-full z-50 transition-all duration-300 backdrop-blur-xl bg-white/90 border-b border-gray-100" id="navbar">
-        <!-- Max width expanded for PC, standard padding for mobile -->
         <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
-            <!-- Increased height for cleaner spacing -->
-            <div class="flex justify-between items-center h-24">
-                
-                <!-- Logo Area -->
+            <div class="flex justify-between items-center h-20 lg:h-24">
+
                 <a href="#" class="flex-shrink-0 flex items-center gap-3.5 group cursor-pointer">
-                    <!-- Custom Image Logo -->
                     <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS Logo" class="w-10 h-10 lg:w-[46px] lg:h-[46px] transform group-hover:scale-105 transition-transform duration-300 object-contain">
-                    <!-- Text aligned and spaced properly -->
                     <div class="flex flex-col justify-center pt-1">
                         <span class="text-[22px] lg:text-[26px] font-bold tracking-wide text-brand-blue leading-none">ARACS</span>
                         <span class="text-[9px] lg:text-[10px] font-semibold tracking-[0.22em] text-brand-teal uppercase mt-1">Technologies</span>
@@ -77,7 +73,7 @@
 
                 <!-- Mobile Menu Button -->
                 <div class="lg:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="p-2 text-brand-navy hover:text-brand-teal focus:outline-none transition-colors">
+                    <button id="mobile-menu-btn" aria-label="Toggle menu" class="p-2 text-brand-navy hover:text-brand-teal transition-colors">
                         <i class="ph ph-list text-3xl"></i>
                     </button>
                 </div>
@@ -95,56 +91,59 @@
         </div>
     </nav>
 
-    <!-- Hero Section (Mobile & PC Optimized) -->
-    <section class="hero-pattern min-h-screen flex items-center pt-28 pb-16 px-6 lg:px-12">
-        <div class="max-w-[1400px] mx-auto w-full grid lg:grid-cols-2 gap-16 lg:gap-12 items-center relative z-10">
-            
+    <!-- Hero -->
+    <section class="hero-pattern min-h-screen flex flex-col justify-center pt-28 lg:pt-32 pb-0 overflow-hidden">
+        <div class="max-w-[1400px] mx-auto w-full px-6 lg:px-12 grid lg:grid-cols-[1.05fr_1fr] gap-14 lg:gap-10 items-center relative z-10 flex-1">
+
             <!-- Hero Text -->
-            <div class="text-center lg:text-left space-y-8 animate-fade-in-up flex flex-col items-center lg:items-start">
-                
-                <!-- Main Headline -->
-                <h1 class="text-5xl sm:text-6xl lg:text-7xl xl:text-[80px] font-bold text-white leading-[1.1] tracking-tight">
+            <div class="text-center lg:text-left flex flex-col items-center lg:items-start space-y-8">
+                <h1 class="rise text-5xl sm:text-6xl lg:text-7xl xl:text-[84px] font-bold text-white leading-[1.05] tracking-tight">
                     Engineering <br class="hidden sm:block">
-                    <span class="text-brand-lightTeal relative inline-block">
-                        Your Vision.
-                        <svg class="absolute w-full h-3 -bottom-1 lg:-bottom-2 left-0 text-brand-teal/60" fill="currentColor" viewBox="0 0 100 10" preserveAspectRatio="none">
-                            <path d="M0 5 Q 50 10 100 5 L 100 10 L 0 10 Z"></path>
-                        </svg>
-                    </span><br class="hidden sm:block">
+                    <span class="text-brand-lightTeal trace inline-block">Your Vision.</span><br class="hidden sm:block">
                     Together.
                 </h1>
-                
-                <!-- Subheadline -->
-                <p class="text-lg sm:text-xl text-gray-300 max-w-xl font-light leading-relaxed">
+
+                <p class="rise rise-2 text-lg sm:text-xl text-gray-300 max-w-xl font-light leading-relaxed">
                     ARACS Technologies architects and delivers robust end-to-end solutions. From initial hardware prototypes (Arduino, ESP32, Raspberry Pi) to scalable cloud deployments, we build the systems that drive your business.
                 </p>
-                
-                <!-- Buttons (Stacked on mobile, inline on PC) -->
-                <div class="flex flex-col sm:flex-row w-full sm:w-auto gap-4 pt-4">
-                    <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-brand-teal to-brand-lightTeal text-brand-navy font-bold text-center hover:shadow-[0_0_20px_rgba(0,194,168,0.4)] hover:-translate-y-1 transition-all duration-300">
+
+                <div class="rise rise-3 flex flex-col sm:flex-row w-full sm:w-auto gap-4 pt-2">
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 rounded-full bg-gradient-to-r from-brand-teal to-brand-lightTeal text-brand-navy font-bold text-center hover:shadow-[0_0_24px_rgba(0,194,168,0.45)] hover:-translate-y-1 transition-all duration-300">
+                        Start your project
+                    </a>
+                    <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-full bg-transparent border-2 border-brand-blue text-white font-semibold text-center hover:bg-brand-blue/20 hover:border-brand-lightTeal transition-all duration-300">
                         Explore Solutions
                     </a>
-                    <a href="#process" class="w-full sm:w-auto px-8 py-4 rounded-full bg-transparent border-2 border-brand-blue text-white font-semibold text-center hover:bg-brand-blue/20 hover:border-brand-lightTeal transition-all duration-300">
-                        Our Process
-                    </a>
                 </div>
+
+                <!-- Quick facts (all taken from the real offer) -->
+                <dl class="rise rise-4 grid grid-cols-3 gap-6 sm:gap-10 pt-6 border-t border-white/10 w-full max-w-xl">
+                    <div>
+                        <dt class="text-xs text-gray-400">capabilities</dt>
+                        <dd class="text-3xl font-bold text-white">10</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-400">steps, idea to growth</dt>
+                        <dd class="text-3xl font-bold text-white">11</dd>
+                    </div>
+                    <div>
+                        <dt class="text-xs text-gray-400">to reply to your inquiry</dt>
+                        <dd class="text-3xl font-bold text-white">Minutes</dd>
+                    </div>
+                </dl>
             </div>
 
-            <!-- Hero Visual (Creative IDE Mockup) -->
-            <div class="hidden lg:flex justify-end relative h-[600px] items-center w-full">
-                <!-- Subtle Glowing backdrop -->
-                <div class="absolute w-[400px] h-[400px] bg-brand-teal rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse-slow"></div>
-                
-                <!-- IDE Window -->
-                <div class="relative w-full max-w-2xl shadow-[0_0_50px_rgba(0,107,141,0.25)] rounded-xl overflow-hidden border border-gray-700/50 bg-[#1e1e1e]">
-                    
-                    <!-- IDE Central Progress Overlay (Hidden by default) -->
+            <!-- Hero Visual (IDE mockup — ids used by main.js) -->
+            <div class="hidden lg:flex justify-end relative h-[600px] items-center w-full rise rise-2">
+                <div class="absolute w-[420px] h-[420px] bg-brand-teal rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse-slow"></div>
+
+                <div class="relative w-full max-w-2xl shadow-[0_0_60px_rgba(0,107,141,0.3)] rounded-xl overflow-hidden border border-gray-700/50 bg-[#1e1e1e]">
+
+                    <!-- IDE Central Progress Overlay -->
                     <div id="ide-overlay" class="absolute inset-0 bg-[#1e1e1e]/80 backdrop-blur-sm z-30 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none">
                         <div id="ide-modal" class="bg-[#252526] border border-gray-600/50 shadow-2xl rounded-xl p-8 w-4/5 max-w-sm flex flex-col items-center transform scale-95 transition-transform duration-500 relative overflow-hidden">
-                            <!-- Subtle glow effect inside modal -->
                             <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-teal/20 rounded-full blur-2xl"></div>
-                            
-                            <!-- Icon/Spinner Area -->
+
                             <div class="relative w-16 h-16 mb-5 flex items-center justify-center">
                                 <svg id="badge-spinner" class="animate-spin text-brand-lightTeal w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5"></circle>
@@ -152,17 +151,14 @@
                                 </svg>
                                 <i id="badge-icon" class="ph ph-terminal-window text-2xl text-white absolute"></i>
                             </div>
-                            
-                            <!-- Text -->
+
                             <h4 id="badge-title" class="text-white font-bold text-lg mb-1 tracking-wide">Compiling Engine...</h4>
                             <p id="badge-desc" class="text-gray-400 text-xs mb-6 font-mono text-center w-full line-clamp-1">Initializing build process</p>
-                            
-                            <!-- Detailed Progress Bar -->
+
                             <div class="w-full bg-[#1e1e1e] rounded-full h-2 overflow-hidden relative shadow-inner border border-white/5">
                                 <div id="badge-progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-teal to-brand-lightTeal w-0 transition-all shadow-[0_0_10px_#00C2A8]"></div>
                             </div>
-                            
-                            <!-- Metrics -->
+
                             <div class="w-full flex justify-between mt-3 px-1">
                                 <span class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">Status: <span id="badge-status-text" class="text-brand-lightTeal ml-1 font-bold">Running</span></span>
                                 <span id="badge-percentage" class="text-[10px] text-white font-mono font-bold tracking-widest">0%</span>
@@ -186,7 +182,6 @@
                             <i class="ph ph-file-code text-brand-teal"></i> solution.ts
                         </div>
                         <div class="w-24 flex justify-end">
-                            <!-- Run Button -->
                             <button id="ide-run-btn" class="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-brand-lightTeal bg-brand-lightTeal/10 px-3 py-1.5 rounded border border-brand-lightTeal/20 transition-all duration-150 origin-center">
                                 <i class="ph ph-play-fill text-[11px]"></i> Run
                             </button>
@@ -195,11 +190,9 @@
 
                     <!-- IDE Body -->
                     <div class="p-6 text-[15px] font-mono leading-relaxed flex overflow-hidden h-[320px] relative z-10">
-                        <!-- Line Numbers -->
                         <div class="text-gray-600 text-right pr-6 select-none flex flex-col border-r border-gray-700/50 mr-6">
                             <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
                         </div>
-                        <!-- Code Content with Authentic IDE Syntax Highlighting -->
                         <div class="text-gray-300 whitespace-pre flex-1 relative"><span id="code-block"><span class="text-[#c678dd]">import</span> { <span class="text-[#e5c07b]">Engine</span>, <span class="text-[#e5c07b]">Solution</span> } <span class="text-[#c678dd]">from</span> <span class="text-[#98c379]">'@aracs/core'</span>;
 
 <span class="text-[#56b6c2]">const</span> <span class="text-[#e06c75]">project</span> <span class="text-[#56b6c2]">=</span> <span class="text-[#c678dd]">new</span> <span class="text-[#e5c07b]">Solution</span>({
@@ -217,355 +210,226 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Services / Iconography -->
-    <section id="services" class="py-24 lg:py-32 bg-white">
-        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
-            <div class="text-center max-w-3xl mx-auto mb-20">
-                <h2 class="text-sm font-bold tracking-[0.2em] text-brand-teal uppercase mb-4">— Expertise —</h2>
-                <h3 class="text-3xl md:text-5xl font-bold text-brand-navy mb-6">Comprehensive Capabilities</h3>
-                <p class="text-gray-500 text-lg md:text-xl">Covering every angle of the development lifecycle—from custom software to hardware prototyping (Arduino, ESP32, Raspberry Pi)—to ensure your product performs and inspires.</p>
-            </div>
-
-            <!-- Responsive Grid: 2 cols mobile, 3 tablet, 5 PC -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 lg:gap-10">
-                
-                <!-- Service Item Template -->
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-code text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Development</h4>
-                </div>
-                
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-cube text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Hardware MVP</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-gear text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Automation</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-cloud text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Cloud</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-cpu text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Embedded & IoT</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-monitor text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">UI/UX</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-database text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Data</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-check-square text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Testing</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-shield-check text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Security</h4>
-                </div>
-
-                <div class="group p-8 rounded-3xl bg-brand-light border border-transparent hover:border-brand-teal/20 hover:shadow-2xl hover:-translate-y-2 hover:bg-white transition-all duration-300 text-center flex flex-col items-center">
-                    <div class="w-20 h-20 rounded-2xl bg-white text-brand-blue group-hover:bg-brand-blue group-hover:text-white shadow-sm flex items-center justify-center mb-6 transition-all duration-300">
-                        <i class="ph ph-headset text-4xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy text-[15px] uppercase tracking-wider">Support</h4>
-                </div>
+        <!-- Scope ticker: what we build, from chip to cloud -->
+        <div class="relative z-10 mt-14 lg:mt-10 border-t border-white/10 bg-black/10 overflow-hidden" aria-hidden="true">
+            <div class="drift flex items-center gap-12 py-5 text-gray-400 text-sm font-medium whitespace-nowrap">
+                <span class="flex items-center gap-2"><i class="ph ph-cpu text-brand-lightTeal text-xl"></i> Arduino</span>
+                <span class="flex items-center gap-2"><i class="ph ph-wifi-high text-brand-lightTeal text-xl"></i> ESP32</span>
+                <span class="flex items-center gap-2"><i class="ph ph-circuitry text-brand-lightTeal text-xl"></i> Raspberry Pi</span>
+                <span class="flex items-center gap-2"><i class="ph ph-globe text-brand-lightTeal text-xl"></i> Web applications</span>
+                <span class="flex items-center gap-2"><i class="ph ph-device-mobile text-brand-lightTeal text-xl"></i> Mobile applications</span>
+                <span class="flex items-center gap-2"><i class="ph ph-plugs-connected text-brand-lightTeal text-xl"></i> APIs and integration</span>
+                <span class="flex items-center gap-2"><i class="ph ph-cloud text-brand-lightTeal text-xl"></i> Cloud deployment</span>
+                <span class="flex items-center gap-2"><i class="ph ph-cpu text-brand-lightTeal text-xl"></i> Arduino</span>
+                <span class="flex items-center gap-2"><i class="ph ph-wifi-high text-brand-lightTeal text-xl"></i> ESP32</span>
+                <span class="flex items-center gap-2"><i class="ph ph-circuitry text-brand-lightTeal text-xl"></i> Raspberry Pi</span>
+                <span class="flex items-center gap-2"><i class="ph ph-globe text-brand-lightTeal text-xl"></i> Web applications</span>
+                <span class="flex items-center gap-2"><i class="ph ph-device-mobile text-brand-lightTeal text-xl"></i> Mobile applications</span>
+                <span class="flex items-center gap-2"><i class="ph ph-plugs-connected text-brand-lightTeal text-xl"></i> APIs and integration</span>
+                <span class="flex items-center gap-2"><i class="ph ph-cloud text-brand-lightTeal text-xl"></i> Cloud deployment</span>
             </div>
         </div>
     </section>
 
-    <!-- Process Section (Simple Vertical Timeline) -->
-    <section id="process" class="py-24 lg:py-32 bg-brand-light relative overflow-hidden">
-        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-            
-            <div class="text-center mb-20 lg:mb-24">
-                <div class="flex items-center justify-center gap-4 mb-6">
-                    <div class="h-px w-16 bg-brand-teal"></div>
-                    <h2 class="text-xl font-medium text-brand-blue italic tracking-wide">our process</h2>
-                    <div class="h-px w-16 bg-brand-teal"></div>
+    <!-- Services: "chip to cloud" capability stack (logic in main.js) -->
+    <section id="services" class="py-24 lg:py-32 bg-white">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-2 gap-6 lg:gap-16 items-end mb-12 lg:mb-14">
+                <div>
+                    <p class="text-brand-teal font-semibold mb-3">Expertise</p>
+                    <h2 class="text-4xl md:text-5xl font-bold text-brand-navy leading-tight">Comprehensive Capabilities</h2>
                 </div>
-                <h3 class="text-4xl md:text-5xl font-bold text-brand-navy">A beautiful timeline.</h3>
+                <p class="text-gray-500 text-lg">Covering every angle of the development lifecycle—from custom software to hardware prototyping (Arduino, ESP32, Raspberry Pi)—to ensure your product performs and inspires.</p>
             </div>
 
-            <!-- Timeline: Vertical on mobile, Horizontal on PC -->
-            <div class="relative max-w-full mx-auto">
-                <!-- Mobile: Vertical Timeline -->
-                <div class="lg:hidden relative">
-                    <div class="absolute top-0 bottom-0 left-1/2 w-[2px] bg-gradient-to-b from-brand-blue/30 via-brand-teal/50 to-brand-lightTeal/30 -translate-x-1/2 z-0"></div>
-                    <div class="relative z-10 flex flex-col items-center">
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-lightbulb text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Idea</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-magnifying-glass text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Research</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-strategy text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Strategy</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-trademark text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Brand</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-palette text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Design</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-code text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Development</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-cube text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Prototype</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-check-square text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Testing</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-presentation-chart text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Presentation</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-rocket-launch text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Launch</h4>
-                            <div class="text-brand-teal text-2xl mt-2">↓</div>
-                        </div>
-                        <div class="flex flex-col items-center text-center py-6 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-chart-line-up text-2xl"></i></div>
-                            <h4 class="text-lg font-bold text-brand-navy mt-4 uppercase tracking-wider">Growth</h4>
-                        </div>
+            <!-- Your stack: fills as capabilities are ticked -->
+            <div id="stack-bar" class="sticky top-[5.5rem] lg:top-28 z-30 mb-10">
+                <div class="rounded-2xl bg-white/95 backdrop-blur border border-gray-200 shadow-lg px-4 sm:px-5 py-3 flex flex-wrap items-center gap-3">
+                    <div class="flex items-center gap-2 text-brand-navy font-semibold">
+                        <i class="ph ph-stack text-xl text-brand-teal"></i>
+                        <span id="stack-count" aria-live="polite">Tap what you need</span>
                     </div>
-                </div>
-
-                <!-- PC: Horizontal Timeline with arrows between bubbles -->
-                <div class="hidden lg:flex flex-col items-center gap-y-12">
-                    <!-- Row 1: 5 steps -->
-                    <div class="flex flex-row items-start justify-center">
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-lightbulb text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Idea</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-magnifying-glass text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Research</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-strategy text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Strategy</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-trademark text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Brand</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-palette text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Design</h4>
-                        </div>
-                    </div>
-                    <!-- Row 2: 6 steps -->
-                    <div class="flex flex-row items-start justify-center">
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-code text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Development</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-cube text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Prototype</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-check-square text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Testing</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-presentation-chart text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Presentation</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-rocket-launch text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Launch</h4>
-                        </div>
-                        <div class="text-brand-teal text-2xl mx-3 flex-shrink-0 leading-none pt-[20px]">→</div>
-                        <div class="flex flex-col items-center text-center flex-shrink-0 group">
-                            <div class="w-16 h-16 rounded-full bg-white border-2 border-brand-light shadow-lg flex items-center justify-center text-brand-teal group-hover:border-brand-teal group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 relative z-10"><i class="ph ph-chart-line-up text-2xl"></i></div>
-                            <h4 class="text-base font-bold text-brand-navy mt-3 uppercase tracking-wider">Growth</h4>
-                        </div>
+                    <div id="stack-chips" class="hidden sm:flex flex-wrap gap-2 flex-1 min-w-0"></div>
+                    <div class="ml-auto flex items-center gap-3">
+                        <button id="stack-clear" type="button" class="hidden text-sm font-medium text-gray-500 hover:text-brand-navy transition-colors">Clear</button>
+                        <a id="stack-cta" href="#contact" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-teal to-brand-lightTeal text-brand-navy font-bold text-sm hover:shadow-[0_0_20px_rgba(0,194,168,0.45)] transition-all duration-300"><span>Start a project</span> <i class="ph ph-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center mt-16">
-                <p class="text-lg text-gray-500 italic">Simple. Clean. Easy to understand.</p>
+            <div id="stack"></div>
+        </div>
+    </section>
+
+    <!-- Process: interactive stepper (logic in main.js) -->
+    <section id="process" class="py-24 lg:py-32 bg-brand-light">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
+            <div class="max-w-2xl mb-14 lg:mb-16">
+                <p class="text-brand-teal font-semibold mb-3">Our process</p>
+                <h2 class="text-4xl md:text-5xl font-bold text-brand-navy leading-tight mb-5">From first idea to steady growth.</h2>
+                <p class="text-gray-500 text-lg">Simple. Clean. Easy to understand. It plays on repeat. Pause it any time, or press the step you want to play from.</p>
+            </div>
+
+            <div id="proc">
+                <div id="proc-scroll" class="overflow-x-auto pb-4 -mx-6 px-6 lg:mx-0 lg:px-0">
+                    <div class="min-w-[900px] lg:min-w-0">
+                        <div class="flex mb-5 text-sm font-semibold" id="proc-phases">
+                            <div data-phase="0" style="flex:3" class="proc-phase pb-2 border-b-2">Discover</div>
+                            <div data-phase="1" style="flex:2" class="proc-phase pb-2 border-b-2">Shape</div>
+                            <div data-phase="2" style="flex:3" class="proc-phase pb-2 border-b-2">Build</div>
+                            <div data-phase="3" style="flex:3" class="proc-phase pb-2 border-b-2">Ship</div>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute top-6 h-[3px] rounded bg-brand-teal/20" style="left:4.545%; right:4.545%;">
+                                <div id="proc-fill" class="h-full rounded bg-gradient-to-r from-brand-teal to-brand-lightTeal" style="width:0%; transition:width .5s cubic-bezier(.22,1,.36,1)"></div>
+                            </div>
+                            <div id="proc-nodes" role="tablist" aria-label="Project steps" class="relative flex"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 rounded-3xl bg-brand-navy hero-pattern overflow-hidden">
+                    <div id="proc-bar" class="absolute top-0 left-0 h-1 bg-brand-lightTeal z-10" style="width:0"></div>
+                    <div class="relative z-10 p-7 md:p-10 grid md:grid-cols-[auto_1fr] gap-7 md:gap-10 items-start">
+                        <div id="proc-icon" class="w-20 h-20 rounded-2xl bg-white/10 text-brand-lightTeal flex items-center justify-center"><i class="ph ph-lightbulb text-5xl"></i></div>
+                        <div id="proc-panel" role="tabpanel" aria-live="polite" class="proc-panel">
+                            <p class="text-brand-lightTeal font-semibold text-sm mb-2"><span id="proc-count">Step 1 of 11</span> <span class="text-gray-400 font-normal">in the</span> <span id="proc-phase" class="text-gray-300 font-medium">Discover</span> <span class="text-gray-400 font-normal">phase</span></p>
+                            <h3 id="proc-title" class="text-3xl md:text-4xl font-bold text-white mb-3">Idea</h3>
+                            <p id="proc-desc" class="text-gray-300 text-lg max-w-2xl mb-5"></p>
+                            <p class="flex items-start gap-2 text-white font-medium"><i class="ph ph-check-circle text-brand-lightTeal text-2xl flex-shrink-0"></i><span><span class="text-gray-400 font-normal">You get: </span><span id="proc-out"></span></span></p>
+                        </div>
+                    </div>
+                    <div class="relative z-10 px-7 md:px-10 pb-7 md:pb-8 flex flex-wrap items-center gap-3">
+                        <button id="proc-prev" type="button" class="px-5 py-2.5 rounded-full border border-white/20 text-white font-medium hover:border-brand-lightTeal hover:text-brand-lightTeal transition-colors flex items-center gap-2 disabled:opacity-30 disabled:pointer-events-none"><i class="ph ph-arrow-left"></i> Previous</button>
+                        <button id="proc-next" type="button" class="px-5 py-2.5 rounded-full bg-brand-lightTeal text-brand-navy font-semibold hover:bg-white transition-colors flex items-center gap-2 disabled:opacity-30 disabled:pointer-events-none">Next <i class="ph ph-arrow-right"></i></button>
+                        <div class="ml-auto flex items-center gap-4">
+                            <span id="proc-status" class="hidden sm:flex items-center gap-1.5 text-sm text-gray-400"><i class="ph ph-repeat"></i><span>Playing on repeat</span></span>
+                            <button id="proc-play" type="button" class="px-5 py-2.5 rounded-full border border-white/20 text-white font-medium hover:border-brand-lightTeal hover:text-brand-lightTeal transition-colors flex items-center gap-2"><i class="ph ph-pause"></i> <span>Pause</span></button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Brand Values -->
-    <section id="values" class="py-24 bg-white border-y border-gray-100">
-        <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-navy mb-4">Brand Values</h2>
-            </div>
+    <section id="values" class="py-24 lg:py-28 bg-brand-navy hero-pattern">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-14 lg:mb-16">Brand Values</h2>
 
-            <!-- Responsive Flex Layout for Values -->
-            <div class="flex flex-wrap justify-center gap-10 md:gap-16 lg:gap-24">
-                <div class="flex flex-col items-center text-center w-28 md:w-32">
-                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
-                        <i class="ph ph-lightbulb text-5xl md:text-6xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Innovate</h4>
+            <div class="grid grid-cols-2 lg:grid-cols-5 gap-x-8 gap-y-14">
+                <div class="val-card">
+                    <div class="val-icon" data-fx="bulb"><i class="ph ph-lightbulb"></i></div>
+                    <h3 class="val-title text-xl font-bold text-white mt-6 mb-2">Innovate</h3>
+                    <span class="val-line"></span>
+                    <p class="text-gray-400 text-[15px] max-w-[16rem]">We look for the better way to solve the problem, not just the usual one.</p>
                 </div>
-                
-                <div class="flex flex-col items-center text-center w-28 md:w-32">
-                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
-                        <i class="ph ph-gear text-5xl md:text-6xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Engineer</h4>
+                <div class="val-card">
+                    <div class="val-icon" data-fx="gear"><i class="ph ph-gear"></i></div>
+                    <h3 class="val-title text-xl font-bold text-white mt-6 mb-2">Engineer</h3>
+                    <span class="val-line"></span>
+                    <p class="text-gray-400 text-[15px] max-w-[16rem]">Every solution is built to be robust, tested and ready to scale.</p>
                 </div>
-                
-                <div class="flex flex-col items-center text-center w-28 md:w-32">
-                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
-                        <i class="ph ph-users text-5xl md:text-6xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Collaborate</h4>
+                <div class="val-card">
+                    <div class="val-icon" data-fx="users"><i class="ph ph-users"></i></div>
+                    <h3 class="val-title text-xl font-bold text-white mt-6 mb-2">Collaborate</h3>
+                    <span class="val-line"></span>
+                    <p class="text-gray-400 text-[15px] max-w-[16rem]">We work with you, in the open, from the first call to launch.</p>
                 </div>
-                
-                <div class="flex flex-col items-center text-center w-28 md:w-32">
-                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
-                        <i class="ph ph-rocket text-5xl md:text-6xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Deliver</h4>
+                <div class="val-card">
+                    <div class="val-icon" data-fx="rocket"><i class="ph ph-rocket"></i></div>
+                    <h3 class="val-title text-xl font-bold text-white mt-6 mb-2">Deliver</h3>
+                    <span class="val-line"></span>
+                    <p class="text-gray-400 text-[15px] max-w-[16rem]">Ideas become working products that reach real users.</p>
                 </div>
-                
-                <div class="flex flex-col items-center text-center w-28 md:w-32">
-                    <div class="text-brand-teal mb-4 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300">
-                        <i class="ph ph-chart-bar text-5xl md:text-6xl"></i>
-                    </div>
-                    <h4 class="font-bold text-brand-navy uppercase tracking-widest text-[13px] md:text-sm">Elevate</h4>
+                <div class="val-card">
+                    <div class="val-icon" data-fx="chart"><i class="ph ph-chart-bar"></i></div>
+                    <h3 class="val-title text-xl font-bold text-white mt-6 mb-2">Elevate</h3>
+                    <span class="val-line"></span>
+                    <p class="text-gray-400 text-[15px] max-w-[16rem]">We keep improving your product after launch, as you grow.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Call to Action / Footer Connect -->
-    <section class="hero-pattern py-28 lg:py-36 relative overflow-hidden" id="contact">
-        <div class="max-w-4xl mx-auto px-6 lg:px-12 text-center relative z-10">
-            <h2 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight tracking-tight">
-                Ideas. <span class="text-brand-teal">Engineered.</span> <br>
-                Delivered.
-            </h2>
-            <div class="flex items-center justify-center gap-6 mb-12">
-                <div class="h-px w-12 bg-brand-lightTeal"></div>
-                <h3 class="text-xl md:text-2xl font-medium text-brand-lightTeal italic">end-to-end solutions</h3>
-                <div class="h-px w-12 bg-brand-lightTeal"></div>
-            </div>
-            
-            <div class="max-w-3xl mx-auto bg-white/5 p-8 md:p-12 rounded-3xl backdrop-blur-md border border-white/10 text-center">
-                <div class="mb-8">
-                    <h4 class="text-2xl md:text-3xl font-bold text-white mb-3">Project Inquiry</h4>
-                    <p class="text-gray-400">Tell us about your vision, and our engineering team will get back to you within 24 hours.</p>
+    <!-- Contact -->
+    <section class="hero-pattern py-24 lg:py-32 relative overflow-hidden" id="contact">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10 grid lg:grid-cols-[1fr_1.1fr] gap-14 lg:gap-20 items-start">
+
+            <!-- Left: pitch + direct channels -->
+            <div class="lg:sticky lg:top-32">
+                <h2 class="text-5xl md:text-6xl font-bold text-white mb-6 leading-[1.08] tracking-tight">
+                    Ideas. <span class="text-brand-lightTeal">Engineered.</span> <br>
+                    Delivered.
+                </h2>
+                <div class="flex items-center gap-5 mb-10">
+                    <div class="h-px w-12 bg-brand-lightTeal"></div>
+                    <h3 class="text-xl font-medium text-brand-lightTeal italic">end-to-end solutions</h3>
                 </div>
-                
-                <!-- Product Inquiry Form -->
+                <p class="text-gray-300 text-lg max-w-md mb-10">Prefer to talk? Reach us directly, or fill in the form and we reply in minutes.</p>
+
+                <ul class="space-y-4">
+                    <li>
+                        <a href="https://wa.me/213550044008" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-lightTeal/50 transition-colors">
+                            <span class="w-11 h-11 flex-shrink-0 rounded-full bg-brand-lightTeal/15 text-brand-lightTeal flex items-center justify-center"><i class="ph ph-whatsapp-logo text-2xl"></i></span>
+                            <span><span class="block text-white font-semibold">WhatsApp</span><span class="text-gray-400 text-sm">+213 550 04 40 08</span></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:aracstechnologies@gmail.com" class="group flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 hover:border-brand-lightTeal/50 transition-colors">
+                            <span class="w-11 h-11 flex-shrink-0 rounded-full bg-brand-lightTeal/15 text-brand-lightTeal flex items-center justify-center"><i class="ph ph-envelope text-2xl"></i></span>
+                            <span><span class="block text-white font-semibold">Email</span><span class="text-gray-400 text-sm">aracstechnologies@gmail.com</span></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right: form card -->
+            <div class="bg-white/5 p-7 md:p-10 rounded-3xl backdrop-blur-md border border-white/10">
+                <div class="mb-8">
+                    <h4 class="text-2xl md:text-3xl font-bold text-white mb-2">Project Inquiry</h4>
+                    <p class="text-gray-400">Tell us about your vision, and our engineering team will get back to you in minutes.</p>
+                </div>
+
                 <form id="contact-form" class="w-full text-left space-y-6">
-                    <!-- Spam honeypot: invisible to humans, filled by bots -->
+                    <!-- Spam honeypot -->
                     <div style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;" aria-hidden="true">
                         <label>Website
                             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
                         </label>
                     </div>
 
-                    <!-- Name Row -->
-                    <div>
-                        <label class="block text-sm font-semibold text-white mb-2">Name <span class="text-red-500">*</span></label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <input type="text" name="first_name" required 
-                                    class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm">
-                                <span class="block text-[11px] text-gray-500 mt-1 ml-1">First Name</span>
-                            </div>
-                            <div>
-                                <input type="text" name="last_name" required 
-                                    class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm">
-                                <span class="block text-[11px] text-gray-500 mt-1 ml-1">Last Name</span>
-                            </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="first_name" class="block text-sm font-semibold text-white mb-2">First name <span class="text-red-400">*</span></label>
+                            <input id="first_name" type="text" name="first_name" required autocomplete="given-name" class="field">
+                        </div>
+                        <div>
+                            <label for="last_name" class="block text-sm font-semibold text-white mb-2">Last name <span class="text-red-400">*</span></label>
+                            <input id="last_name" type="text" name="last_name" required autocomplete="family-name" class="field">
                         </div>
                     </div>
 
-                    <!-- Email & Project Type Row -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-semibold text-white mb-2">Email <span class="text-red-500">*</span></label>
-                            <input type="email" name="email" required 
-                                class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm">
-                            <span class="block text-[11px] text-gray-500 mt-1 ml-1">example@example.com</span>
+                            <label for="email" class="block text-sm font-semibold text-white mb-2">Email <span class="text-red-400">*</span></label>
+                            <input id="email" type="email" name="email" required autocomplete="email" placeholder="example@example.com" class="field placeholder-gray-500">
                         </div>
                         <div>
-                            <label class="block text-sm font-semibold text-white mb-2">Project Type <span class="text-red-500">*</span></label>
+                            <label for="project_type" class="block text-sm font-semibold text-white mb-2">Project type <span class="text-red-400">*</span></label>
                             <div class="relative">
-                                <select name="project_type" required 
-                                    class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white focus:outline-none transition-all duration-300 text-sm appearance-none pr-10">
+                                <select id="project_type" name="project_type" required class="field appearance-none pr-10">
                                     <option value="Business Landing Page" class="bg-brand-navy text-white">Business Landing Page</option>
-                                    <option value="Web application" class="bg-brand-navy text-white">Web application</option>
-                                    <option value="Mobile application" selected class="bg-brand-navy text-white">Mobile application</option>
-                                    <option value="E-commerce store" selected class="bg-brand-navy text-white">E-commerce store</option>
+                                    <option value="Web application" selected class="bg-brand-navy text-white">Web application</option>
+                                    <option value="Mobile application" class="bg-brand-navy text-white">Mobile application</option>
+                                    <option value="E-commerce store" class="bg-brand-navy text-white">E-commerce store</option>
                                     <option value="API development and integration" class="bg-brand-navy text-white">API development and integration</option>
                                     <option value="Hardware Prototyping" class="bg-brand-navy text-white">Hardware Prototyping</option>
                                     <option value="Automation Solutions" class="bg-brand-navy text-white">Automation Solutions</option>
-                                    <option value="Cloud & Infrastructure" class="bg-brand-navy text-white">Cloud & Infrastructure</option>
-                                    <option value="Consulting & Technical Architecture" class="bg-brand-navy text-white">Consulting & Technical Architecture</option>
-                                    <option value="Quality assurance & Testing" class="bg-brand-navy text-white">Quality assurance & Testing</option>
+                                    <option value="Cloud & Infrastructure" class="bg-brand-navy text-white">Cloud &amp; Infrastructure</option>
+                                    <option value="Consulting & Technical Architecture" class="bg-brand-navy text-white">Consulting &amp; Technical Architecture</option>
+                                    <option value="Quality assurance & Testing" class="bg-brand-navy text-white">Quality assurance &amp; Testing</option>
                                     <option value="UI/UX Design" class="bg-brand-navy text-white">UI/UX Design</option>
                                     <option value="Other" class="bg-brand-navy text-white">Other</option>
                                 </select>
@@ -576,44 +440,35 @@
                         </div>
                     </div>
 
-                    <!-- Project Description Row -->
                     <div>
-                        <label class="block text-sm font-semibold text-white mb-2">Project Description <span class="text-red-500">*</span></label>
-                        <textarea name="project_description" required rows="5" 
-                            class="w-full bg-[#0D2133]/40 border border-brand-teal/40 focus:border-brand-lightTeal rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none transition-all duration-300 text-sm resize-y"></textarea>
+                        <label for="project_description" class="block text-sm font-semibold text-white mb-2">Project description <span class="text-red-400">*</span></label>
+                        <textarea id="project_description" name="project_description" required rows="5" placeholder="What are you building, and what should it do?" class="field placeholder-gray-500 resize-y"></textarea>
                     </div>
 
-                    <!-- Submit Button Row -->
-                    <div class="text-center pt-2">
-                        <button type="submit" 
-                            class="px-12 py-3.5 rounded-lg bg-brand-lightTeal text-brand-navy font-bold text-[17px] hover:bg-brand-teal hover:text-white transition-all duration-300 shadow-lg hover:shadow-brand-lightTeal/20">
-                            Submit
-                        </button>
-                    </div>
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-10 py-4 rounded-xl bg-brand-lightTeal text-brand-navy font-bold text-[17px] hover:bg-brand-teal hover:text-white transition-all duration-300 shadow-lg hover:shadow-brand-lightTeal/20 disabled:opacity-70">
+                        Send inquiry
+                    </button>
                 </form>
 
-                <!-- Success Message Container -->
+                <!-- Success Message -->
                 <div id="form-success-message" class="hidden flex-col items-center justify-center p-8 bg-brand-teal/10 border border-brand-lightTeal/30 rounded-2xl text-center transition-all duration-500">
                     <div class="w-16 h-16 rounded-full bg-brand-lightTeal/20 flex items-center justify-center text-brand-lightTeal mb-4">
                         <i class="ph ph-check-circle text-4xl"></i>
                     </div>
                     <h5 class="text-2xl font-bold text-white mb-2">Inquiry Submitted!</h5>
-                    <p class="text-gray-300 max-w-md">Thank you for reaching out. Our engineering team will review your project details and get back to you within 24 hours.</p>
+                    <p class="text-gray-300 max-w-md">Thank you for reaching out. Our engineering team will review your project details and get back to you in minutes.</p>
                 </div>
-                
             </div>
         </div>
     </section>
 
-    <!-- Clean Footer -->
+    <!-- Footer -->
     <footer class="bg-brand-navy border-t border-white/5 pt-20 pb-10">
         <div class="max-w-[1400px] mx-auto px-6 lg:px-12">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16 mb-16">
-                
-                <!-- Brand Info -->
+
                 <div class="col-span-1 md:col-span-2">
                     <div class="flex items-center gap-3.5 mb-8">
-                        <!-- Custom Image Logo -->
                         <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS Logo" class="w-10 h-10 object-contain">
                         <div class="flex flex-col text-white justify-center">
                             <span class="text-2xl font-bold tracking-wide leading-none">ARACS</span>
@@ -624,27 +479,26 @@
                         Delivering end-to-end solutions in development and prototyping — from idea to deployment and beyond.
                     </p>
                     <div class="flex space-x-4">
-                        <a href="https://www.linkedin.com/in/aracs-technologies-646984419/" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="LinkedIn">
+                        <a href="https://www.linkedin.com/in/aracs-technologies-646984419/" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="LinkedIn" aria-label="LinkedIn">
                             <i class="ph ph-linkedin-logo text-2xl"></i>
                         </a>
-                        <a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="Instagram">
+                        <a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="Instagram" aria-label="Instagram">
                             <i class="ph ph-instagram-logo text-2xl"></i>
                         </a>
-                        <a href="https://www.facebook.com/profile.php?id=61591379255784" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="Facebook">
+                        <a href="https://www.facebook.com/profile.php?id=61591379255784" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="Facebook" aria-label="Facebook">
                             <i class="ph ph-facebook-logo text-2xl"></i>
                         </a>
-                        <a href="https://www.github.com/aracs" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="GitHub">
+                        <a href="https://www.github.com/aracs" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="GitHub" aria-label="GitHub">
                             <i class="ph ph-github-logo text-2xl"></i>
                         </a>
-                        <a href="https://wa.me/213550044008" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="WhatsApp">
+                        <a href="https://wa.me/213550044008" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-brand-lightTeal hover:bg-brand-teal hover:text-white transition-all hover:-translate-y-1" title="WhatsApp" aria-label="WhatsApp">
                             <i class="ph ph-whatsapp-logo text-2xl"></i>
                         </a>
                     </div>
                 </div>
 
-                <!-- Navigation -->
                 <div>
-                    <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-sm">Company</h4>
+                    <h4 class="text-white font-bold mb-6 text-lg">Company</h4>
                     <ul class="space-y-4">
                         <li><a href="#services" class="text-gray-400 hover:text-brand-lightTeal text-[15px] transition-colors">Services</a></li>
                         <li><a href="#process" class="text-gray-400 hover:text-brand-lightTeal text-[15px] transition-colors">Process</a></li>
@@ -652,45 +506,72 @@
                     </ul>
                 </div>
 
-                <!-- Contact -->
                 <div>
-                    <h4 class="text-white font-bold mb-6 tracking-widest uppercase text-sm">Contact</h4>
+                    <h4 class="text-white font-bold mb-6 text-lg">Contact</h4>
                     <ul class="space-y-4">
                         <li class="flex items-center gap-4 text-gray-400 text-[15px]">
-                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-phone"></i></div>
+                            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-phone text-base"></i></div>
                             <a href="tel:+213550044008" class="hover:text-brand-lightTeal transition-colors">+213 550 04 40 08</a>
                         </li>
                         <li class="flex items-center gap-4 text-gray-400 text-[15px]">
-                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-whatsapp-logo"></i></div>
+                            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-whatsapp-logo text-base"></i></div>
                             <a href="https://wa.me/213550044008" target="_blank" rel="noopener noreferrer" class="hover:text-brand-lightTeal transition-colors">+213 550 04 40 08</a>
                         </li>
                         <li class="flex items-center gap-4 text-gray-400 text-[15px]">
-                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-envelope-simple"></i></div>
-                            <a href="mailto:aracstechnologies@gmail.com" class="hover:text-brand-lightTeal transition-colors">aracstechnologies@gmail.com</a>
+                            <div class="w-8 h-8 flex-shrink-0 rounded-full bg-white/5 flex items-center justify-center text-brand-teal"><i class="ph ph-envelope text-base"></i></div>
+                            <a href="mailto:aracstechnologies@gmail.com" class="break-all hover:text-brand-lightTeal transition-colors">aracstechnologies@gmail.com</a>
                         </li>
                     </ul>
                 </div>
             </div>
-            
+
             <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
                 <a href="https://neochipclub.oneapp.dev" target="_blank" rel="noopener noreferrer" class="text-gray-500 text-[14px] hover:text-brand-lightTeal transition-colors">
                     &copy; <span id="year"></span> ARACS TECHNOLOGIES | NeoChip Dev | NeoChip Club - All Rights Reserved.
                 </a>
-                <div class="flex items-center">
-                    <span class="text-brand-teal text-[11px] font-semibold tracking-[0.2em] uppercase">end-to-end solutions</span>
-                </div>
+                <span class="text-brand-teal text-[11px] font-semibold tracking-[0.2em] uppercase">end-to-end solutions</span>
             </div>
         </div>
     </footer>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/213550044008" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white flex items-center justify-center shadow-2xl shadow-green-500/40 hover:scale-110 hover:shadow-green-400/60 transition-all duration-300 group animate-pulse-slow" title="Chat on WhatsApp">
+    <a href="https://wa.me/213550044008" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-emerald-600 text-white flex items-center justify-center shadow-2xl shadow-green-500/40 hover:scale-110 hover:shadow-green-400/60 transition-all duration-300 group animate-pulse-slow" title="Chat on WhatsApp" aria-label="Chat on WhatsApp">
         <span class="absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
         <span class="absolute inset-0 rounded-full animate-ping bg-green-400/30 opacity-75 group-hover:opacity-0 transition-opacity duration-300"></span>
         <i class="ph ph-whatsapp-logo text-3xl relative z-10"></i>
     </a>
 
-    <!-- Interactive Scripts -->
+    <!-- FAQ assistant (logic in main.js) -->
+    <div id="bot-root">
+        <button id="bot-launcher" type="button" aria-expanded="false" aria-controls="bot-panel" aria-label="Open the ARACS assistant" class="fixed bottom-28 right-6 z-50 h-14 pl-4 pr-5 rounded-full bg-brand-navy text-white border border-brand-lightTeal/40 shadow-2xl shadow-black/30 flex items-center gap-2.5 hover:border-brand-lightTeal hover:-translate-y-0.5 transition-all duration-300">
+            <i class="ph ph-chat-circle-dots text-2xl text-brand-lightTeal"></i>
+            <span id="bot-launcher-label" class="font-semibold text-[15px]">Ask us</span>
+        </button>
+
+        <section id="bot-panel" role="dialog" aria-label="ARACS assistant" class="bot-panel hidden fixed z-[60] bottom-28 right-6 w-[380px] max-w-[calc(100vw-2rem)] h-[560px] max-h-[calc(100vh-8rem)] rounded-2xl bg-white shadow-2xl shadow-black/30 border border-gray-200 flex flex-col overflow-hidden">
+            <header class="bg-brand-navy px-5 py-4 flex items-center gap-3">
+                <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="" class="w-9 h-9 object-contain">
+                <div class="flex-1 min-w-0">
+                    <p id="bot-title" class="text-white font-semibold leading-tight">ARACS assistant</p>
+                    <p class="text-brand-lightTeal text-xs flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-brand-lightTeal"></span> <span id="bot-status">Instant answers to common questions</span></p>
+                </div>
+                <button id="bot-lang" type="button" aria-label="Switch to Arabic" title="Switch to Arabic" class="px-3 py-1.5 rounded-full border border-white/25 text-white text-sm font-semibold hover:border-brand-lightTeal hover:text-brand-lightTeal transition-colors">عربي</button>
+                <button id="bot-close" type="button" aria-label="Close assistant" class="p-2 -mr-2 text-gray-300 hover:text-white transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </header>
+
+            <div id="bot-log" aria-live="polite" class="flex-1 overflow-y-auto px-4 py-5 space-y-3 bg-brand-light"></div>
+
+            <div id="bot-chips" class="px-4 py-3 flex flex-wrap gap-2 bg-brand-light border-t border-gray-100 max-h-[7.5rem] overflow-y-auto"></div>
+
+            <form id="bot-form" class="p-3 bg-white border-t border-gray-100 flex items-center gap-2" autocomplete="off">
+                <label for="bot-input" class="sr-only">Your question</label>
+                <input id="bot-input" type="text" dir="auto" maxlength="200" placeholder="Ask about services, process, hardware…" class="flex-1 min-w-0 rounded-full bg-brand-light border border-gray-200 px-4 py-2.5 text-sm text-brand-navy placeholder-gray-400 focus:outline-none focus:border-brand-teal">
+                <button type="submit" aria-label="Send" class="w-10 h-10 flex-shrink-0 rounded-full bg-brand-blue text-white flex items-center justify-center hover:bg-brand-teal transition-colors"><i class="ph ph-paper-plane-tilt text-lg"></i></button>
+            </form>
+        </section>
+    </div>
+
     <script src="./main.js"></script>
 </body>
 </html>
+
