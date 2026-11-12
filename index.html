@@ -15,7 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
 
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -133,80 +134,61 @@
                 </dl>
             </div>
 
-            <!-- Hero Visual (IDE mockup — ids used by main.js) -->
-            <div class="hidden lg:flex justify-end relative h-[600px] items-center w-full rise rise-2">
-                <div class="absolute w-[420px] h-[420px] bg-brand-teal rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-pulse-slow"></div>
+            <!-- Hero Visual: a living circuit board (one canvas, drawn and animated in main.js) -->
+            <div class="flex justify-center lg:justify-end rise rise-2">
+                <div id="hero-pcb" class="pcb relative w-full max-w-[640px]">
+                    <div class="absolute inset-[6%] bg-brand-teal rounded-full mix-blend-screen filter blur-[110px] opacity-20 animate-pulse-slow"></div>
 
-                <div class="relative w-full max-w-2xl shadow-[0_0_60px_rgba(0,107,141,0.3)] rounded-xl overflow-hidden border border-gray-700/50 bg-[#1e1e1e]">
-
-                    <!-- IDE Central Progress Overlay -->
-                    <div id="ide-overlay" class="absolute inset-0 bg-[#1e1e1e]/80 backdrop-blur-sm z-30 flex items-center justify-center transition-opacity duration-500 opacity-0 pointer-events-none">
-                        <div id="ide-modal" class="bg-[#252526] border border-gray-600/50 shadow-2xl rounded-xl p-8 w-4/5 max-w-sm flex flex-col items-center transform scale-95 transition-transform duration-500 relative overflow-hidden">
-                            <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-teal/20 rounded-full blur-2xl"></div>
-
-                            <div class="relative w-16 h-16 mb-5 flex items-center justify-center">
-                                <svg id="badge-spinner" class="animate-spin text-brand-lightTeal w-full h-full" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle class="opacity-20" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5"></circle>
-                                    <path class="opacity-80" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                </svg>
-                                <i id="badge-icon" class="ph ph-terminal-window text-2xl text-white absolute"></i>
+                    <div class="pcb-frame">
+                        <canvas role="img" aria-label="Interactive circuit board. Each component stands for an ARACS capability. Hover or tap a component or a trace to probe it."></canvas>
+                        <span class="pcb-corner tl" aria-hidden="true"></span><span class="pcb-corner tr" aria-hidden="true"></span>
+                        <span class="pcb-corner bl" aria-hidden="true"></span><span class="pcb-corner br" aria-hidden="true"></span>
+                        <div id="pcb-ide" class="ide" aria-hidden="true">
+                            <div class="ide-win">
+                                <div class="ide-title"><span class="dots"><i></i><i></i><i></i></span><span class="ide-name">project-aracs: launch.ts</span><span class="ide-st" id="ide-state">editing</span></div>
+                                <div class="ide-body">
+                                    <div class="ide-act"><i class="ph ph-files on"></i><i class="ph ph-magnifying-glass"></i><i class="ph ph-git-branch"></i><i class="ph ph-puzzle-piece"></i></div>
+                                    <div class="ide-side">
+                                        <p class="h">EXPLORER</p>
+                                        <p class="f">&#9662; PROJECT-ARACS</p>
+                                        <p class="f i1">&#9662; src</p>
+                                        <p class="f i2 on">launch.ts</p>
+                                        <p class="f i2">board.ts</p>
+                                        <p class="f i2">firmware.ino</p>
+                                        <p class="f i1">&#9656; cloud</p>
+                                        <p class="f i1">deploy.yml</p>
+                                        <p class="f i1">package.json</p>
+                                    </div>
+                                    <div class="ide-main">
+                                        <div class="ide-tabs"><span class="on">launch.ts</span><span>board.ts</span><span>firmware.ino</span></div>
+                                        <div class="ide-code" id="ide-box"><div id="ide-gut"></div><pre id="ide-pre"></pre></div>
+                                        <div class="ide-term" id="ide-term">
+                                            <div class="th"><span>TERMINAL</span><span id="ide-pct">0%</span></div>
+                                            <div id="ide-log"></div>
+                                            <div class="ide-bar"><i id="ide-bar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ide-status"><span>&#9095; main</span><span id="ide-pos">Ln 1, Col 1</span><span>TypeScript</span><span class="ml-auto">ARACS</span></div>
                             </div>
-
-                            <h4 id="badge-title" class="text-white font-bold text-lg mb-1 tracking-wide">Compiling Engine...</h4>
-                            <p id="badge-desc" class="text-gray-400 text-xs mb-6 font-mono text-center w-full line-clamp-1">Initializing build process</p>
-
-                            <div class="w-full bg-[#1e1e1e] rounded-full h-2 overflow-hidden relative shadow-inner border border-white/5">
-                                <div id="badge-progress-bar" class="absolute top-0 left-0 h-full bg-gradient-to-r from-brand-teal to-brand-lightTeal w-0 transition-all shadow-[0_0_10px_#00C2A8]"></div>
-                            </div>
-
-                            <div class="w-full flex justify-between mt-3 px-1">
-                                <span class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">Status: <span id="badge-status-text" class="text-brand-lightTeal ml-1 font-bold">Running</span></span>
-                                <span id="badge-percentage" class="text-[10px] text-white font-mono font-bold tracking-widest">0%</span>
+                            <div class="ide-load" id="ide-load">
+                                <div class="ide-ring"></div>
+                                <h4>Launching Project ARACS</h4>
+                                <p id="ide-load-txt">Loading board layout</p>
+                                <div class="pb"><i id="ide-load-bar"></i></div>
                             </div>
                         </div>
+                        <button id="pcb-skip" type="button" class="pcb-btn">Skip intro</button>
+                        <p class="pcb-hud left-8 top-0" aria-hidden="true">ARACS-PCB · REV A</p>
+                        <p id="pcb-stat" class="pcb-hud right-8 top-0" aria-hidden="true"></p>
                     </div>
 
-                    <!-- Animated Mouse Cursor SVG -->
-                    <svg id="mock-cursor" class="absolute z-50 w-6 h-6 opacity-0 pointer-events-none drop-shadow-lg transition-all" style="top: 80%; left: 80%; transition-duration: 800ms; transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1); transform-origin: top left;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.43c.45 0 .67-.54.35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z" fill="white" stroke="#0D2133" stroke-width="1.5" stroke-linejoin="round"/>
-                    </svg>
+                    <p class="pcb-caption" aria-live="polite">
+                        <span id="pcb-name" class="block text-white font-semibold text-lg">End-to-end solutions</span>
+                        <span id="pcb-line" class="block text-gray-400 text-sm">From chip to cloud. Hover a component or a trace to probe it.</span>
+                    </p>
 
-                    <!-- IDE Header -->
-                    <div class="bg-[#2d2d2d] px-4 py-3 flex items-center justify-between border-b border-black/50 relative z-10">
-                        <div class="flex space-x-2 w-24">
-                            <div class="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
-                            <div class="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
-                            <div class="w-3 h-3 rounded-full bg-[#27c93f]"></div>
-                        </div>
-                        <div class="text-xs text-gray-400 font-mono tracking-wider flex items-center gap-2">
-                            <i class="ph ph-file-code text-brand-teal"></i> solution.ts
-                        </div>
-                        <div class="w-24 flex justify-end">
-                            <button id="ide-run-btn" class="flex items-center gap-1.5 text-[10px] uppercase font-bold tracking-wider text-brand-lightTeal bg-brand-lightTeal/10 px-3 py-1.5 rounded border border-brand-lightTeal/20 transition-all duration-150 origin-center">
-                                <i class="ph ph-play-fill text-[11px]"></i> Run
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- IDE Body -->
-                    <div class="p-6 text-[15px] font-mono leading-relaxed flex overflow-hidden h-[320px] relative z-10">
-                        <div class="text-gray-600 text-right pr-6 select-none flex flex-col border-r border-gray-700/50 mr-6">
-                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
-                        </div>
-                        <div class="text-gray-300 whitespace-pre flex-1 relative"><span id="code-block"><span class="text-[#c678dd]">import</span> { <span class="text-[#e5c07b]">Engine</span>, <span class="text-[#e5c07b]">Solution</span> } <span class="text-[#c678dd]">from</span> <span class="text-[#98c379]">'@aracs/core'</span>;
-
-<span class="text-[#56b6c2]">const</span> <span class="text-[#e06c75]">project</span> <span class="text-[#56b6c2]">=</span> <span class="text-[#c678dd]">new</span> <span class="text-[#e5c07b]">Solution</span>({
-  <span class="text-[#d19a66]">client</span>: <span class="text-[#98c379]">'Your Vision'</span>,
-  <span class="text-[#d19a66]">type</span>: <span class="text-[#98c379]">'End-to-End'</span>,
-  <span class="text-[#d19a66]">hardware</span>: [<span class="text-[#98c379]">'ESP32'</span>, <span class="text-[#98c379]">'Raspberry Pi'</span>, <span class="text-[#98c379]">'Arduino'</span>],
-  <span class="text-[#d19a66]">stack</span>: [<span class="text-[#98c379]">'Ideate'</span>, <span class="text-[#98c379]">'Develop'</span>, <span class="text-[#98c379]">'Deploy'</span>],
-  <span class="text-[#d19a66]">scalable</span>: <span class="text-[#d19a66]">true</span>
-});
-
-<span class="text-[#5c6370] italic">// Initializing architecture...</span>
-<span class="text-[#c678dd]">await</span> <span class="text-[#e5c07b]">Engine</span>.<span class="text-[#61afef]">build</span>(<span class="text-[#e06c75]">project</span>);
-<span class="text-[#e06c75]">project</span>.<span class="text-[#61afef]">launch</span>();</span><span id="ide-cursor" class="animate-pulse inline-block w-2.5 h-[1.2em] bg-brand-lightTeal align-middle ml-[2px]"></span></div>
-                    </div>
+                    <ul class="sr-only"><li>Hardware MVP</li><li>Embedded & IoT</li><li>Automation</li><li>Development</li><li>UI/UX</li><li>Data</li><li>Cloud</li><li>Testing</li><li>Security</li><li>Support</li></ul>
                 </div>
             </div>
         </div>
@@ -400,42 +382,126 @@
                         </label>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="first_name" class="block text-sm font-semibold text-white mb-2">First name <span class="text-red-400">*</span></label>
-                            <input id="first_name" type="text" name="first_name" required autocomplete="given-name" class="field">
-                        </div>
-                        <div>
-                            <label for="last_name" class="block text-sm font-semibold text-white mb-2">Last name <span class="text-red-400">*</span></label>
-                            <input id="last_name" type="text" name="last_name" required autocomplete="family-name" class="field">
-                        </div>
+                    <div>
+                        <label for="full_name" class="block text-sm font-semibold text-white mb-2">Full name <span class="text-red-400">*</span></label>
+                        <input id="full_name" type="text" name="full_name" required autocomplete="name" placeholder="Your full name" class="field placeholder-gray-500">
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label for="email" class="block text-sm font-semibold text-white mb-2">Email <span class="text-red-400">*</span></label>
-                            <input id="email" type="email" name="email" required autocomplete="email" placeholder="example@example.com" class="field placeholder-gray-500">
-                        </div>
-                        <div>
-                            <label for="project_type" class="block text-sm font-semibold text-white mb-2">Project type <span class="text-red-400">*</span></label>
+                            <label for="wilaya" class="block text-sm font-semibold text-white mb-2">Wilaya <span class="text-red-400">*</span></label>
                             <div class="relative">
-                                <select id="project_type" name="project_type" required class="field appearance-none pr-10">
-                                    <option value="Business Landing Page" class="bg-brand-navy text-white">Business Landing Page</option>
-                                    <option value="Web application" selected class="bg-brand-navy text-white">Web application</option>
-                                    <option value="Mobile application" class="bg-brand-navy text-white">Mobile application</option>
-                                    <option value="E-commerce store" class="bg-brand-navy text-white">E-commerce store</option>
-                                    <option value="API development and integration" class="bg-brand-navy text-white">API development and integration</option>
-                                    <option value="Hardware Prototyping" class="bg-brand-navy text-white">Hardware Prototyping</option>
-                                    <option value="Automation Solutions" class="bg-brand-navy text-white">Automation Solutions</option>
-                                    <option value="Cloud & Infrastructure" class="bg-brand-navy text-white">Cloud &amp; Infrastructure</option>
-                                    <option value="Consulting & Technical Architecture" class="bg-brand-navy text-white">Consulting &amp; Technical Architecture</option>
-                                    <option value="Quality assurance & Testing" class="bg-brand-navy text-white">Quality assurance &amp; Testing</option>
-                                    <option value="UI/UX Design" class="bg-brand-navy text-white">UI/UX Design</option>
-                                    <option value="Other" class="bg-brand-navy text-white">Other</option>
+                                <select id="wilaya" name="wilaya" required autocomplete="address-level1" class="field appearance-none pr-10">
+                                    <option value="" selected disabled class="bg-brand-navy text-gray-400">Select your wilaya</option>
+                                    <option value="01 - Adrar" class="bg-brand-navy text-white">01 - Adrar</option>
+                                    <option value="02 - Chlef" class="bg-brand-navy text-white">02 - Chlef</option>
+                                    <option value="03 - Laghouat" class="bg-brand-navy text-white">03 - Laghouat</option>
+                                    <option value="04 - Oum El Bouaghi" class="bg-brand-navy text-white">04 - Oum El Bouaghi</option>
+                                    <option value="05 - Batna" class="bg-brand-navy text-white">05 - Batna</option>
+                                    <option value="06 - Béjaïa" class="bg-brand-navy text-white">06 - Béjaïa</option>
+                                    <option value="07 - Biskra" class="bg-brand-navy text-white">07 - Biskra</option>
+                                    <option value="08 - Béchar" class="bg-brand-navy text-white">08 - Béchar</option>
+                                    <option value="09 - Blida" class="bg-brand-navy text-white">09 - Blida</option>
+                                    <option value="10 - Bouira" class="bg-brand-navy text-white">10 - Bouira</option>
+                                    <option value="11 - Tamanrasset" class="bg-brand-navy text-white">11 - Tamanrasset</option>
+                                    <option value="12 - Tébessa" class="bg-brand-navy text-white">12 - Tébessa</option>
+                                    <option value="13 - Tlemcen" class="bg-brand-navy text-white">13 - Tlemcen</option>
+                                    <option value="14 - Tiaret" class="bg-brand-navy text-white">14 - Tiaret</option>
+                                    <option value="15 - Tizi Ouzou" class="bg-brand-navy text-white">15 - Tizi Ouzou</option>
+                                    <option value="16 - Alger" class="bg-brand-navy text-white">16 - Alger</option>
+                                    <option value="17 - Djelfa" class="bg-brand-navy text-white">17 - Djelfa</option>
+                                    <option value="18 - Jijel" class="bg-brand-navy text-white">18 - Jijel</option>
+                                    <option value="19 - Sétif" class="bg-brand-navy text-white">19 - Sétif</option>
+                                    <option value="20 - Saïda" class="bg-brand-navy text-white">20 - Saïda</option>
+                                    <option value="21 - Skikda" class="bg-brand-navy text-white">21 - Skikda</option>
+                                    <option value="22 - Sidi Bel Abbès" class="bg-brand-navy text-white">22 - Sidi Bel Abbès</option>
+                                    <option value="23 - Annaba" class="bg-brand-navy text-white">23 - Annaba</option>
+                                    <option value="24 - Guelma" class="bg-brand-navy text-white">24 - Guelma</option>
+                                    <option value="25 - Constantine" class="bg-brand-navy text-white">25 - Constantine</option>
+                                    <option value="26 - Médéa" class="bg-brand-navy text-white">26 - Médéa</option>
+                                    <option value="27 - Mostaganem" class="bg-brand-navy text-white">27 - Mostaganem</option>
+                                    <option value="28 - M'Sila" class="bg-brand-navy text-white">28 - M'Sila</option>
+                                    <option value="29 - Mascara" class="bg-brand-navy text-white">29 - Mascara</option>
+                                    <option value="30 - Ouargla" class="bg-brand-navy text-white">30 - Ouargla</option>
+                                    <option value="31 - Oran" class="bg-brand-navy text-white">31 - Oran</option>
+                                    <option value="32 - El Bayadh" class="bg-brand-navy text-white">32 - El Bayadh</option>
+                                    <option value="33 - Illizi" class="bg-brand-navy text-white">33 - Illizi</option>
+                                    <option value="34 - Bordj Bou Arréridj" class="bg-brand-navy text-white">34 - Bordj Bou Arréridj</option>
+                                    <option value="35 - Boumerdès" class="bg-brand-navy text-white">35 - Boumerdès</option>
+                                    <option value="36 - El Tarf" class="bg-brand-navy text-white">36 - El Tarf</option>
+                                    <option value="37 - Tindouf" class="bg-brand-navy text-white">37 - Tindouf</option>
+                                    <option value="38 - Tissemsilt" class="bg-brand-navy text-white">38 - Tissemsilt</option>
+                                    <option value="39 - El Oued" class="bg-brand-navy text-white">39 - El Oued</option>
+                                    <option value="40 - Khenchela" class="bg-brand-navy text-white">40 - Khenchela</option>
+                                    <option value="41 - Souk Ahras" class="bg-brand-navy text-white">41 - Souk Ahras</option>
+                                    <option value="42 - Tipaza" class="bg-brand-navy text-white">42 - Tipaza</option>
+                                    <option value="43 - Mila" class="bg-brand-navy text-white">43 - Mila</option>
+                                    <option value="44 - Aïn Defla" class="bg-brand-navy text-white">44 - Aïn Defla</option>
+                                    <option value="45 - Naâma" class="bg-brand-navy text-white">45 - Naâma</option>
+                                    <option value="46 - Aïn Témouchent" class="bg-brand-navy text-white">46 - Aïn Témouchent</option>
+                                    <option value="47 - Ghardaïa" class="bg-brand-navy text-white">47 - Ghardaïa</option>
+                                    <option value="48 - Relizane" class="bg-brand-navy text-white">48 - Relizane</option>
+                                    <option value="49 - Timimoun" class="bg-brand-navy text-white">49 - Timimoun</option>
+                                    <option value="50 - Bordj Badji Mokhtar" class="bg-brand-navy text-white">50 - Bordj Badji Mokhtar</option>
+                                    <option value="51 - Ouled Djellal" class="bg-brand-navy text-white">51 - Ouled Djellal</option>
+                                    <option value="52 - Béni Abbès" class="bg-brand-navy text-white">52 - Béni Abbès</option>
+                                    <option value="53 - In Salah" class="bg-brand-navy text-white">53 - In Salah</option>
+                                    <option value="54 - In Guezzam" class="bg-brand-navy text-white">54 - In Guezzam</option>
+                                    <option value="55 - Touggourt" class="bg-brand-navy text-white">55 - Touggourt</option>
+                                    <option value="56 - Djanet" class="bg-brand-navy text-white">56 - Djanet</option>
+                                    <option value="57 - El M'Ghair" class="bg-brand-navy text-white">57 - El M'Ghair</option>
+                                    <option value="58 - El Meniaa" class="bg-brand-navy text-white">58 - El Meniaa</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
                                     <i class="ph ph-caret-down text-lg"></i>
                                 </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-white mb-2">Email <span class="text-red-400">*</span></label>
+                            <input id="email" type="email" name="email" required autocomplete="email" placeholder="example@example.com" class="field placeholder-gray-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="phone" class="block text-sm font-semibold text-white mb-2">Phone number <span class="text-red-400">*</span></label>
+                        <input id="phone" type="tel" name="phone" required autocomplete="tel" inputmode="tel" placeholder="+213 550 04 40 08" pattern="[0-9+][0-9+ .\(\)\-]{6,18}" title="Please enter a valid phone number." class="field placeholder-gray-500">
+                        <label for="has_whatsapp" class="flex items-start gap-3 mt-3 cursor-pointer select-none">
+                            <input id="has_whatsapp" type="checkbox" name="has_whatsapp" value="yes" class="mt-0.5 h-4 w-4 rounded border-white/30 bg-white/10 accent-brand-lightTeal">
+                            <span class="text-sm text-gray-300 leading-snug">Do you have WhatsApp with this number?</span>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label for="project_type" class="block text-sm font-semibold text-white mb-2">Project type <span class="text-red-400">*</span></label>
+                        <div class="relative">
+                            <select id="project_type" name="project_type" required class="field appearance-none pr-10">
+                                <option value="" selected disabled class="bg-brand-navy text-gray-400">Select your project type</option>
+                                <optgroup label="Websites &amp; Web Apps" class="bg-brand-navy text-brand-lightTeal">
+                                    <option value="Business Landing Page" class="bg-brand-navy text-white">Business Landing Page</option>
+                                    <option value="Web application" class="bg-brand-navy text-white">Web application</option>
+                                    <option value="E-commerce store" class="bg-brand-navy text-white">E-commerce store</option>
+                                </optgroup>
+                                <optgroup label="Mobile &amp; Design" class="bg-brand-navy text-brand-lightTeal">
+                                    <option value="Mobile application" class="bg-brand-navy text-white">Mobile application</option>
+                                    <option value="UI/UX Design" class="bg-brand-navy text-white">UI/UX Design</option>
+                                </optgroup>
+                                <optgroup label="Hardware &amp; Automation" class="bg-brand-navy text-brand-lightTeal">
+                                    <option value="Hardware Prototyping" class="bg-brand-navy text-white">Hardware Prototyping</option>
+                                    <option value="Automation Solutions" class="bg-brand-navy text-white">Automation Solutions</option>
+                                </optgroup>
+                                <optgroup label="Engineering &amp; Cloud" class="bg-brand-navy text-brand-lightTeal">
+                                    <option value="API development and integration" class="bg-brand-navy text-white">API development and integration</option>
+                                    <option value="Cloud & Infrastructure" class="bg-brand-navy text-white">Cloud &amp; Infrastructure</option>
+                                    <option value="Consulting & Technical Architecture" class="bg-brand-navy text-white">Consulting &amp; Technical Architecture</option>
+                                    <option value="Quality assurance & Testing" class="bg-brand-navy text-white">Quality assurance &amp; Testing</option>
+                                </optgroup>
+                                <optgroup label="Something else" class="bg-brand-navy text-brand-lightTeal">
+                                    <option value="Other" class="bg-brand-navy text-white">Other</option>
+                                </optgroup>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
+                                <i class="ph ph-caret-down text-lg"></i>
                             </div>
                         </div>
                     </div>
@@ -443,6 +509,53 @@
                     <div>
                         <label for="project_description" class="block text-sm font-semibold text-white mb-2">Project description <span class="text-red-400">*</span></label>
                         <textarea id="project_description" name="project_description" required rows="5" placeholder="What are you building, and what should it do?" class="field placeholder-gray-500 resize-y"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <div class="flex items-center gap-3 mb-5" aria-hidden="true">
+                            <span class="h-px flex-1 bg-white/10"></span>
+                            <span class="text-[11px] font-semibold tracking-[0.18em] uppercase text-brand-lightTeal">Additional details</span>
+                            <span class="h-px flex-1 bg-white/10"></span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="promo_code" class="block text-sm font-semibold text-white mb-2">Promo code</label>
+                                <input id="promo_code" type="text" name="promo_code" autocomplete="off" placeholder="e.g. ARACS2026" class="field placeholder-gray-500 uppercase tracking-wide">
+                            </div>
+                            <div>
+                                <label for="invitor" class="block text-sm font-semibold text-white mb-2">Invited by</label>
+                                <input id="invitor" type="text" name="invitor" autocomplete="off" placeholder="Name of the person who invited you" class="field placeholder-gray-500">
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label for="heard_about" class="block text-sm font-semibold text-white mb-2">How did you know about us?</label>
+                            <div class="relative">
+                                <select id="heard_about" name="heard_about" class="field appearance-none pr-10">
+                                    <option value="" selected class="bg-brand-navy text-white">Select an option</option>
+                                    <option value="Social media" class="bg-brand-navy text-white">Social media</option>
+                                    <option value="Google" class="bg-brand-navy text-white">Google</option>
+                                    <option value="A friend or colleague" class="bg-brand-navy text-white">A friend or colleague</option>
+                                    <option value="A previous client" class="bg-brand-navy text-white">A previous client</option>
+                                    <option value="An event or workshop" class="bg-brand-navy text-white">An event or workshop</option>
+                                    <option value="University or school" class="bg-brand-navy text-white">University or school</option>
+                                    <option value="A business partner" class="bg-brand-navy text-white">A business partner</option>
+                                    <option value="NeoChip Club or community" class="bg-brand-navy text-white">NeoChip Club or community</option>
+                                    <option value="Saw an ad or poster" class="bg-brand-navy text-white">Saw an ad or poster</option>
+                                    <option value="Other" class="bg-brand-navy text-white">Other</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400">
+                                    <i class="ph ph-caret-down text-lg"></i>
+                                </div>
+                            </div>
+
+                            <div id="referral-details-wrap" class="hidden mt-3">
+                                <label for="referral_details" id="referral-details-label" class="block text-sm font-semibold text-white mb-2">Friend's name</label>
+                                <input id="referral_details" name="referral_details" type="text" autocomplete="off" placeholder="Optional" class="field placeholder-gray-500" disabled>
+                                <p id="referral-details-hint" class="mt-1.5 text-xs text-gray-500">Optional — mention their name if you can, so we can thank them.</p>
+                            </div>
+                        </div>
                     </div>
 
                     <button type="submit" class="w-full flex items-center justify-center gap-2 px-10 py-4 rounded-xl bg-brand-lightTeal text-brand-navy font-bold text-[17px] hover:bg-brand-teal hover:text-white transition-all duration-300 shadow-lg hover:shadow-brand-lightTeal/20 disabled:opacity-70">
@@ -574,5 +687,3 @@
     <script src="./main.js"></script>
 </body>
 </html>
-
-
