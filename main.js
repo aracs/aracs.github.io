@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		updateReferralDetails();
 	}
 
-	async function fetchWithTimeout(url, options = {}, timeoutMs = 20000) {
+	async function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
 		const controller = new AbortController();
 		const timer = setTimeout(() => controller.abort(), timeoutMs);
 		try {
@@ -138,6 +138,23 @@ document.addEventListener("DOMContentLoaded", () => {
 		} finally {
 			clearTimeout(timer);
 		}
+	}
+
+	// Resolves as soon as the first request succeeds; rejects only if all fail.
+	function firstAccepted(tasks) {
+		return new Promise((resolve, reject) => {
+			let pending = tasks.length;
+			if (!pending) {
+				reject(new Error('No submission endpoints are configured.'));
+				return;
+			}
+			tasks.forEach((task) => {
+				Promise.resolve(task).then(resolve, () => {
+					pending -= 1;
+					if (pending === 0) reject(new Error('All submission endpoints failed.'));
+				});
+			});
+		});
 	}
 
 	async function sendInquiryToBot(data) {
@@ -251,33 +268,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
 			try {
 				// Keep the existing Supabase submission AND notify the NeoChip bot.
-				// The form succeeds if at least one of the two accepted the inquiry.
+				// The form succeeds as soon as ONE of them accepts the inquiry, so a
+				// slow or offline endpoint never keeps the visitor waiting for the other.
 				const botConfigured = INQUIRY_API_URL && !INQUIRY_API_URL.includes('YOUR-BOT');
 
-				const legacyPromise = sendInquiryToLegacy(legacyPayload)
-					.then(() => true)
-					.catch((legacyError) => {
+				const attempts = [
+					sendInquiryToLegacy(legacyPayload).catch((legacyError) => {
 						console.warn('Legacy backend failed:', legacyError);
-						return false;
-					});
+						throw legacyError;
+					})
+				];
 
-				const botPromise = botConfigured
-					? sendInquiryToBot(botPayload)
-						.then(() => true)
-						.catch((botError) => {
+				if (botConfigured) {
+					attempts.push(
+						sendInquiryToBot(botPayload).catch((botError) => {
 							console.warn('Bot webhook failed:', botError);
-							return false;
+							throw botError;
 						})
-					: Promise.resolve(false);
-
-				const [legacyOk, botOk] = await Promise.all([legacyPromise, botPromise]);
-
-				if (!legacyOk && !botOk) {
-					throw new Error('Both the website backend and the Telegram bot were unreachable.');
+					);
+				} else {
+					console.warn('INQUIRY_API_URL is not configured in main.js — Telegram will not be notified.');
 				}
-				if (!botConfigured) {
-					console.warn('INQUIRY_API_URL is not configured in main.js — the website backend worked, but Telegram was not notified.');
-				}
+
+				await firstAccepted(attempts);
 
 				// Hide form, show success message
 				contactForm.classList.add('hidden');
@@ -1992,4 +2005,3 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 	if (typeof ResizeObserver !== 'undefined') { let to = 0; new ResizeObserver(() => { clearTimeout(to); to = setTimeout(() => { measure(); schedule(); }, 120); }).observe(body); }
 	sizeFx(); measure(); requestAnimationFrame(update);
 })();
-
