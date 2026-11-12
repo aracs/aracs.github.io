@@ -1992,3 +1992,4 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 	if (typeof ResizeObserver !== 'undefined') { let to = 0; new ResizeObserver(() => { clearTimeout(to); to = setTimeout(() => { measure(); schedule(); }, 120); }).observe(body); }
 	sizeFx(); measure(); requestAnimationFrame(update);
 })();
+
