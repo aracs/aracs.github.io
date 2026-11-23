@@ -254,40 +254,65 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.getElementById('aracs-problem-retry').focus();
 	}
 
-	// Shared animation styles for the confirmation + success modals (injected once).
+	// Modal styles — built from the site's own design tokens (navy / teal / Poppins).
 	function aracsModalStyles() {
 		if (document.getElementById('aracs-modal-styles')) return;
 		const style = document.createElement('style');
 		style.id = 'aracs-modal-styles';
 		style.textContent = [
-			'@keyframes arOverlayIn{from{opacity:0}to{opacity:1}}',
-			'@keyframes arCardIn{0%{opacity:0;transform:translateY(30px) scale(.93)}60%{opacity:1;transform:translateY(-5px) scale(1.015)}100%{opacity:1;transform:translateY(0) scale(1)}}',
-			'@keyframes arOrbA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(34px,-26px) scale(1.18)}}',
-			'@keyframes arOrbB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,24px) scale(1.22)}}',
-			'@keyframes arRowIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}',
-			'@keyframes arFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}',
-			'@keyframes arShimmer{from{background-position:200% 0}to{background-position:-200% 0}}',
-			'@keyframes arSubmitPulse{0%,100%{box-shadow:0 0 0 0 rgba(0,194,168,.55),0 10px 26px rgba(0,194,168,.28)}50%{box-shadow:0 0 0 11px rgba(0,194,168,0),0 10px 36px rgba(0,194,168,.5)}}',
-			'@keyframes arRing{0%{transform:scale(.55);opacity:.75}100%{transform:scale(2.3);opacity:0}}',
+			'@keyframes arFadeIn{from{opacity:0}to{opacity:1}}',
+			'@keyframes arRiseIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}',
 			'@keyframes arCheckDraw{to{stroke-dashoffset:0}}',
-			'@keyframes arMailBob{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}',
-			'@keyframes arMailGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,183,3,.6),0 8px 24px rgba(255,183,3,.25)}50%{box-shadow:0 0 0 14px rgba(255,183,3,0),0 8px 34px rgba(255,183,3,.45)}}',
-			'@keyframes arScan{0%{transform:translateX(-110%);opacity:0}18%{opacity:1}82%{opacity:1}100%{transform:translateX(110%);opacity:0}}',
-			'@keyframes arSpin{to{transform:rotate(360deg)}}',
-			'.ar-card{animation:arCardIn .62s cubic-bezier(.22,1,.36,1) both}',
-			'.ar-row{animation:arRowIn .5s cubic-bezier(.22,1,.36,1) both}',
-			'.ar-fade{animation:arFadeUp .6s cubic-bezier(.22,1,.36,1) both}',
-			'.ar-shimmer{background-size:200% 100%;animation:arShimmer 2.6s linear infinite}',
-			'.ar-submit{animation:arSubmitPulse 1.5s ease-in-out infinite}',
-			'.ar-ring{animation:arRing 2.2s ease-out infinite}',
-			'.ar-mail{animation:arMailBob 1.7s ease-in-out infinite,arMailGlow 1.7s ease-in-out infinite}',
-			'.ar-scan{animation:arScan 2.8s ease-in-out infinite}',
-			'.ar-spin{animation:arSpin 9s linear infinite}'
+			'@keyframes arFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}',
+			'.ar-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,20,32,.82);backdrop-filter:blur(10px);font-family:Poppins,system-ui,sans-serif;animation:arFadeIn .28s ease both}',
+			'.ar-card{position:relative;width:min(100%,480px);max-height:88vh;overflow-y:auto;overscroll-behavior:contain;background:rgba(13,33,51,.97);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.5);color:#fff;text-align:center;animation:arRiseIn .42s cubic-bezier(.22,1,.36,1) both}',
+			'.ar-icon{width:60px;height:60px;margin:0 auto 16px;border-radius:18px;background:rgba(0,194,168,.12);border:1px solid rgba(0,194,168,.25);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:28px}',
+			'.ar-icon-float{animation:arFloat 2.6s ease-in-out infinite}',
+			'.ar-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(0,194,168,.1);color:#00C2A8;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}',
+			'.ar-title{margin:14px 0 8px;font-size:23px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.25}',
+			'.ar-sub{margin:0;color:#9fb3bf;font-size:14px;line-height:1.6}',
+			'.ar-list{text-align:left;margin-top:18px;border-top:1px solid rgba(255,255,255,.09);padding-top:4px}',
+			'.ar-group{display:flex;align-items:center;gap:8px;margin:16px 0 4px;color:#00C2A8;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}',
+			'.ar-group span.line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,194,168,.4),transparent)}',
+			'.ar-row{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}',
+			'.ar-row-icon{flex:none;width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.05);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:15px}',
+			'.ar-label{color:#8aa0ad;font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase}',
+			'.ar-value{color:#e8f4f6;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}',
+			'.ar-actions{display:flex;gap:12px;margin-top:22px}',
+			'.ar-btn{flex:1;min-height:48px;padding:12px 18px;border-radius:999px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s,background .2s,border-color .2s,box-shadow .2s;appearance:none}',
+			'.ar-btn:hover{transform:translateY(-2px)}',
+			'.ar-btn:focus-visible{outline:2px solid #00C2A8;outline-offset:3px}',
+			'.ar-btn-ghost{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.18);color:#d7e6ec}',
+			'.ar-btn-ghost:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.32)}',
+			'.ar-btn-primary{background:linear-gradient(100deg,#0097A7,#00C2A8);border:0;color:#0D2133;box-shadow:0 8px 22px rgba(0,194,168,.18)}',
+			'.ar-btn-primary:hover{box-shadow:0 10px 28px rgba(0,194,168,.3)}',
+			'.ar-check{width:46px;height:46px}',
+			'.ar-notice{margin-top:18px;text-align:left;padding:16px;border-radius:16px;background:rgba(0,151,167,.09);border:1px solid rgba(0,194,168,.28)}',
+			'.ar-notice-head{display:flex;align-items:center;gap:12px}',
+			'.ar-notice-icon{flex:none;width:44px;height:44px;border-radius:13px;background:rgba(0,194,168,.12);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:22px}',
+			'.ar-notice-title{color:#00C2A8;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.4}',
+			'.ar-notice-sub{color:#b9ccd6;font-size:12px;margin-top:3px;line-height:1.5}',
+			'.ar-step{display:flex;gap:11px;align-items:flex-start;padding:10px 0 0;margin-top:10px;border-top:1px solid rgba(255,255,255,.07);color:#cbd5e1;font-size:13px;line-height:1.5}',
+			'.ar-step-num{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(0,194,168,.13);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}',
+			'.ar-foot{margin:16px 0 0;color:#9fb3bf;font-size:12px;line-height:1.6;display:flex;align-items:center;justify-content:center;gap:8px}',
+			'@media (max-width:480px){',
+			'.ar-overlay{padding:12px}',
+			'.ar-card{padding:20px 18px;border-radius:20px;max-height:92vh}',
+			'.ar-icon{width:52px;height:52px;font-size:24px;margin-bottom:12px}',
+			'.ar-title{font-size:20px}',
+			'.ar-sub{font-size:13px}',
+			'.ar-actions{flex-direction:column-reverse;gap:10px}',
+			'.ar-actions .ar-btn{width:100%}',
+			'.ar-notice{padding:13px}',
+			'.ar-notice-head{gap:10px}',
+			'.ar-notice-icon{width:38px;height:38px;font-size:19px}',
+			'.ar-value{font-size:13px}',
+			'}'
 		].join('');
 		document.head.appendChild(style);
 	}
 
-	// Reusable shell: animated backdrop with drifting orbs + spring-in card.
+	// Shared shell: overlay + card. Close on backdrop click, X button, or Escape.
 	function aracsModalShell(id, labelledBy, cardHtml) {
 		aracsModalStyles();
 		const old = document.getElementById(id);
@@ -295,21 +320,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 		const overlay = document.createElement('div');
 		overlay.id = id;
+		overlay.className = 'ar-overlay';
 		overlay.setAttribute('role', 'dialog');
 		overlay.setAttribute('aria-modal', 'true');
 		overlay.setAttribute('aria-labelledby', labelledBy);
-		overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,17,27,.82);backdrop-filter:blur(9px);font-family:Poppins,system-ui,sans-serif;animation:arOverlayIn .35s ease both;overflow:hidden;';
-
-		const orbA = document.createElement('div');
-		orbA.style.cssText = 'position:absolute;width:340px;height:340px;left:-90px;top:-110px;border-radius:50%;background:radial-gradient(circle,rgba(0,194,168,.22),transparent 70%);animation:arOrbA 7s ease-in-out infinite;pointer-events:none;';
-		const orbB = document.createElement('div');
-		orbB.style.cssText = 'position:absolute;width:380px;height:380px;right:-120px;bottom:-150px;border-radius:50%;background:radial-gradient(circle,rgba(255,183,3,.18),transparent 70%);animation:arOrbB 8s ease-in-out infinite;pointer-events:none;';
-		overlay.appendChild(orbA);
-		overlay.appendChild(orbB);
 
 		const card = document.createElement('div');
 		card.className = 'ar-card';
-		card.style.cssText = 'position:relative;width:min(100%,500px);max-height:90vh;overflow:auto;background:linear-gradient(160deg,rgba(17,42,58,.98),rgba(8,28,42,.98));color:#fff;border:1px solid rgba(0,194,168,.32);border-radius:24px;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.06);text-align:center;';
 		card.innerHTML = cardHtml;
 		overlay.appendChild(card);
 		document.body.appendChild(overlay);
@@ -340,25 +357,20 @@ document.addEventListener("DOMContentLoaded", () => {
 			{ icon: 'ph-whatsapp-logo', label: 'WhatsApp', value: info.whatsapp },
 		].filter((f) => f.value && String(f.value).trim());
 
-		let i = 0;
 		const rowsHtml = fields.map((f) => {
-			const delay = 0.16 + (i++) * 0.055;
-			const header = f.group ? `<div class="ar-row" style="animation-delay:${delay - 0.05}s;display:flex;align-items:center;gap:8px;margin:16px 0 4px;color:#4de0c6;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;"><i class="ph ${f.icon}"></i>${escapeHtml(f.group)}<span style="flex:1;height:1px;background:linear-gradient(90deg,rgba(0,194,168,.4),transparent);"></span></div>` : '';
-			return header + `<div class="ar-row" style="animation-delay:${delay}s;display:flex;gap:11px;align-items:flex-start;padding:9px 2px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left;"><i class="ph ${f.icon}" style="flex:none;width:30px;height:30px;border-radius:9px;background:rgba(0,194,168,.1);color:#4de0c6;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:1px;"></i><div style="min-width:0;"><div style="color:#8199a6;font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;">${escapeHtml(f.label)}</div><div style="color:#e8f4f6;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word;">${escapeHtml(f.value)}</div></div></div>`;
+			const header = f.group ? `<div class="ar-group"><i class="ph ${f.icon}"></i>${escapeHtml(f.group)}<span class="line"></span></div>` : '';
+			return header + `<div class="ar-row"><span class="ar-row-icon"><i class="ph ${f.icon}"></i></span><div style="min-width:0;"><div class="ar-label">${escapeHtml(f.label)}</div><div class="ar-value">${escapeHtml(f.value)}</div></div></div>`;
 		}).join('');
 
 		const { close } = aracsModalShell('aracs-confirm-inquiry', 'aracs-confirm-title', `
-			<div style="position:relative;width:70px;height:70px;margin:2px auto 16px;">
-				<div class="ar-ring" style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(0,194,168,.5);"></div>
-				<div style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(140deg,rgba(0,194,168,.22),rgba(0,151,167,.12));border:1px solid rgba(0,194,168,.4);display:flex;align-items:center;justify-content:center;font-size:32px;color:#4de0c6;"><i class="ph ph-shield-check"></i></div>
-			</div>
-			<div style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(0,194,168,.1);border:1px solid rgba(0,194,168,.25);color:#4de0c6;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;"><i class="ph ph-check-circle"></i> Final review</div>
-			<h3 id="aracs-confirm-title" class="ar-fade" style="margin:14px 0 6px;font-size:24px;font-weight:800;letter-spacing:-.02em;">Are these details correct?</h3>
-			<p class="ar-fade" style="margin:0 0 6px;color:#9fb3bf;font-size:13px;line-height:1.6;">Please verify everything below before sending it to our team.</p>
-			<div style="margin-top:8px;text-align:left;max-height:44vh;overflow:auto;padding-right:4px;">${rowsHtml}</div>
-			<div style="display:flex;gap:11px;margin-top:20px;">
-				<button type="button" id="aracs-confirm-edit" style="flex:1;padding:13px;border:1px solid rgba(255,255,255,.18);border-radius:13px;background:rgba(255,255,255,.04);color:#d7e6ec;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:.25s;" onmouseover="this.style.background='rgba(255,255,255,.1)';this.style.borderColor='rgba(255,255,255,.35)'" onmouseout="this.style.background='rgba(255,255,255,.04)';this.style.borderColor='rgba(255,255,255,.18)'"><i class="ph ph-pencil" style="font-size:18px;"></i> Edit details</button>
-				<button type="button" id="aracs-confirm-send" class="ar-submit ar-shimmer" style="flex:1.2;padding:13px;border:0;border-radius:13px;background:linear-gradient(100deg,#00c2a8,#00e0c0,#00c2a8);color:#05202b;font-weight:800;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'"><i class="ph ph-paper-plane-tilt" style="font-size:18px;"></i> Submit now</button>
+			<div class="ar-icon"><i class="ph ph-shield-check"></i></div>
+			<span class="ar-badge"><i class="ph ph-check-circle"></i> Final review</span>
+			<h3 id="aracs-confirm-title" class="ar-title">Are these details correct?</h3>
+			<p class="ar-sub">Please verify everything below before sending it to our team.</p>
+			<div class="ar-list">${rowsHtml}</div>
+			<div class="ar-actions">
+				<button type="button" id="aracs-confirm-edit" class="ar-btn ar-btn-ghost"><i class="ph ph-pencil" style="font-size:17px;"></i> Edit details</button>
+				<button type="button" id="aracs-confirm-send" class="ar-btn ar-btn-primary"><i class="ph ph-paper-plane-tilt" style="font-size:17px;"></i> Submit now</button>
 			</div>
 		`);
 
@@ -367,38 +379,33 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.getElementById('aracs-confirm-send').focus();
 	}
 
-	// Success popup — celebrate + make the mail/verification step unmissable.
+	// Success popup — on-brand, with the mail step clearly highlighted.
 	function showInquirySuccess() {
 		const { close } = aracsModalShell('aracs-success-popup', 'aracs-success-title', `
-			<div style="position:relative;width:88px;height:88px;margin:4px auto 18px;">
-				<div class="ar-ring" style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(0,194,168,.55);"></div>
-				<div class="ar-ring" style="position:absolute;inset:0;border-radius:50%;border:2px solid rgba(0,194,168,.4);animation-delay:.7s;"></div>
-				<div class="ar-fade" style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(140deg,rgba(0,194,168,.3),rgba(0,151,167,.14));border:1px solid rgba(0,194,168,.5);display:flex;align-items:center;justify-content:center;">
-					<svg viewBox="0 0 52 52" style="width:46px;height:46px;" aria-hidden="true"><path d="M14 27 l8 8 l17 -19" fill="none" stroke="#4de0c6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:60;stroke-dashoffset:60;animation:arCheckDraw .75s .3s ease-out forwards;"/></svg>
-				</div>
+			<div class="ar-icon" style="position:relative;">
+				<svg class="ar-check" viewBox="0 0 52 52" aria-hidden="true"><path d="M14 27 l8 8 l17 -19" fill="none" stroke="#00C2A8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:60;stroke-dashoffset:60;animation:arCheckDraw .7s .15s ease-out forwards;"/></svg>
 			</div>
-			<div class="ar-fade" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(0,194,168,.1);border:1px solid rgba(0,194,168,.25);color:#4de0c6;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;"><i class="ph ph-sparkle"></i> All set</div>
-			<h3 id="aracs-success-title" class="ar-fade" style="margin:14px 0 8px;font-size:24px;font-weight:800;letter-spacing:-.02em;">Inquiry received</h3>
-			<p class="ar-fade" style="margin:0 0 20px;color:#9fb3bf;font-size:14px;line-height:1.65;">Our team has received your inquiry and will contact you shortly.</p>
+			<span class="ar-badge"><i class="ph ph-check-circle"></i> Received</span>
+			<h3 id="aracs-success-title" class="ar-title">Inquiry received</h3>
+			<p class="ar-sub">Our team has received your inquiry and will contact you shortly.</p>
 
-			<div class="ar-fade" style="position:relative;overflow:hidden;text-align:left;padding:18px;border-radius:18px;background:linear-gradient(150deg,rgba(255,183,3,.12),rgba(255,183,3,.04));border:1px solid rgba(255,183,3,.42);box-shadow:0 12px 34px rgba(255,183,3,.08);">
-				<div class="ar-scan" style="position:absolute;top:0;bottom:0;width:45%;background:linear-gradient(90deg,transparent,rgba(255,183,3,.13),transparent);pointer-events:none;"></div>
-				<div style="display:flex;align-items:center;gap:14px;">
-					<div class="ar-mail" style="width:56px;height:56px;flex:none;border-radius:16px;background:rgba(255,183,3,.18);color:#ffc866;display:flex;align-items:center;justify-content:center;font-size:29px;"><i class="ph ph-envelope-open"></i></div>
+			<div class="ar-notice">
+				<div class="ar-notice-head">
+					<span class="ar-icon-float ar-notice-icon"><i class="ph ph-envelope-open"></i></span>
 					<div>
-						<div style="color:#ffc866;font-size:11px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;">Important — check your mail</div>
-						<div style="color:#f2e3c4;font-size:12px;margin-top:3px;line-height:1.5;">A verification message was sent to your address.</div>
+						<div class="ar-notice-title">Check your mail</div>
+						<div class="ar-notice-sub">A verification message was sent to your address.</div>
 					</div>
 				</div>
-				<div style="margin-top:16px;display:grid;gap:10px;">
-					<div class="ar-row" style="animation-delay:.35s;display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.22);"><span style="width:24px;height:24px;flex:none;border-radius:50%;background:rgba(255,183,3,.2);color:#ffc866;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">1</span><span style="color:#e8f4f6;font-size:13px;line-height:1.45;"><strong style="color:#ffc866;">Open your inbox</strong> and verify your email address.</span></div>
-					<div class="ar-row" style="animation-delay:.45s;display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.22);"><span style="width:24px;height:24px;flex:none;border-radius:50%;background:rgba(255,183,3,.2);color:#ffc866;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">2</span><span style="color:#e8f4f6;font-size:13px;line-height:1.45;">Check your <strong style="color:#ffc866;">Spam / Junk</strong> folder — our reply may be there.</span></div>
-					<div class="ar-row" style="animation-delay:.55s;display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.22);"><span style="width:24px;height:24px;flex:none;border-radius:50%;background:rgba(255,183,3,.2);color:#ffc866;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;">3</span><span style="color:#e8f4f6;font-size:13px;line-height:1.45;">If it's not in either, contact us directly — we're one message away.</span></div>
-				</div>
+				<div class="ar-step"><span class="ar-step-num">1</span><span><strong style="color:#00C2A8;">Open your inbox</strong> and verify your email address.</span></div>
+				<div class="ar-step"><span class="ar-step-num">2</span><span>Check your <strong style="color:#00C2A8;">Spam / Junk</strong> folder — our reply may be there.</span></div>
+				<div class="ar-step"><span class="ar-step-num">3</span><span>If it is not in either, <strong style="color:#00C2A8;">contact us directly</strong> and we will help.</span></div>
 			</div>
 
-			<p class="ar-fade" style="margin:16px 0 0;color:#9fb3bf;font-size:12px;line-height:1.6;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph ph-warning-circle" style="font-size:18px;color:#ffc866;"></i> Don't miss our reply — look in Spam if your inbox is empty.</p>
-			<button type="button" id="aracs-success-ok" class="ar-shimmer" style="margin-top:22px;width:100%;padding:13px;border:0;border-radius:13px;background:linear-gradient(100deg,#00c2a8,#00e0c0,#00c2a8);color:#05202b;font-weight:800;font-size:14px;cursor:pointer;transition:transform .2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Done</button>
+			<p class="ar-foot"><i class="ph ph-warning-circle" style="font-size:17px;color:#00C2A8;"></i> Do not miss our reply — look in Spam if your inbox is empty.</p>
+			<div class="ar-actions" style="margin-top:18px;">
+				<button type="button" id="aracs-success-ok" class="ar-btn ar-btn-primary">Done</button>
+			</div>
 		`);
 
 		document.getElementById('aracs-success-ok').addEventListener('click', close);
