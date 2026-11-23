@@ -224,10 +224,10 @@ document.addEventListener("DOMContentLoaded", () => {
 			${detail ? `<p style="margin:10px 0 0;color:#8199a6;font-size:12px;word-break:break-word;">${escapeHtml(detail)}</p>` : ''}
 			<p style="margin:20px 0 10px;color:#4de0c6;font-size:13px;font-weight:600;letter-spacing:.02em;">Other ways to reach us</p>
 			<div style="display:grid;gap:9px;">
-				<a href="https://wa.me/213550044008?text=Hello%20ARACS%2C%20I%20couldn%27t%20send%20my%20inquiry%20through%20the%20website." target="_blank" rel="noopener noreferrer" style="${linkStyle}"><span style="font-size:18px;">💬</span><span><strong style="display:block;">WhatsApp</strong>+213 550 04 40 08</span></a>
-				<a href="tel:+213550044008" style="${linkStyle}"><span style="font-size:18px;">📞</span><span><strong style="display:block;">Call us</strong>+213 550 04 40 08</span></a>
-				<a href="mailto:aracstechnologies@gmail.com?subject=Website%20inquiry" style="${linkStyle}"><span style="font-size:18px;">✉️</span><span><strong style="display:block;">Email</strong>aracstechnologies@gmail.com</span></a>
-				<a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" style="${linkStyle}"><span style="font-size:18px;">📸</span><span><strong style="display:block;">Instagram</strong>@aracstech</span></a>
+				<a href="https://wa.me/213550044008?text=Hello%20ARACS%2C%20I%20couldn%27t%20send%20my%20inquiry%20through%20the%20website." target="_blank" rel="noopener noreferrer" style="${linkStyle}"><i class="ph ph-whatsapp-logo" style="font-size:18px;"></i><span><strong style="display:block;">WhatsApp</strong>+213 550 04 40 08</span></a>
+				<a href="tel:+213550044008" style="${linkStyle}"><i class="ph ph-phone" style="font-size:18px;"></i><span><strong style="display:block;">Call us</strong>+213 550 04 40 08</span></a>
+				<a href="mailto:aracstechnologies@gmail.com?subject=Website%20inquiry" style="${linkStyle}"><i class="ph ph-envelope" style="font-size:18px;"></i><span><strong style="display:block;">Email</strong>aracstechnologies@gmail.com</span></a>
+				<a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" style="${linkStyle}"><i class="ph ph-instagram-logo" style="font-size:18px;"></i><span><strong style="display:block;">Instagram</strong>@aracstech</span></a>
 			</div>
 			<div style="display:flex;gap:10px;margin-top:20px;">
 				<button type="button" id="aracs-problem-retry" style="flex:1;padding:12px;border:0;border-radius:11px;background:#00c2a8;color:#05202b;font-weight:700;font-size:14px;cursor:pointer;">Try again</button>
@@ -254,16 +254,131 @@ document.addEventListener("DOMContentLoaded", () => {
 		document.getElementById('aracs-problem-retry').focus();
 	}
 
+	// Confirmation window: show the exact details that will be sent, with an edit
+	// (pen) button and a blinking Submit button. Uses icons only — no emojis.
+	function showConfirmInquiry(info, onConfirm) {
+		const old = document.getElementById('aracs-confirm-inquiry');
+		if (old) old.remove();
+
+		const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (ch) => ({
+			'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+		}[ch]));
+
+		const fields = [
+			['Full name', info.full_name],
+			['Email', info.email],
+			['Phone', info.phone],
+			['Wilaya', info.wilaya],
+			['Project type', info.project_type],
+			['Project description', info.project_description],
+			['Promo code', info.promo_code],
+			['Invited by', info.invitor],
+			['How did you know about us', info.heard_about],
+			['WhatsApp', info.whatsapp],
+		].filter(([, value]) => value && String(value).trim());
+
+		const rowStyle = 'padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);';
+		const labelStyle = 'display:block;color:#4de0c6;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px;';
+		const valueStyle = 'display:block;color:#e8f4f6;font-size:14px;line-height:1.5;word-break:break-word;white-space:pre-wrap;';
+		const rowsHtml = fields.map(([label, value]) =>
+			`<div style="${rowStyle}"><span style="${labelStyle}">${escapeHtml(label)}</span><span style="${valueStyle}">${escapeHtml(value)}</span></div>`
+		).join('');
+
+		if (!document.getElementById('aracs-modal-blink')) {
+			const style = document.createElement('style');
+			style.id = 'aracs-modal-blink';
+			style.textContent = '@keyframes aracsBlink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,194,168,.5)}50%{opacity:.62;box-shadow:0 0 0 8px rgba(0,194,168,0)}}.aracs-blink{animation:aracsBlink 1.15s ease-in-out infinite}';
+			document.head.appendChild(style);
+		}
+
+		const overlay = document.createElement('div');
+		overlay.id = 'aracs-confirm-inquiry';
+		overlay.setAttribute('role', 'dialog');
+		overlay.setAttribute('aria-modal', 'true');
+		overlay.setAttribute('aria-labelledby', 'aracs-confirm-title');
+		overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,17,27,.78);backdrop-filter:blur(6px);font-family:Poppins,system-ui,sans-serif;';
+
+		const card = document.createElement('div');
+		card.style.cssText = 'width:min(100%,520px);max-height:90vh;overflow:auto;background:#0b2030;color:#fff;border:1px solid rgba(0,194,168,.35);border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.55);text-align:left;';
+		card.innerHTML = `
+			<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
+				<div style="width:44px;height:44px;flex:none;border-radius:14px;background:rgba(0,194,168,.15);color:#4de0c6;display:flex;align-items:center;justify-content:center;font-size:24px;"><i class="ph ph-question"></i></div>
+				<button type="button" id="aracs-confirm-close" aria-label="Close" style="background:transparent;border:0;color:#9fb3bf;font-size:24px;line-height:1;cursor:pointer;"><i class="ph ph-x"></i></button>
+			</div>
+			<h3 id="aracs-confirm-title" style="margin:16px 0 6px;font-size:21px;font-weight:700;">Are this correct?</h3>
+			<p style="margin:0 0 14px;color:#b9ccd6;font-size:14px;line-height:1.6;">Please review your information below before sending it to our team.</p>
+			<div style="margin-bottom:18px;">${rowsHtml}</div>
+			<div style="display:flex;gap:10px;">
+				<button type="button" id="aracs-confirm-edit" style="flex:1;padding:12px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:transparent;color:#d7e6ec;font-weight:600;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph ph-pencil"></i> Edit</button>
+				<button type="button" id="aracs-confirm-send" class="aracs-blink" style="flex:1;padding:12px;border:0;border-radius:11px;background:#00c2a8;color:#05202b;font-weight:700;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph ph-paper-plane-tilt"></i> Submit</button>
+			</div>
+		`;
+		overlay.appendChild(card);
+		document.body.appendChild(overlay);
+
+		const close = () => {
+			document.removeEventListener('keydown', onKey);
+			overlay.remove();
+		};
+		const onKey = (event) => { if (event.key === 'Escape') close(); };
+
+		document.getElementById('aracs-confirm-close').addEventListener('click', close);
+		document.getElementById('aracs-confirm-edit').addEventListener('click', close);
+		overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+		document.addEventListener('keydown', onKey);
+		document.getElementById('aracs-confirm-send').addEventListener('click', () => { close(); onConfirm(); });
+		document.getElementById('aracs-confirm-send').focus();
+	}
+
+	// Shown only after the server confirms the inquiry was accepted.
+	function showInquirySuccess() {
+		const old = document.getElementById('aracs-success-popup');
+		if (old) old.remove();
+
+		const overlay = document.createElement('div');
+		overlay.id = 'aracs-success-popup';
+		overlay.setAttribute('role', 'dialog');
+		overlay.setAttribute('aria-modal', 'true');
+		overlay.setAttribute('aria-labelledby', 'aracs-success-title');
+		overlay.style.cssText = 'position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,17,27,.78);backdrop-filter:blur(6px);font-family:Poppins,system-ui,sans-serif;';
+
+		if (!document.getElementById('aracs-success-anim')) {
+			const style = document.createElement('style');
+			style.id = 'aracs-success-anim';
+			style.textContent = '@keyframes aracsMailFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes aracsMailGlow{0%,100%{box-shadow:0 0 0 0 rgba(255,183,3,.55)}50%{box-shadow:0 0 0 12px rgba(255,183,3,0)}}@keyframes aracsSpamPulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.18)}}.aracs-mail-icon{animation:aracsMailFloat 1.4s ease-in-out infinite,aracsMailGlow 1.4s ease-in-out infinite}.aracs-spam-icon{animation:aracsSpamPulse 1.1s ease-in-out infinite}';
+			document.head.appendChild(style);
+		}
+
+		const card = document.createElement('div');
+		card.style.cssText = 'width:min(100%,470px);max-height:90vh;overflow:auto;background:#0b2030;color:#fff;border:1px solid rgba(0,194,168,.35);border-radius:22px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.55);text-align:center;';
+		card.innerHTML = `
+			<div style="width:64px;height:64px;margin:0 auto 16px;border-radius:50%;background:rgba(0,194,168,.15);color:#4de0c6;display:flex;align-items:center;justify-content:center;font-size:36px;"><i class="ph ph-check-circle"></i></div>
+			<h3 id="aracs-success-title" style="margin:0 0 10px;font-size:22px;font-weight:700;">Inquiry received</h3>
+			<p style="margin:0 0 18px;color:#b9ccd6;font-size:14px;line-height:1.65;">Our team has received your inquiry and will contact you shortly.</p>
+			<div style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:16px;background:rgba(255,183,3,.08);border:1px solid rgba(255,183,3,.45);">
+				<div class="aracs-mail-icon" style="width:54px;height:54px;flex:none;border-radius:50%;background:rgba(255,183,3,.16);color:#ffc866;display:flex;align-items:center;justify-content:center;font-size:28px;"><i class="ph ph-envelope"></i></div>
+				<div style="min-width:0;">
+					<p style="margin:0 0 6px;color:#ffc866;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;">Important — check your mail</p>
+					<p style="margin:0;color:#e8f4f6;font-size:14px;line-height:1.6;"><strong>Open your inbox</strong> for our verification message, then <strong>check your Spam / Junk folder</strong> — our reply may land there.</p>
+				</div>
+			</div>
+			<p style="margin:14px 0 0;color:#9fb3bf;font-size:13px;line-height:1.6;display:flex;align-items:center;justify-content:center;gap:8px;"><i class="ph ph-warning-circle aracs-spam-icon" style="font-size:20px;color:#ffc866;"></i> Don't miss our reply — look in Spam if your inbox is empty.</p>
+			<button type="button" id="aracs-success-ok" style="margin-top:22px;width:100%;padding:12px;border:0;border-radius:11px;background:#00c2a8;color:#05202b;font-weight:700;font-size:14px;cursor:pointer;">Done</button>
+		`;
+		overlay.appendChild(card);
+		document.body.appendChild(overlay);
+		const close = () => { document.removeEventListener('keydown', onKey); overlay.remove(); };
+		const onKey = (event) => { if (event.key === 'Escape') close(); };
+		document.getElementById('aracs-success-ok').addEventListener('click', close);
+		overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+		document.addEventListener('keydown', onKey);
+		document.getElementById('aracs-success-ok').focus();
+	}
+
 	if (contactForm && formSuccessMessage) {
 		contactForm.addEventListener('submit', async (e) => {
 			e.preventDefault();
-			
-			// Show loading state on submit button
-			const submitBtn = contactForm.querySelector('button[type="submit"]');
-			const originalBtnContent = submitBtn.innerHTML;
-			submitBtn.disabled = true;
-			submitBtn.innerHTML = `<i class="ph ph-circle-notch animate-spin text-lg"></i> Submitting...`;
-			
+
 			// Get form data
 			const formData = new FormData(contactForm);
 
@@ -277,7 +392,6 @@ document.addEventListener("DOMContentLoaded", () => {
 			const referralDetails = String(formData.get('referral_details') || '').trim();
 
 			const payload = {
-				// Original fields (kept for the bot/backend)
 				first_name: firstName,
 				last_name: lastName,
 				email: String(formData.get('email') || '').trim(),
@@ -286,7 +400,6 @@ document.addEventListener("DOMContentLoaded", () => {
 				_gotcha: formData.get('_gotcha') || '',
 				source: 'website',
 				page: window.location.href,
-				// New fields
 				full_name: fullName,
 				wilaya: String(formData.get('wilaya') || ''),
 				phone: String(formData.get('phone') || '').trim(),
@@ -297,6 +410,16 @@ document.addEventListener("DOMContentLoaded", () => {
 				heard_about: String(formData.get('heard_about') || ''),
 				referral_details: referralDetails
 			};
+
+			// Show the confirmation window before anything is sent.
+			showConfirmInquiry(payload, () => performSubmit(payload));
+		});
+
+		async function performSubmit(payload) {
+			const submitBtn = contactForm.querySelector('button[type="submit"]');
+			const originalBtnContent = submitBtn.innerHTML;
+			submitBtn.disabled = true;
+			submitBtn.innerHTML = `<i class="ph ph-circle-notch animate-spin text-lg"></i> Submitting...`;
 
 			// The existing backend only knows the original fields, so keep it untouched.
 			const legacyPayload = {
@@ -318,8 +441,8 @@ document.addEventListener("DOMContentLoaded", () => {
 			if (payload.phone) extraLines.push(`Phone: ${payload.phone}${payload.has_whatsapp ? ' (WhatsApp)' : ''}`);
 			if (payload.promo_code) extraLines.push(`Promo code: ${payload.promo_code}`);
 			if (payload.invitor) extraLines.push(`Invited by: ${payload.invitor}`);
-			if (payload.heard_about) extraLines.push(`Heard about us: ${payload.heard_about}${referralDetails ? ` (${referralDetails})` : ''}`);
-			if (!hasWhatsapp) extraLines.push('WhatsApp on this number: No');
+			if (payload.heard_about) extraLines.push(`Heard about us: ${payload.heard_about}${payload.referral_details ? ` (${payload.referral_details})` : ''}`);
+			if (!payload.has_whatsapp) extraLines.push('WhatsApp on this number: No');
 
 			const botPayload = {
 				...payload,
@@ -354,13 +477,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 				await firstAccepted(attempts);
 
-				// Hide form, show success message
+				// Hide the form and show the success popup.
 				contactForm.classList.add('hidden');
-				formSuccessMessage.classList.remove('hidden');
-				formSuccessMessage.classList.add('flex');
-				
-				// Scroll to the card header
-				formSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				formSuccessMessage.classList.add('hidden');
+				showInquirySuccess();
 			} catch (error) {
 				console.error('Error submitting form:', error);
 
@@ -369,7 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				submitBtn.innerHTML = originalBtnContent;
 				showInquiryProblem(error && error.message ? error.message : '');
 			}
-		});
+		}
 	}
 
 });
@@ -814,12 +934,12 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 		loadEl.classList.remove('on'); loadBar.style.width = '0'; stEl.textContent = 'editing';
 		sel = hov = null; ripples.length = 0; COMPS.forEach((c) => { c.act = 0; });
 		renderIde(0); say('Project ARACS', 'Writing launch.ts'); if (statEl) statEl.textContent = 'BOOT';
-		skipBtn.textContent = 'Skip intro';
+		skipBtn.innerHTML = '<i class="ph ph-fast-forward"></i> Skip intro';
 	}
 	function goLive(instant) {
 		phase = 'live'; buildT = buildEnd; liveT0 = instant ? time - 2 : time;
 		ideEl.classList.add('hide'); caption(); if (statEl) statEl.textContent = STAT;
-		skipBtn.textContent = '↻ Replay build';
+		skipBtn.innerHTML = '<i class="ph ph-arrow-counter-clockwise"></i> Replay build';
 	}
 
 	function introUpdate(dt) {
