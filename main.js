@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		updateReferralDetails();
 	}
 
-	async function fetchWithTimeout(url, options = {}, timeoutMs = 12000) {
+	async function fetchWithTimeout(url, options = {}, timeoutMs = 20000) {
 		const controller = new AbortController();
 		const timer = setTimeout(() => controller.abort(), timeoutMs);
 		try {
@@ -190,6 +190,66 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		return response;
+	}
+
+	// Friendly in-page popup instead of window.alert(). If the online form
+	// cannot be confirmed, the visitor gets every other way to reach ARACS.
+	function showInquiryProblem(detail) {
+		const old = document.getElementById('aracs-contact-problem');
+		if (old) old.remove();
+
+		const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
+			'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+		}[ch]));
+
+		const linkStyle = 'display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:#e8f4f6;text-decoration:none;font-size:14px;transition:.2s;';
+		const overlay = document.createElement('div');
+		overlay.id = 'aracs-contact-problem';
+		overlay.setAttribute('role', 'dialog');
+		overlay.setAttribute('aria-modal', 'true');
+		overlay.setAttribute('aria-labelledby', 'aracs-problem-title');
+		overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,17,27,.74);backdrop-filter:blur(6px);font-family:Poppins,system-ui,sans-serif;';
+
+		const card = document.createElement('div');
+		card.style.cssText = 'width:min(100%,470px);max-height:90vh;overflow:auto;background:#0b2030;color:#fff;border:1px solid rgba(0,194,168,.35);border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.55);text-align:left;';
+		card.innerHTML = `
+			<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
+				<div style="width:44px;height:44px;flex:none;border-radius:14px;background:rgba(0,194,168,.15);color:#4de0c6;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;">!</div>
+				<button type="button" id="aracs-problem-close" aria-label="Close" style="background:transparent;border:0;color:#9fb3bf;font-size:26px;line-height:1;cursor:pointer;">&times;</button>
+			</div>
+			<h3 id="aracs-problem-title" style="margin:16px 0 8px;font-size:21px;font-weight:700;">Your message may not have reached us</h3>
+			<p style="margin:0;color:#b9ccd6;font-size:14px;line-height:1.6;">The online form didn't confirm your inquiry. Please try again, or contact us directly so nothing gets lost.</p>
+			${detail ? `<p style="margin:10px 0 0;color:#8199a6;font-size:12px;word-break:break-word;">${escapeHtml(detail)}</p>` : ''}
+			<p style="margin:20px 0 10px;color:#4de0c6;font-size:13px;font-weight:600;letter-spacing:.02em;">Other ways to reach us</p>
+			<div style="display:grid;gap:9px;">
+				<a href="https://wa.me/213550044008?text=Hello%20ARACS%2C%20I%20couldn%27t%20send%20my%20inquiry%20through%20the%20website." target="_blank" rel="noopener noreferrer" style="${linkStyle}"><span style="font-size:18px;">💬</span><span><strong style="display:block;">WhatsApp</strong>+213 550 04 40 08</span></a>
+				<a href="tel:+213550044008" style="${linkStyle}"><span style="font-size:18px;">📞</span><span><strong style="display:block;">Call us</strong>+213 550 04 40 08</span></a>
+				<a href="mailto:aracstechnologies@gmail.com?subject=Website%20inquiry" style="${linkStyle}"><span style="font-size:18px;">✉️</span><span><strong style="display:block;">Email</strong>aracstechnologies@gmail.com</span></a>
+				<a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" style="${linkStyle}"><span style="font-size:18px;">📸</span><span><strong style="display:block;">Instagram</strong>@aracstech</span></a>
+			</div>
+			<div style="display:flex;gap:10px;margin-top:20px;">
+				<button type="button" id="aracs-problem-retry" style="flex:1;padding:12px;border:0;border-radius:11px;background:#00c2a8;color:#05202b;font-weight:700;font-size:14px;cursor:pointer;">Try again</button>
+				<button type="button" id="aracs-problem-ok" style="padding:12px 18px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:transparent;color:#d7e6ec;font-weight:600;font-size:14px;cursor:pointer;">Close</button>
+			</div>
+		`;
+		overlay.appendChild(card);
+		document.body.appendChild(overlay);
+
+		const close = () => {
+			document.removeEventListener('keydown', onKey);
+			overlay.remove();
+		};
+		const onKey = (event) => { if (event.key === 'Escape') close(); };
+
+		document.getElementById('aracs-problem-close').addEventListener('click', close);
+		document.getElementById('aracs-problem-ok').addEventListener('click', close);
+		overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+		document.addEventListener('keydown', onKey);
+		document.getElementById('aracs-problem-retry').addEventListener('click', () => {
+			close();
+			if (contactForm && typeof contactForm.requestSubmit === 'function') contactForm.requestSubmit();
+		});
+		document.getElementById('aracs-problem-retry').focus();
 	}
 
 	if (contactForm && formSuccessMessage) {
@@ -301,11 +361,11 @@ document.addEventListener("DOMContentLoaded", () => {
 				formSuccessMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 			} catch (error) {
 				console.error('Error submitting form:', error);
-				alert("Sorry, we couldn't send your inquiry right now. Please try again in a moment.");
-				
-				// Reset button state
+
+				// Reset button state first, then show a helpful in-page popup.
 				submitBtn.disabled = false;
 				submitBtn.innerHTML = originalBtnContent;
+				showInquiryProblem(error && error.message ? error.message : '');
 			}
 		});
 	}
