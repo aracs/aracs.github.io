@@ -130,7 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		updateReferralDetails();
 	}
 
-	async function fetchWithTimeout(url, options = {}, timeoutMs = 20000) {
+	async function fetchWithTimeout(url, options = {}, timeoutMs = 30000) {
 		const controller = new AbortController();
 		const timer = setTimeout(() => controller.abort(), timeoutMs);
 		try {
@@ -144,14 +144,16 @@ document.addEventListener("DOMContentLoaded", () => {
 	function firstAccepted(tasks) {
 		return new Promise((resolve, reject) => {
 			let pending = tasks.length;
+			const failures = [];
 			if (!pending) {
 				reject(new Error('No submission endpoints are configured.'));
 				return;
 			}
 			tasks.forEach((task) => {
-				Promise.resolve(task).then(resolve, () => {
+				Promise.resolve(task).then(resolve, (err) => {
+					failures.push(err && err.message ? err.message : String(err));
 					pending -= 1;
-					if (pending === 0) reject(new Error('All submission endpoints failed.'));
+					if (pending === 0) reject(new Error(failures.join(' | ') || 'All submission endpoints failed.'));
 				});
 			});
 		});
@@ -2065,4 +2067,3 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
 	if (typeof ResizeObserver !== 'undefined') { let to = 0; new ResizeObserver(() => { clearTimeout(to); to = setTimeout(() => { measure(); schedule(); }, 120); }).observe(body); }
 	sizeFx(); measure(); requestAnimationFrame(update);
 })();
-
