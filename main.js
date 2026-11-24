@@ -194,232 +194,541 @@ document.addEventListener("DOMContentLoaded", () => {
 		return response;
 	}
 
-	// Friendly in-page popup instead of window.alert(). If the online form
-	// cannot be confirmed, the visitor gets every other way to reach ARACS.
-	function showInquiryProblem(detail) {
-		const old = document.getElementById('aracs-contact-problem');
-		if (old) old.remove();
+	// ======================================================================
+	// INQUIRY FLOW
+	// Review modal  ->  sending  ->  "check your mail & verify the draft"
+	//                           \->  error (retry without retyping anything)
+	// One modal, four animated panels. Styles live in styles.css (.af-*).
+	// ======================================================================
+	const AF_WA = '213550044008';
+	const AF_MAIL = 'aracstechnologies@gmail.com';
+	const AF_MIN_SENDING_MS = 1300; // keeps the "sending" scene from flashing on fast connections
 
-		const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
-			'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-		}[ch]));
+	const afEsc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (ch) => ({
+		'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+	}[ch]));
+	const afWait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-		const linkStyle = 'display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:#e8f4f6;text-decoration:none;font-size:14px;transition:.2s;';
+	// Webmail shortcut shown on the success screen (only for well-known providers).
+	const AF_MAIL_PROVIDERS = {
+		'gmail.com': ['Gmail', 'https://mail.google.com/'],
+		'googlemail.com': ['Gmail', 'https://mail.google.com/'],
+		'outlook.com': ['Outlook', 'https://outlook.live.com/mail/'],
+		'outlook.fr': ['Outlook', 'https://outlook.live.com/mail/'],
+		'hotmail.com': ['Outlook', 'https://outlook.live.com/mail/'],
+		'hotmail.fr': ['Outlook', 'https://outlook.live.com/mail/'],
+		'live.com': ['Outlook', 'https://outlook.live.com/mail/'],
+		'live.fr': ['Outlook', 'https://outlook.live.com/mail/'],
+		'msn.com': ['Outlook', 'https://outlook.live.com/mail/'],
+		'yahoo.com': ['Yahoo Mail', 'https://mail.yahoo.com/'],
+		'yahoo.fr': ['Yahoo Mail', 'https://mail.yahoo.com/'],
+		'ymail.com': ['Yahoo Mail', 'https://mail.yahoo.com/'],
+		'icloud.com': ['iCloud Mail', 'https://www.icloud.com/mail'],
+		'me.com': ['iCloud Mail', 'https://www.icloud.com/mail'],
+		'proton.me': ['Proton Mail', 'https://mail.proton.me/'],
+		'protonmail.com': ['Proton Mail', 'https://mail.proton.me/'],
+		'pm.me': ['Proton Mail', 'https://mail.proton.me/']
+	};
+	function afMailProvider(email) {
+		const domain = String(email || '').split('@')[1];
+		return domain ? (AF_MAIL_PROVIDERS[domain.toLowerCase()] || null) : null;
+	}
+
+	// Which part of the page form each reviewed value belongs to (for the pencil buttons).
+	function afReviewMarkup(info) {
+		let i = 0;
+		const row = (icon, label, valueHtml, field, extra = '') => `
+			<div class="af-row" style="--i:${i++}">
+				<span class="af-row-ico"><i class="ph ${icon}"></i></span>
+				<div class="af-row-body"><span class="af-label">${afEsc(label)}</span>${valueHtml}${extra}</div>
+				<button type="button" class="af-edit" data-field="${field}" aria-label="Edit ${afEsc(label)}" title="Edit"><i class="ph ph-pencil-simple"></i></button>
+			</div>`;
+		const val = (text) => `<span class="af-value">${afEsc(text)}</span>`;
+		const group = (title, rows) => rows.length ? `<div class="af-group"><p class="af-group-title">${title}</p>${rows.join('')}</div>` : '';
+
+		const contact = [];
+		contact.push(row('ph-user', 'Full name', val(info.full_name), 'full_name'));
+		contact.push(row('ph-phone', 'Phone',
+			`<span class="af-value">${afEsc(info.phone)}${info.has_whatsapp
+				? '<span class="af-chip"><i class="ph ph-whatsapp-logo"></i>WhatsApp</span>'
+				: '<span class="af-chip is-off">No WhatsApp</span>'}</span>`, 'phone'));
+		if (info.wilaya) contact.push(row('ph-map-pin', 'Wilaya', val(info.wilaya), 'wilaya'));
+
+		const long = (info.project_description || '').length > 150 || (info.project_description || '').split('\n').length > 3;
+		const project = [];
+		project.push(row('ph-briefcase', 'Project type', val(info.project_type), 'project_type'));
+		project.push(row('ph-chat-text', 'Description',
+			`<span class="af-value ${long ? 'af-clamp' : ''}" data-desc>${afEsc(info.project_description)}</span>`,
+			'project_description',
+			long ? '<button type="button" class="af-more" aria-expanded="false">Show more</button>' : ''));
+
+		const extra = [];
+		if (info.promo_code) extra.push(row('ph-ticket', 'Promo code', val(info.promo_code), 'promo_code'));
+		if (info.invitor) extra.push(row('ph-user-plus', 'Invited by', val(info.invitor), 'invitor'));
+		if (info.heard_about) extra.push(row('ph-megaphone', 'How you found us',
+			val(info.heard_about + (info.referral_details ? ` — ${info.referral_details}` : '')), 'heard_about'));
+
+		return group('Contact', contact) + group('Project', project) + group('Extra details', extra);
+	}
+
+	function openInquiryFlow(info, deliver) {
+		const existing = document.getElementById('aracs-flow');
+		if (existing) existing.remove();
+
+		const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const opener = document.activeElement;
+		const firstName = (info.full_name || '').split(' ')[0] || '';
+		const provider = afMailProvider(info.email);
+
 		const overlay = document.createElement('div');
-		overlay.id = 'aracs-contact-problem';
+		overlay.id = 'aracs-flow';
+		overlay.className = 'af-overlay';
 		overlay.setAttribute('role', 'dialog');
 		overlay.setAttribute('aria-modal', 'true');
-		overlay.setAttribute('aria-labelledby', 'aracs-problem-title');
-		overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(3,17,27,.74);backdrop-filter:blur(6px);font-family:Poppins,system-ui,sans-serif;';
+		overlay.setAttribute('aria-labelledby', 'af-title-review');
 
-		const card = document.createElement('div');
-		card.style.cssText = 'width:min(100%,470px);max-height:90vh;overflow:auto;background:#0b2030;color:#fff;border:1px solid rgba(0,194,168,.35);border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(0,0,0,.55);text-align:left;';
-		card.innerHTML = `
-			<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
-				<div style="width:44px;height:44px;flex:none;border-radius:14px;background:rgba(0,194,168,.15);color:#4de0c6;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;">!</div>
-				<button type="button" id="aracs-problem-close" aria-label="Close" style="background:transparent;border:0;color:#9fb3bf;font-size:26px;line-height:1;cursor:pointer;">&times;</button>
+		overlay.innerHTML = `
+		<div class="af-card" data-state="review">
+			<div class="af-inner">
+				<div class="af-top">
+					<ol class="af-steps" aria-label="Progress">
+						<li class="af-step is-active" data-step="0"><span class="af-dot"><i class="ph ph-eye"></i></span><span>Review</span></li>
+						<li class="af-line" aria-hidden="true"></li>
+						<li class="af-step" data-step="1"><span class="af-dot"><i class="ph ph-paper-plane-tilt"></i></span><span>Send</span></li>
+						<li class="af-line" aria-hidden="true"></li>
+						<li class="af-step" data-step="2"><span class="af-dot"><i class="ph ph-envelope-simple-open"></i></span><span>Verify</span></li>
+					</ol>
+					<button type="button" class="af-x" aria-label="Close"><i class="ph ph-x"></i></button>
+				</div>
+
+				<div class="af-stage">
+					<!-- 1. REVIEW -->
+					<section class="af-panel is-active" data-panel="review">
+						<div class="af-review-head">
+							<span class="af-badge-ico"><i class="ph ph-shield-check"></i></span>
+							<div>
+								<h3 class="af-h" id="af-title-review" tabindex="-1" data-focus>Is everything correct?</h3>
+								<p class="af-sub">Nothing has been sent yet. Check your details one last time — tap the pencil next to anything you want to fix.</p>
+							</div>
+						</div>
+
+						<div class="af-emailbox">
+							<span class="af-mail-ico"><i class="ph ph-envelope-simple"></i></span>
+							<div style="min-width:0">
+								<p class="af-eyebrow">We'll email a draft to</p>
+								<span class="af-mail-val">${afEsc(info.email)}</span>
+								<span class="af-mail-note">You'll need to open it and verify it — make sure this address is spelled right and you can access it.</span>
+							</div>
+							<button type="button" class="af-edit" data-field="email" aria-label="Edit email" title="Edit"><i class="ph ph-pencil-simple"></i></button>
+						</div>
+
+						${afReviewMarkup(info)}
+
+						<div class="af-foot af-foot-col">
+							<label class="af-check">
+							<input type="checkbox" id="af-confirm">
+							<span class="af-box"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span>
+							<span class="af-check-text">I confirm these details are correct and that I can open my emails at <b>${afEsc(info.email)}</b> to verify my inquiry.</span>
+						</label>
+							<div class="af-foot-btns">
+								<button type="button" class="af-btn af-btn-ghost" data-act="edit"><i class="ph ph-pencil-simple"></i>Edit details</button>
+								<button type="button" class="af-btn af-btn-primary" data-act="send" aria-disabled="true"><i class="ph ph-paper-plane-tilt"></i>Confirm &amp; send</button>
+							</div>
+						</div>
+					</section>
+
+					<!-- 2. SENDING -->
+					<section class="af-panel af-center af-sending" data-panel="sending" hidden aria-live="polite">
+						<div class="af-flight">
+							<svg viewBox="0 0 340 160" role="img" aria-label="Your inquiry is on its way">
+								<defs>
+									<linearGradient id="afTrailGrad" x1="0" x2="1"><stop offset="0" stop-color="#4de0c6" stop-opacity=".1"/><stop offset=".6" stop-color="#4de0c6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+									<linearGradient id="afNodeGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#00c2a8"/><stop offset="1" stop-color="#006b8d"/></linearGradient>
+								</defs>
+								<path id="afArc" class="af-trail" d="M46 118 C 100 10, 240 10, 294 118"/>
+								<!-- you -->
+								<circle class="af-node-ring" cx="46" cy="130" r="22"/>
+								<rect x="26" y="108" width="40" height="44" rx="8" fill="#12303f" stroke="rgba(255,255,255,.28)"/>
+								<rect x="33" y="118" width="26" height="4" rx="2" fill="#4de0c6"/><rect x="33" y="127" width="20" height="4" rx="2" fill="rgba(255,255,255,.4)"/><rect x="33" y="136" width="24" height="4" rx="2" fill="rgba(255,255,255,.4)"/>
+								<!-- ARACS -->
+								<circle class="af-node-ring d2" cx="294" cy="130" r="22"/>
+								<circle cx="294" cy="130" r="25" fill="url(#afNodeGrad)"/>
+								<text x="294" y="139" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="800" font-size="25" fill="#fff">A</text>
+								<!-- the plane -->
+								<g>
+									<path d="M16 0 L-13 -10 L-6 0 L-13 10 Z" fill="#fff"/><path d="M16 0 L-6 0 L-13 10 Z" fill="#b8f3e8"/>
+									<animateMotion dur="2.4s" repeatCount="indefinite" rotate="auto" calcMode="spline" keyTimes="0;1" keySplines=".45 0 .25 1"><mpath href="#afArc"/></animateMotion>
+								</g>
+							</svg>
+						</div>
+						<h3 class="af-h" id="af-title-sending" tabindex="-1" data-focus>Sending your inquiry</h3>
+						<p class="af-status" id="af-status"><span>Packaging your details…</span></p>
+						<div class="af-bar" aria-hidden="true"><i></i></div>
+						<p class="af-keep">Please keep this window open for a moment.</p>
+					</section>
+
+					<!-- 3. SUCCESS (filled in when the server confirms) -->
+					<section class="af-panel af-center" data-panel="success" hidden></section>
+
+					<!-- 4. ERROR (filled in on failure) -->
+					<section class="af-panel af-center" data-panel="error" hidden></section>
+				</div>
 			</div>
-			<h3 id="aracs-problem-title" style="margin:16px 0 8px;font-size:21px;font-weight:700;">Your message may not have reached us</h3>
-			<p style="margin:0;color:#b9ccd6;font-size:14px;line-height:1.6;">The online form didn't confirm your inquiry. Please try again, or contact us directly so nothing gets lost.</p>
-			${detail ? `<p style="margin:10px 0 0;color:#8199a6;font-size:12px;word-break:break-word;">${escapeHtml(detail)}</p>` : ''}
-			<p style="margin:20px 0 10px;color:#4de0c6;font-size:13px;font-weight:600;letter-spacing:.02em;">Other ways to reach us</p>
-			<div style="display:grid;gap:9px;">
-				<a href="https://wa.me/213550044008?text=Hello%20ARACS%2C%20I%20couldn%27t%20send%20my%20inquiry%20through%20the%20website." target="_blank" rel="noopener noreferrer" style="${linkStyle}"><i class="ph ph-whatsapp-logo" style="font-size:18px;"></i><span><strong style="display:block;">WhatsApp</strong>+213 550 04 40 08</span></a>
-				<a href="tel:+213550044008" style="${linkStyle}"><i class="ph ph-phone" style="font-size:18px;"></i><span><strong style="display:block;">Call us</strong>+213 550 04 40 08</span></a>
-				<a href="mailto:aracstechnologies@gmail.com?subject=Website%20inquiry" style="${linkStyle}"><i class="ph ph-envelope" style="font-size:18px;"></i><span><strong style="display:block;">Email</strong>aracstechnologies@gmail.com</span></a>
-				<a href="https://www.instagram.com/aracstech" target="_blank" rel="noopener noreferrer" style="${linkStyle}"><i class="ph ph-instagram-logo" style="font-size:18px;"></i><span><strong style="display:block;">Instagram</strong>@aracstech</span></a>
-			</div>
-			<div style="display:flex;gap:10px;margin-top:20px;">
-				<button type="button" id="aracs-problem-retry" style="flex:1;padding:12px;border:0;border-radius:11px;background:#00c2a8;color:#05202b;font-weight:700;font-size:14px;cursor:pointer;">Try again</button>
-				<button type="button" id="aracs-problem-ok" style="padding:12px 18px;border:1px solid rgba(255,255,255,.18);border-radius:11px;background:transparent;color:#d7e6ec;font-weight:600;font-size:14px;cursor:pointer;">Close</button>
-			</div>
-		`;
-		overlay.appendChild(card);
+		</div>`;
+
 		document.body.appendChild(overlay);
+		const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+		document.body.classList.add('af-lock');
+		if (scrollbar > 0) document.body.style.paddingRight = scrollbar + 'px';
+		requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('is-open')));
 
-		const close = () => {
+		const card = overlay.querySelector('.af-card');
+		const inner = overlay.querySelector('.af-inner');
+		const stage = overlay.querySelector('.af-stage');
+		const panels = Array.from(overlay.querySelectorAll('.af-panel'));
+		const stepEls = Array.from(overlay.querySelectorAll('.af-step'));
+		const lineEls = Array.from(overlay.querySelectorAll('.af-line'));
+		const confirmBox = overlay.querySelector('#af-confirm');
+		const confirmLabel = overlay.querySelector('.af-check');
+		const sendBtn = overlay.querySelector('[data-act="send"]');
+		if (reduced) overlay.querySelector('svg').pauseAnimations && overlay.querySelector('svg').pauseAnimations();
+
+		let state = 'review';
+		let sent = false;
+		let closed = false;
+		let statusTimer = null;
+
+		// ---- stepper ---------------------------------------------------------
+		function paintSteps(name) {
+			const cfg = { review: [0, false], sending: [1, false], success: [3, false], error: [1, true] }[name];
+			const [active, err] = cfg;
+			stepEls.forEach((el, idx) => {
+				el.classList.toggle('is-done', idx < active);
+				el.classList.toggle('is-active', idx === active && !err);
+				el.classList.toggle('is-error', idx === active && err);
+				const dot = el.querySelector('.af-dot i');
+				if (idx < active) dot.className = 'ph ph-check';
+				else dot.className = ['ph ph-eye', 'ph ph-paper-plane-tilt', 'ph ph-envelope-simple-open'][idx];
+				if (err && idx === active) dot.className = 'ph ph-warning';
+			});
+			lineEls.forEach((el, idx) => el.classList.toggle('is-full', idx < active));
+			if (name === 'success') stepEls[2].classList.add('is-active'); // last step stays "current": the user must still verify
+			if (name === 'success') { stepEls[2].classList.remove('is-done'); stepEls[2].querySelector('.af-dot i').className = 'ph ph-envelope-simple-open'; }
+		}
+
+		// ---- panel switching with a smooth height morph ---------------------------
+		function setState(next) {
+			if (state === next) return;
+			const from = stage.offsetHeight;
+			panels.forEach((p) => {
+				const on = p.dataset.panel === next;
+				p.hidden = !on;
+				p.classList.toggle('is-active', on);
+			});
+			state = next;
+			card.dataset.state = next;
+			paintSteps(next);
+			inner.scrollTop = 0;
+			const to = stage.offsetHeight;
+			if (!reduced && from && from !== to) {
+				stage.style.overflow = 'hidden';
+				stage.style.height = from + 'px';
+				void stage.offsetHeight;
+				stage.style.transition = 'height .55s cubic-bezier(.2,.9,.25,1)';
+				stage.style.height = to + 'px';
+				let cleaned = false;
+				const clean = () => {
+					if (cleaned) return; cleaned = true;
+					stage.style.height = ''; stage.style.overflow = ''; stage.style.transition = '';
+					stage.removeEventListener('transitionend', clean);
+				};
+				stage.addEventListener('transitionend', clean);
+				setTimeout(clean, 700);
+			}
+			const heading = overlay.querySelector(`[data-panel="${next}"] [data-focus]`);
+			if (heading) heading.focus({ preventScroll: true });
+		}
+
+		// ---- closing ---------------------------------------------------------------
+		function close(opts = {}) {
+			if (closed) return;
+			closed = true;
 			document.removeEventListener('keydown', onKey);
-			overlay.remove();
-		};
-		const onKey = (event) => { if (event.key === 'Escape') close(); };
+			clearInterval(statusTimer);
+			overlay.classList.remove('is-open');
+			overlay.classList.add('is-closing');
+			setTimeout(() => {
+				overlay.remove();
+				document.body.classList.remove('af-lock');
+				document.body.style.paddingRight = '';
+				if (!opts.keepFocus && opener && typeof opener.focus === 'function') opener.focus({ preventScroll: true });
+			}, reduced ? 0 : 380);
+		}
 
-		document.getElementById('aracs-problem-close').addEventListener('click', close);
-		document.getElementById('aracs-problem-ok').addEventListener('click', close);
-		overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
+		function onKey(e) {
+			if (e.key === 'Escape' && state !== 'sending') { e.preventDefault(); close(); return; }
+			if (e.key !== 'Tab') return;
+			const focusables = Array.from(card.querySelectorAll('button, a[href], input, summary, [tabindex="0"]'))
+				.filter((el) => !el.disabled && el.offsetParent !== null);
+			if (!focusables.length) return;
+			const first = focusables[0], last = focusables[focusables.length - 1];
+			if (e.shiftKey && (document.activeElement === first || !card.contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+			else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+		}
 		document.addEventListener('keydown', onKey);
-		document.getElementById('aracs-problem-retry').addEventListener('click', () => {
-			close();
-			if (contactForm && typeof contactForm.requestSubmit === 'function') contactForm.requestSubmit();
+		overlay.addEventListener('mousedown', (e) => { if (e.target === overlay && state !== 'sending') close(); });
+		overlay.querySelector('.af-x').addEventListener('click', () => { if (state !== 'sending') close(); });
+
+		// ---- review interactions ------------------------------------------------------
+		function jumpToField(id) {
+			const field = document.getElementById(id);
+			close({ keepFocus: true });
+			if (!field) return;
+			setTimeout(() => {
+				field.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'center' });
+				field.focus({ preventScroll: true });
+				field.classList.remove('af-flash'); void field.offsetWidth; field.classList.add('af-flash');
+				setTimeout(() => field.classList.remove('af-flash'), 1800);
+			}, reduced ? 0 : 400);
+		}
+		overlay.querySelectorAll('.af-edit').forEach((btn) => btn.addEventListener('click', () => jumpToField(btn.dataset.field)));
+		overlay.querySelector('[data-act="edit"]').addEventListener('click', () => jumpToField('full_name'));
+
+		overlay.querySelectorAll('.af-more').forEach((btn) => btn.addEventListener('click', () => {
+			const desc = btn.parentElement.querySelector('[data-desc]');
+			const open = desc.classList.toggle('af-clamp') === false;
+			btn.textContent = open ? 'Show less' : 'Show more';
+			btn.setAttribute('aria-expanded', String(open));
+		}));
+
+		confirmBox.addEventListener('change', () => {
+			sendBtn.setAttribute('aria-disabled', confirmBox.checked ? 'false' : 'true');
 		});
-		document.getElementById('aracs-problem-retry').focus();
-	}
+		sendBtn.addEventListener('click', () => {
+			if (!confirmBox.checked) {
+				confirmLabel.classList.remove('is-shake'); void confirmLabel.offsetWidth; confirmLabel.classList.add('is-shake');
+				confirmLabel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				setTimeout(() => confirmLabel.classList.remove('is-shake'), 600);
+				return;
+			}
+			run();
+		});
 
-	// Modal styles — built from the site's own design tokens (navy / teal / Poppins).
-	function aracsModalStyles() {
-		if (document.getElementById('aracs-modal-styles')) return;
-		const style = document.createElement('style');
-		style.id = 'aracs-modal-styles';
-		style.textContent = [
-			'@keyframes arFadeIn{from{opacity:0}to{opacity:1}}',
-			'@keyframes arRiseIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}',
-			'@keyframes arCheckDraw{to{stroke-dashoffset:0}}',
-			'@keyframes arFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}',
-			'.ar-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(6,20,32,.82);backdrop-filter:blur(10px);font-family:Poppins,system-ui,sans-serif;animation:arFadeIn .28s ease both}',
-			'.ar-card{position:relative;width:min(100%,480px);max-height:88vh;overflow-y:auto;overscroll-behavior:contain;background:rgba(13,33,51,.97);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:28px;box-shadow:0 24px 70px rgba(0,0,0,.5);color:#fff;text-align:center;animation:arRiseIn .42s cubic-bezier(.22,1,.36,1) both}',
-			'.ar-icon{width:60px;height:60px;margin:0 auto 16px;border-radius:18px;background:rgba(0,194,168,.12);border:1px solid rgba(0,194,168,.25);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:28px}',
-			'.ar-icon-float{animation:arFloat 2.6s ease-in-out infinite}',
-			'.ar-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;border-radius:999px;background:rgba(0,194,168,.1);color:#00C2A8;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}',
-			'.ar-title{margin:14px 0 8px;font-size:23px;font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.25}',
-			'.ar-sub{margin:0;color:#9fb3bf;font-size:14px;line-height:1.6}',
-			'.ar-list{text-align:left;margin-top:18px;border-top:1px solid rgba(255,255,255,.09);padding-top:4px}',
-			'.ar-group{display:flex;align-items:center;gap:8px;margin:16px 0 4px;color:#00C2A8;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}',
-			'.ar-group span.line{flex:1;height:1px;background:linear-gradient(90deg,rgba(0,194,168,.4),transparent)}',
-			'.ar-row{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06)}',
-			'.ar-row-icon{flex:none;width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.05);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:15px}',
-			'.ar-label{color:#8aa0ad;font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase}',
-			'.ar-value{color:#e8f4f6;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}',
-			'.ar-actions{display:flex;gap:12px;margin-top:22px}',
-			'.ar-btn{flex:1;min-height:48px;padding:12px 18px;border-radius:999px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s,background .2s,border-color .2s,box-shadow .2s;appearance:none}',
-			'.ar-btn:hover{transform:translateY(-2px)}',
-			'.ar-btn:focus-visible{outline:2px solid #00C2A8;outline-offset:3px}',
-			'.ar-btn-ghost{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.18);color:#d7e6ec}',
-			'.ar-btn-ghost:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.32)}',
-			'.ar-btn-primary{background:linear-gradient(100deg,#0097A7,#00C2A8);border:0;color:#0D2133;box-shadow:0 8px 22px rgba(0,194,168,.18)}',
-			'.ar-btn-primary:hover{box-shadow:0 10px 28px rgba(0,194,168,.3)}',
-			'.ar-check{width:46px;height:46px}',
-			'.ar-notice{margin-top:18px;text-align:left;padding:16px;border-radius:16px;background:rgba(0,151,167,.09);border:1px solid rgba(0,194,168,.28)}',
-			'.ar-notice-head{display:flex;align-items:center;gap:12px}',
-			'.ar-notice-icon{flex:none;width:44px;height:44px;border-radius:13px;background:rgba(0,194,168,.12);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:22px}',
-			'.ar-notice-title{color:#00C2A8;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1.4}',
-			'.ar-notice-sub{color:#b9ccd6;font-size:12px;margin-top:3px;line-height:1.5}',
-			'.ar-step{display:flex;gap:11px;align-items:flex-start;padding:10px 0 0;margin-top:10px;border-top:1px solid rgba(255,255,255,.07);color:#cbd5e1;font-size:13px;line-height:1.5}',
-			'.ar-step-num{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(0,194,168,.13);color:#00C2A8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}',
-			'.ar-foot{margin:16px 0 0;color:#9fb3bf;font-size:12px;line-height:1.6;display:flex;align-items:center;justify-content:center;gap:8px}',
-			'@media (max-width:480px){',
-			'.ar-overlay{padding:12px}',
-			'.ar-card{padding:20px 18px;border-radius:20px;max-height:92vh}',
-			'.ar-icon{width:52px;height:52px;font-size:24px;margin-bottom:12px}',
-			'.ar-title{font-size:20px}',
-			'.ar-sub{font-size:13px}',
-			'.ar-actions{flex-direction:column-reverse;gap:10px}',
-			'.ar-actions .ar-btn{width:100%}',
-			'.ar-notice{padding:13px}',
-			'.ar-notice-head{gap:10px}',
-			'.ar-notice-icon{width:38px;height:38px;font-size:19px}',
-			'.ar-value{font-size:13px}',
-			'}'
-		].join('');
-		document.head.appendChild(style);
-	}
+		// ---- sending -------------------------------------------------------------------
+		const STATUS = ['Packaging your details…', 'Reaching our engineering team…', 'Waiting for confirmation…'];
+		function startStatus() {
+			const el = overlay.querySelector('#af-status');
+			let n = 0;
+			el.innerHTML = `<span>${STATUS[0]}</span>`;
+			clearInterval(statusTimer);
+			statusTimer = setInterval(() => {
+				n = Math.min(n + 1, STATUS.length - 1);
+				el.innerHTML = `<span>${STATUS[n]}</span>`;
+			}, 1700);
+		}
 
-	// Shared shell: overlay + card. Close on backdrop click, X button, or Escape.
-	function aracsModalShell(id, labelledBy, cardHtml) {
-		aracsModalStyles();
-		const old = document.getElementById(id);
-		if (old) old.remove();
+		async function run() {
+			if (state === 'sending' || sent) return;
+			setState('sending');
+			startStatus();
+			const t0 = Date.now();
+			try {
+				await deliver();
+				await afWait(Math.max(0, AF_MIN_SENDING_MS - (Date.now() - t0)));
+				clearInterval(statusTimer);
+				sent = true;
+				renderSuccess();
+				setState('success');
+				burstConfetti();
+				if (typeof info.onSent === 'function') info.onSent();
+			} catch (error) {
+				console.error('Error submitting form:', error);
+				await afWait(Math.max(0, 700 - (Date.now() - t0)));
+				clearInterval(statusTimer);
+				renderError(error && error.message ? error.message : '');
+				setState('error');
+			}
+		}
 
-		const overlay = document.createElement('div');
-		overlay.id = id;
-		overlay.className = 'ar-overlay';
-		overlay.setAttribute('role', 'dialog');
-		overlay.setAttribute('aria-modal', 'true');
-		overlay.setAttribute('aria-labelledby', labelledBy);
+		// ---- success: "check your mail and verify the draft" -----------------------------
+		function renderSuccess() {
+			const panel = overlay.querySelector('[data-panel="success"]');
+			panel.innerHTML = `
+				<div class="af-hero">
+					<span class="af-ring"></span><span class="af-ring r2"></span><span class="af-ring r3"></span>
+					<svg class="af-check-svg" viewBox="0 0 96 96" aria-hidden="true">
+						<circle class="af-check-fill" cx="48" cy="48" r="40"/>
+						<circle class="af-check-circle" cx="48" cy="48" r="40"/>
+						<path class="af-check-mark" d="M30 49 L43 62 L67 35"/>
+					</svg>
+					<div class="af-confetti" aria-hidden="true"></div>
+				</div>
+				<h3 class="af-h" id="af-title-success" tabindex="-1" data-focus>${firstName ? `Thank you, ${afEsc(firstName)} — ` : ''}inquiry received</h3>
+				<p class="af-sub">Our team has your request. There's <strong style="color:#fff">one more step</strong> on your side.</p>
 
-		const card = document.createElement('div');
-		card.className = 'ar-card';
-		card.innerHTML = cardHtml;
-		overlay.appendChild(card);
-		document.body.appendChild(overlay);
-
-		const close = () => { document.removeEventListener('keydown', onKey); overlay.remove(); };
-		const onKey = (event) => { if (event.key === 'Escape') close(); };
-		overlay.addEventListener('click', (event) => { if (event.target === overlay) close(); });
-		document.addEventListener('keydown', onKey);
-		return { overlay, card, close };
-	}
-
-	// Confirmation window — verify every detail before anything is sent.
-	function showConfirmInquiry(info, onConfirm) {
-		const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, (ch) => ({
-			'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-		}[ch]));
-
-		const fields = [
-			{ group: 'Contact details', icon: 'ph-user', label: 'Full name', value: info.full_name },
-			{ icon: 'ph-envelope', label: 'Email', value: info.email },
-			{ icon: 'ph-phone', label: 'Phone', value: info.phone },
-			{ icon: 'ph-map-pin', label: 'Wilaya', value: info.wilaya },
-			{ group: 'Your project', icon: 'ph-briefcase', label: 'Project type', value: info.project_type },
-			{ icon: 'ph-align-left', label: 'Description', value: info.project_description },
-			{ group: 'Additional details', icon: 'ph-sparkle', label: 'Promo code', value: info.promo_code },
-			{ icon: 'ph-user-circle', label: 'Invited by', value: info.invitor },
-			{ icon: 'ph-megaphone', label: 'Heard about us', value: info.heard_about },
-			{ icon: 'ph-whatsapp-logo', label: 'WhatsApp', value: info.whatsapp },
-		].filter((f) => f.value && String(f.value).trim());
-
-		const rowsHtml = fields.map((f) => {
-			const header = f.group ? `<div class="ar-group"><i class="ph ${f.icon}"></i>${escapeHtml(f.group)}<span class="line"></span></div>` : '';
-			return header + `<div class="ar-row"><span class="ar-row-icon"><i class="ph ${f.icon}"></i></span><div style="min-width:0;"><div class="ar-label">${escapeHtml(f.label)}</div><div class="ar-value">${escapeHtml(f.value)}</div></div></div>`;
-		}).join('');
-
-		const { close } = aracsModalShell('aracs-confirm-inquiry', 'aracs-confirm-title', `
-			<div class="ar-icon"><i class="ph ph-shield-check"></i></div>
-			<span class="ar-badge"><i class="ph ph-check-circle"></i> Final review</span>
-			<h3 id="aracs-confirm-title" class="ar-title">Are these details correct?</h3>
-			<p class="ar-sub">Please verify everything below before sending it to our team.</p>
-			<div class="ar-list">${rowsHtml}</div>
-			<div class="ar-actions">
-				<button type="button" id="aracs-confirm-edit" class="ar-btn ar-btn-ghost"><i class="ph ph-pencil" style="font-size:17px;"></i> Edit details</button>
-				<button type="button" id="aracs-confirm-send" class="ar-btn ar-btn-primary"><i class="ph ph-paper-plane-tilt" style="font-size:17px;"></i> Submit now</button>
-			</div>
-		`);
-
-		document.getElementById('aracs-confirm-edit').addEventListener('click', close);
-		document.getElementById('aracs-confirm-send').addEventListener('click', () => { close(); onConfirm(); });
-		document.getElementById('aracs-confirm-send').focus();
-	}
-
-	// Success popup — on-brand, with the mail step clearly highlighted.
-	function showInquirySuccess() {
-		const { close } = aracsModalShell('aracs-success-popup', 'aracs-success-title', `
-			<div class="ar-icon" style="position:relative;">
-				<svg class="ar-check" viewBox="0 0 52 52" aria-hidden="true"><path d="M14 27 l8 8 l17 -19" fill="none" stroke="#00C2A8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:60;stroke-dashoffset:60;animation:arCheckDraw .7s .15s ease-out forwards;"/></svg>
-			</div>
-			<span class="ar-badge"><i class="ph ph-check-circle"></i> Received</span>
-			<h3 id="aracs-success-title" class="ar-title">Inquiry received</h3>
-			<p class="ar-sub">Our team has received your inquiry and will contact you shortly.</p>
-
-			<div class="ar-notice">
-				<div class="ar-notice-head">
-					<span class="ar-icon-float ar-notice-icon"><i class="ph ph-envelope-open"></i></span>
-					<div>
-						<div class="ar-notice-title">Check your mail</div>
-						<div class="ar-notice-sub">A verification message was sent to your address.</div>
+				<div class="af-mailcard">
+					<div class="af-envelope" aria-hidden="true">
+						<div class="af-env-back"></div>
+						<div class="af-letter"><i></i><i></i><i></i></div>
+						<div class="af-env-front"></div>
+						<div class="af-env-flap"></div>
+						<span class="af-notif">1</span>
+					</div>
+					<div style="min-width:0">
+						<p class="af-eyebrow">Action needed</p>
+						<h4>Open the draft we emailed you and verify it</h4>
+						<p class="af-to">Sent to <b>${afEsc(info.email)}</b></p>
 					</div>
 				</div>
-				<div class="ar-step"><span class="ar-step-num">1</span><span><strong style="color:#00C2A8;">Open your inbox</strong> and verify your email address.</span></div>
-				<div class="ar-step"><span class="ar-step-num">2</span><span>Check your <strong style="color:#00C2A8;">Spam / Junk</strong> folder — our reply may be there.</span></div>
-				<div class="ar-step"><span class="ar-step-num">3</span><span>If it is not in either, <strong style="color:#00C2A8;">contact us directly</strong> and we will help.</span></div>
-			</div>
 
-			<p class="ar-foot"><i class="ph ph-warning-circle" style="font-size:17px;color:#00C2A8;"></i> Do not miss our reply — look in Spam if your inbox is empty.</p>
-			<div class="ar-actions" style="margin-top:18px;">
-				<button type="button" id="aracs-success-ok" class="ar-btn ar-btn-primary">Done</button>
-			</div>
-		`);
+				<ol class="af-todo">
+					<li style="--i:0"><span class="af-num">1</span><div><strong>Open your inbox</strong><p>Look for our email at <b>${afEsc(info.email)}</b> — it contains a draft of your inquiry.</p></div></li>
+					<li style="--i:1"><span class="af-num">2</span><div><strong>Read the draft and verify it</strong><p>Make sure every detail is right. If something is off, reply to that email and we'll fix it. We need your verification to move forward.</p></div></li>
+					<li class="af-spam" style="--i:2"><span class="af-num"><i class="ph ph-warning-circle"></i></span><div><strong>Can't see it? Check Spam / Junk</strong><p>It can land there. Mark it as “Not spam” so our next messages reach you.</p></div></li>
+				</ol>
 
-		document.getElementById('aracs-success-ok').addEventListener('click', close);
-		document.getElementById('aracs-success-ok').focus();
+				<div class="af-actions">
+					${provider ? `<a class="af-btn af-btn-amber" href="${provider[1]}" target="_blank" rel="noopener noreferrer"><i class="ph ph-envelope-simple-open"></i>Open ${afEsc(provider[0])}</a>` : ''}
+					<button type="button" class="af-btn ${provider ? 'af-btn-ghost' : 'af-btn-primary'}" data-act="done"><i class="ph ph-check"></i>Done</button>
+				</div>
+				<p class="af-wrong">Wrong email address? <a href="https://wa.me/${AF_WA}?text=${encodeURIComponent('Hello ARACS, I submitted an inquiry on the website but I entered the wrong email. My name is ' + (info.full_name || '') + '.')}" target="_blank" rel="noopener noreferrer">Tell us on WhatsApp</a></p>
+			`;
+			panel.querySelector('[data-act="done"]').addEventListener('click', () => close());
+		}
+
+		function burstConfetti() {
+			if (reduced) return;
+			const host = overlay.querySelector('.af-confetti');
+			if (!host) return;
+			const colors = ['#00c2a8', '#4de0c6', '#ffb703', '#ffffff', '#0097a7', '#ffd166'];
+			const frag = document.createDocumentFragment();
+			for (let n = 0; n < 34; n++) {
+				const angle = (Math.PI * 2 * n) / 34 + Math.random() * 0.4;
+				const dist = 70 + Math.random() * 90;
+				const p = document.createElement('i');
+				p.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+				p.style.setProperty('--dy', Math.sin(angle) * dist - 20 + 'px');
+				p.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+				p.style.setProperty('--c', colors[n % colors.length]);
+				p.style.setProperty('--s', (6 + Math.random() * 6) + 'px');
+				p.style.setProperty('--d', (0.75 + Math.random() * 0.2) + 's');
+				frag.appendChild(p);
+			}
+			host.appendChild(frag);
+		}
+
+		// ---- error: nothing is lost, one tap to retry ----------------------------------------
+		function renderError(detail) {
+			const panel = overlay.querySelector('[data-panel="error"]');
+			panel.innerHTML = `
+				<div class="af-err-ico"><i class="ph ph-cloud-slash"></i></div>
+				<h3 class="af-h" id="af-title-error" tabindex="-1" data-focus>We couldn't confirm your inquiry</h3>
+				<p class="af-sub">Your details are safe in the form. Try again, or reach us directly so nothing gets lost.</p>
+				${detail ? `<details class="af-details"><summary>Technical details</summary><p>${afEsc(detail)}</p></details>` : ''}
+				<div class="af-contact">
+					<a href="https://wa.me/${AF_WA}?text=${encodeURIComponent("Hello ARACS, I couldn't send my inquiry through the website.")}" target="_blank" rel="noopener noreferrer"><i class="ph ph-whatsapp-logo"></i><span><strong>WhatsApp</strong><small>+213 550 04 40 08</small></span></a>
+					<a href="tel:+${AF_WA}"><i class="ph ph-phone"></i><span><strong>Call us</strong><small>+213 550 04 40 08</small></span></a>
+					<a href="mailto:${AF_MAIL}?subject=Website%20inquiry"><i class="ph ph-envelope"></i><span><strong>Email</strong><small>${AF_MAIL}</small></span></a>
+				</div>
+				<div class="af-foot" style="position:static;margin:14px 0 0;padding:0;background:none">
+					<button type="button" class="af-btn af-btn-ghost af-btn-wide" data-act="close"><i class="ph ph-x"></i>Close</button>
+					<button type="button" class="af-btn af-btn-primary" data-act="retry"><i class="ph ph-arrow-clockwise"></i>Try again</button>
+				</div>
+			`;
+			panel.querySelector('[data-act="retry"]').addEventListener('click', () => run());
+			panel.querySelector('[data-act="close"]').addEventListener('click', () => close());
+		}
+
+		// start
+		setTimeout(() => { const h = overlay.querySelector('#af-title-review'); if (h) h.focus({ preventScroll: true }); }, 60);
+	}
+
+	// ---- the actual network calls (unchanged behaviour) -------------------------------------
+	async function deliverInquiry(payload) {
+		// The existing backend only knows the original fields, so keep it untouched.
+		const legacyPayload = {
+			first_name: payload.first_name,
+			last_name: payload.last_name,
+			email: payload.email,
+			project_type: payload.project_type,
+			project_description: payload.project_description,
+			_gotcha: payload._gotcha,
+			source: payload.source,
+			page: payload.page
+		};
+
+		// The bot receives every field, plus a readable summary appended to the
+		// description so the new details show up even if the bot's message template
+		// only prints the description.
+		const extraLines = [];
+		if (payload.wilaya) extraLines.push(`Wilaya: ${payload.wilaya}`);
+		if (payload.phone) extraLines.push(`Phone: ${payload.phone}${payload.has_whatsapp ? ' (WhatsApp)' : ''}`);
+		if (payload.promo_code) extraLines.push(`Promo code: ${payload.promo_code}`);
+		if (payload.invitor) extraLines.push(`Invited by: ${payload.invitor}`);
+		if (payload.heard_about) extraLines.push(`Heard about us: ${payload.heard_about}${payload.referral_details ? ` (${payload.referral_details})` : ''}`);
+		if (!payload.has_whatsapp) extraLines.push('WhatsApp on this number: No');
+
+		const botPayload = {
+			...payload,
+			project_description: extraLines.length
+				? `${payload.project_description || ''}\n\n— Additional details —\n${extraLines.join('\n')}`
+				: payload.project_description
+		};
+		delete botPayload.onSent;
+
+		// Keep the existing Supabase submission AND notify the NeoChip bot.
+		// It succeeds as soon as ONE of them accepts the inquiry, so a slow or
+		// offline endpoint never keeps the visitor waiting for the other.
+		const botConfigured = INQUIRY_API_URL && !INQUIRY_API_URL.includes('YOUR-BOT');
+		const attempts = [
+			sendInquiryToLegacy(legacyPayload).catch((legacyError) => {
+				console.warn('Legacy backend failed:', legacyError);
+				throw legacyError;
+			})
+		];
+		if (botConfigured) {
+			attempts.push(
+				sendInquiryToBot(botPayload).catch((botError) => {
+					console.warn('Bot webhook failed:', botError);
+					throw botError;
+				})
+			);
+		} else {
+			console.warn('INQUIRY_API_URL is not configured in main.js — Telegram will not be notified.');
+		}
+		await firstAccepted(attempts);
+	}
+
+	// ---- inline card on the page once the inquiry is in (visible after the modal closes) --------
+	function showInlineSuccess(email) {
+		if (!contactForm || !formSuccessMessage) return;
+		const emailSlot = document.getElementById('inline-success-email');
+		if (emailSlot) emailSlot.textContent = email;
+		contactForm.classList.add('hidden');
+		formSuccessMessage.classList.remove('hidden');
+		formSuccessMessage.classList.add('flex');
+	}
+	const newInquiryBtn = document.getElementById('new-inquiry-btn');
+	if (newInquiryBtn && contactForm && formSuccessMessage) {
+		newInquiryBtn.addEventListener('click', () => {
+			contactForm.reset();
+			updateReferralDetails();
+			formSuccessMessage.classList.add('hidden');
+			formSuccessMessage.classList.remove('flex');
+			contactForm.classList.remove('hidden');
+			const first = document.getElementById('full_name');
+			if (first) first.focus();
+		});
 	}
 
 	if (contactForm && formSuccessMessage) {
-		contactForm.addEventListener('submit', async (e) => {
+		contactForm.addEventListener('submit', (e) => {
 			e.preventDefault();
 
 			// Get form data
 			const formData = new FormData(contactForm);
 
-			// The form now has one "Full name" field. The bot and the existing backend
+			// The form has one "Full name" field. The bot and the existing backend
 			// still expect first_name/last_name, so derive them from it.
 			const fullName = String(formData.get('full_name') || '').replace(/\s+/g, ' ').trim();
 			const nameParts = fullName.split(' ').filter(Boolean);
@@ -448,85 +757,10 @@ document.addEventListener("DOMContentLoaded", () => {
 				referral_details: referralDetails
 			};
 
-			// Show the confirmation window before anything is sent.
-			showConfirmInquiry(payload, () => performSubmit(payload));
+			// Nothing is sent until the visitor confirms inside the review modal.
+			payload.onSent = () => showInlineSuccess(payload.email);
+			openInquiryFlow(payload, () => deliverInquiry(payload));
 		});
-
-		async function performSubmit(payload) {
-			const submitBtn = contactForm.querySelector('button[type="submit"]');
-			const originalBtnContent = submitBtn.innerHTML;
-			submitBtn.disabled = true;
-			submitBtn.innerHTML = `<i class="ph ph-circle-notch animate-spin text-lg"></i> Submitting...`;
-
-			// The existing backend only knows the original fields, so keep it untouched.
-			const legacyPayload = {
-				first_name: payload.first_name,
-				last_name: payload.last_name,
-				email: payload.email,
-				project_type: payload.project_type,
-				project_description: payload.project_description,
-				_gotcha: payload._gotcha,
-				source: payload.source,
-				page: payload.page
-			};
-
-			// The bot receives every field, plus a readable summary appended to the
-			// description so the new details show up even if the bot's message template
-			// only prints the description.
-			const extraLines = [];
-			if (payload.wilaya) extraLines.push(`Wilaya: ${payload.wilaya}`);
-			if (payload.phone) extraLines.push(`Phone: ${payload.phone}${payload.has_whatsapp ? ' (WhatsApp)' : ''}`);
-			if (payload.promo_code) extraLines.push(`Promo code: ${payload.promo_code}`);
-			if (payload.invitor) extraLines.push(`Invited by: ${payload.invitor}`);
-			if (payload.heard_about) extraLines.push(`Heard about us: ${payload.heard_about}${payload.referral_details ? ` (${payload.referral_details})` : ''}`);
-			if (!payload.has_whatsapp) extraLines.push('WhatsApp on this number: No');
-
-			const botPayload = {
-				...payload,
-				project_description: extraLines.length
-					? `${payload.project_description || ''}\n\n— Additional details —\n${extraLines.join('\n')}`
-					: payload.project_description
-			};
-
-			try {
-				// Keep the existing Supabase submission AND notify the NeoChip bot.
-				// The form succeeds as soon as ONE of them accepts the inquiry, so a
-				// slow or offline endpoint never keeps the visitor waiting for the other.
-				const botConfigured = INQUIRY_API_URL && !INQUIRY_API_URL.includes('YOUR-BOT');
-
-				const attempts = [
-					sendInquiryToLegacy(legacyPayload).catch((legacyError) => {
-						console.warn('Legacy backend failed:', legacyError);
-						throw legacyError;
-					})
-				];
-
-				if (botConfigured) {
-					attempts.push(
-						sendInquiryToBot(botPayload).catch((botError) => {
-							console.warn('Bot webhook failed:', botError);
-							throw botError;
-						})
-					);
-				} else {
-					console.warn('INQUIRY_API_URL is not configured in main.js — Telegram will not be notified.');
-				}
-
-				await firstAccepted(attempts);
-
-				// Hide the form and show the success popup.
-				contactForm.classList.add('hidden');
-				formSuccessMessage.classList.add('hidden');
-				showInquirySuccess();
-			} catch (error) {
-				console.error('Error submitting form:', error);
-
-				// Reset button state first, then show a helpful in-page popup.
-				submitBtn.disabled = false;
-				submitBtn.innerHTML = originalBtnContent;
-				showInquiryProblem(error && error.message ? error.message : '');
-			}
-		}
 	}
 
 });
