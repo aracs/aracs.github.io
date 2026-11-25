@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARACS — Control Center</title>
+<meta name="theme-color" content="#0D2133">
+<link rel="icon" href="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+:root{
+  --navy:#f4f8f9; --navy2:#ffffff; --navy3:#eef4f6;
+  --blue:#006b8d; --teal:#007a91; --mint:#007d70;
+  --light:#e8f0f2; --muted:#718b98; --line:rgba(16,43,59,.10);
+  --amber:#a86600; --red:#c23b3b; --green:#0a8f7a;
+  --r:18px; --shadow:0 18px 50px rgba(16,43,59,.12);
+
+  --ink:#102b3b; --ink-2:#29485a; --ink-3:#466273; --ink-4:#5c7786;
+  --ink-5:#718b98; --ink-6:#7d959f; --ink-7:#8aa0aa; --ink-8:#9aadb6; --ink-9:#8ba1ac;
+  --code-text:#00796b; --accent-blue:#006b8d;
+  --surface:#ffffff; --surface-2:#f7fafb; --hover:#eef4f6; --hover-2:#e5eef1;
+  --border-soft:rgba(16,43,59,.10); --border:rgba(16,43,59,.14); --border-strong:rgba(16,43,59,.24);
+  --brand-softest:rgba(0,125,112,.05); --brand-tint:rgba(0,125,112,.07);
+  --brand-soft:rgba(0,125,112,.10); --brand-line:rgba(0,125,112,.28);
+  --accent-blue-soft:rgba(0,107,141,.10); --green-soft:rgba(10,143,122,.12);
+  --amber-soft:rgba(168,102,0,.12); --red-soft:rgba(194,59,59,.10); --red-line:rgba(194,59,59,.4);
+  --page-bg:#f4f8f9; --page-from:#f4f8f9; --page-to:#e8f2f3;
+  --bg-image:radial-gradient(900px 500px at 85% -10%,rgba(0,125,112,.10),transparent 60%),radial-gradient(700px 500px at -10% 60%,rgba(0,107,141,.10),transparent 60%),linear-gradient(180deg,#f4f8f9,#e8f2f3);
+  --sidebar-from:#ffffff; --sidebar-to:#f7fafb;
+  --login-bg:rgba(244,248,249,.94); --login-card:#ffffff; --toast-bg:#ffffff;
+  --raw-bg:#f1f6f7; --scrim:rgba(16,43,59,.38); --shadow-deep:rgba(16,43,59,.22);
+  --on-primary:#ffffff; --switch-off:#dbe7ea; --switch-knob:#ffffff;
+}
+[data-theme="dark"]{
+  --navy:#0D2133; --navy2:#091a29; --navy3:#0f2a3d;
+  --blue:#006B8D; --teal:#0097A7; --mint:#00C2A8;
+  --light:#F2F7F8; --muted:#8fa6b4; --line:rgba(255,255,255,.09);
+  --amber:#ffc866; --red:#ff7a7a; --green:#4de0c6;
+  --shadow:0 18px 50px rgba(0,0,0,.35);
+
+  --ink:#ffffff; --ink-2:#dbe9ee; --ink-3:#b9ccd6; --ink-4:#9fb3bf;
+  --ink-5:#8fa6b4; --ink-6:#7f97a5; --ink-7:#6f8796; --ink-8:#5f7887; --ink-9:#7893a2;
+  --code-text:#9fd8cf; --accent-blue:#6fd0e6;
+  --surface:rgba(255,255,255,.035); --surface-2:rgba(255,255,255,.04);
+  --hover:rgba(255,255,255,.05); --hover-2:rgba(255,255,255,.08);
+  --border-soft:rgba(255,255,255,.09); --border:rgba(255,255,255,.14); --border-strong:rgba(255,255,255,.3);
+  --brand-softest:rgba(0,194,168,.06); --brand-tint:rgba(0,194,168,.08);
+  --brand-soft:rgba(0,194,168,.12); --brand-line:rgba(0,194,168,.35);
+  --accent-blue-soft:rgba(0,107,141,.18); --green-soft:rgba(77,224,198,.14);
+  --amber-soft:rgba(255,200,102,.14); --red-soft:rgba(255,122,122,.14); --red-line:rgba(255,122,122,.5);
+  --page-bg:#0D2133; --page-from:#0d2133; --page-to:#081725;
+  --bg-image:radial-gradient(900px 500px at 85% -10%,rgba(0,194,168,.12),transparent 60%),radial-gradient(700px 500px at -10% 60%,rgba(0,107,141,.16),transparent 60%),linear-gradient(180deg,#0d2133,#081725);
+  --sidebar-from:rgba(9,26,41,.98); --sidebar-to:rgba(7,20,33,.99);
+  --login-bg:rgba(6,20,32,.94); --login-card:rgba(13,33,51,.96); --toast-bg:#0f2a3d;
+  --raw-bg:rgba(0,0,0,.18); --scrim:rgba(4,14,23,.72); --shadow-deep:rgba(0,0,0,.5);
+  --on-primary:#06202c; --switch-off:rgba(255,255,255,.12); --switch-knob:#b9ccd6;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:Poppins,system-ui,-apple-system,sans-serif;
+  background:var(--page-bg); color:var(--ink); min-height:100vh;
+  background-image:var(--bg-image);
+}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-thumb{background:var(--brand-line);border-radius:9px}
+::-webkit-scrollbar-track{background:transparent}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+/* ---------- LOGIN ---------- */
+#login{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--login-bg);backdrop-filter:blur(14px)}
+.login-card{width:min(100%,420px);background:var(--login-card);border:1px solid var(--brand-line);border-radius:26px;padding:36px 30px;text-align:center;box-shadow:var(--shadow)}
+.login-icon{width:68px;height:68px;margin:0 auto 20px;border-radius:20px;background:var(--brand-soft);border:1px solid var(--brand-line);color:var(--mint);display:flex;align-items:center;justify-content:center;font-size:32px}
+.login-card h1{margin:0 0 8px;font-size:24px;font-weight:800;letter-spacing:-.02em}
+.login-card p{margin:0 0 24px;color:var(--muted);font-size:14px;line-height:1.6}
+.login-input{width:100%;padding:14px 16px;border-radius:14px;background:var(--hover);border:1px solid var(--border);color:var(--ink);font-size:15px;outline:none;transition:.2s}
+.login-input:focus{border-color:var(--mint);box-shadow:0 0 0 3px var(--brand-soft)}
+.login-btn{width:100%;margin-top:14px;padding:14px;border:0;border-radius:999px;background:linear-gradient(100deg,var(--teal),var(--mint));color:var(--on-primary);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:9px;transition:.2s}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px var(--brand-line)}
+.login-note{margin-top:20px;color:var(--ink-7);font-size:11px;line-height:1.6}
+.field-label{display:block;text-align:left;margin:14px 0 6px;color:var(--ink-4);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.login-btn:disabled{opacity:.7;cursor:wait;transform:none}
+.login-hint{margin:14px 0 0!important;color:var(--amber)!important;font-size:11px!important;line-height:1.5!important;min-height:0}
+.user-chip{display:none;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;background:var(--hover);border:1px solid var(--border);color:var(--ink-3);font-size:11px;font-weight:600;max-width:220px}
+.user-chip i{color:var(--mint);font-size:16px;flex:none}
+.user-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.source-tag{color:var(--mint);font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px}
+
+/* ---------- APP SHELL ---------- */
+#app{display:none;min-height:100vh}
+.shell{margin-left:250px;padding:0 28px 60px;max-width:1600px}
+.view{display:none}
+.view.on{display:block}
+#sidebar{position:fixed;left:0;top:0;bottom:0;width:250px;z-index:60;display:flex;flex-direction:column;padding:18px 14px;background:linear-gradient(180deg,var(--sidebar-from),var(--sidebar-to));border-right:1px solid var(--brand-line);box-shadow:14px 0 40px var(--shadow-deep)}
+.side-brand{display:flex;align-items:center;gap:10px;padding:6px 8px 16px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.side-brand img{width:36px;height:36px;object-fit:contain;flex:none}
+.side-brand strong{display:block;font-size:15px;letter-spacing:.02em}
+.side-brand span{display:block;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--mint);font-weight:700;margin-top:2px}
+.side-scroll{flex:1;overflow-y:auto;padding-right:4px}
+.nav-group{margin-bottom:18px}
+.nav-label{display:block;padding:0 10px 7px;color:var(--ink-8);font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.nav-item{width:100%;display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid transparent;border-radius:11px;background:transparent;color:var(--ink-4);font-size:12px;font-weight:600;text-align:left;transition:.2s}
+.nav-item i{font-size:17px;flex:none;color:var(--ink-9)}
+.nav-item:hover{background:var(--hover);color:var(--ink-2)}
+.nav-item.on{background:linear-gradient(90deg,var(--accent-blue-soft),var(--brand-tint));border-color:var(--brand-line);color:var(--mint)}
+.nav-item.on i{color:var(--mint)}
+.nav-item .nav-count{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 7px;border-radius:999px;background:var(--hover);color:var(--ink-3)}
+.nav-item.on .nav-count{background:var(--brand-soft);color:var(--mint)}
+.side-foot{padding-top:12px;border-top:1px solid var(--line)}
+.side-user{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:11px;background:var(--surface);margin-bottom:8px;min-width:0}
+.side-user i{color:var(--mint);font-size:18px;flex:none}
+.side-user span{font-size:11px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.side-actions .tb-btn{justify-content:center;padding:8px 6px;font-size:11px}
+#sideScrim{display:none;position:fixed;inset:0;z-index:55;background:var(--scrim);backdrop-filter:blur(3px)}
+#sideScrim.on{display:block}
+.xbtn.side-close{display:none}
+.topbar{display:flex;align-items:center;gap:16px;padding:22px 0;border-bottom:1px solid var(--line);margin-bottom:26px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;margin-right:auto}
+.brand img{width:38px;height:38px;object-fit:contain}
+.brand-txt strong{display:block;font-size:18px;line-height:1.1;letter-spacing:.02em}
+.brand-txt span{display:block;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--mint);margin-top:3px;font-weight:700}
+.pill-live{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;background:var(--brand-soft);border:1px solid var(--brand-line);color:var(--mint);font-size:11px;font-weight:700}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 0 var(--brand-line);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 var(--brand-line)}70%{box-shadow:0 0 0 8px rgba(0,194,168,0)}100%{box-shadow:0 0 0 0 rgba(0,194,168,0)}}
+.dot.bad{background:var(--red);animation:none}
+.tb-btn{padding:9px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-2);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:.2s}
+.tb-btn:hover{background:var(--hover-2);border-color:var(--border-strong)}
+.tb-btn i{font-size:16px}
+
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.page-head h2{margin:0;font-size:clamp(26px,4vw,36px);font-weight:800;letter-spacing:-.03em}
+.page-head h2 em{font-style:normal;color:var(--mint)}
+.page-head p{margin:6px 0 0;color:var(--muted);font-size:14px}
+
+/* ---------- STATS ---------- */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:22px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;position:relative;overflow:hidden;transition:.25s}
+.stat:hover{transform:translateY(-3px);border-color:var(--brand-line)}
+.stat .ic{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:12px;background:var(--brand-soft);color:var(--mint)}
+.stat .ic.blue{background:var(--accent-blue-soft);color:var(--accent-blue)}
+.stat .ic.amber{background:var(--amber-soft);color:var(--amber)}
+.stat .lab{color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.stat .val{font-size:30px;font-weight:800;line-height:1.2;margin-top:2px;letter-spacing:-.03em}
+.stat .sub{font-size:11px;color:var(--ink-7);margin-top:3px}
+
+/* ---------- TOOLBAR ---------- */
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:14px;background:var(--surface-2);border:1px solid var(--border)}
+.search i{color:var(--mint);font-size:18px}
+.search input{flex:1;background:transparent;border:0;outline:none;color:var(--ink);font-size:14px;min-width:0}
+.search input::placeholder{color:var(--ink-7)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{padding:8px 13px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-4);font-size:12px;font-weight:600;transition:.2s}
+.chip:hover{background:var(--hover-2);color:var(--ink)}
+.chip.on{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
+select.sort{padding:10px 13px;border-radius:12px;background:var(--navy3);border:1px solid var(--border);color:var(--ink-2);font-size:12px;outline:none}
+
+/* ---------- INQUIRY LIST ---------- */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;transition:.25s;cursor:pointer;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-3px);border-color:var(--brand-line);background:var(--surface);box-shadow:var(--shadow)}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--mint);opacity:.55}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mint);background:var(--brand-soft);border:1px solid var(--brand-line);padding:4px 9px;border-radius:8px;font-weight:600}
+.status{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px}
+.status.new{background:var(--amber-soft);color:var(--amber)}
+.status.contacted,.status.replied{background:var(--brand-soft);color:var(--mint)}
+.status.approved,.status.won{background:var(--green-soft);color:var(--green)}
+.status.rejected,.status.lost{background:var(--red-soft);color:var(--red)}
+.status.archived{background:var(--hover-2);color:var(--ink-5)}
+.arch-tag{display:inline-flex;align-items:center;gap:5px;padding:3px 8px;border-radius:8px;background:var(--hover);border:1px solid var(--hover-2);color:var(--ink-5);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-left:6px}
+.card.archived{border-color:var(--surface-2);opacity:.82}
+.card.archived::before{background:var(--ink-7)}
+.card.archived:hover{opacity:1}
+.card-name{font-size:17px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+.card-type{color:var(--ink-4);font-size:12px;margin-bottom:12px}
+.meta-line{display:flex;align-items:center;gap:8px;color:var(--ink-4);font-size:12px;margin-top:6px;min-width:0}
+.meta-line i{color:var(--teal);font-size:15px;flex:none}
+.meta-line span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-desc{color:var(--ink-6);font-size:12px;line-height:1.55;margin:13px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.time{font-size:11px;color:var(--ink-7)}
+.quick{display:flex;gap:6px}
+.qbtn{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-3);display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s}
+.qbtn:hover{background:var(--brand-soft);color:var(--mint);border-color:var(--brand-line)}
+
+/* ---------- CHARTS ---------- */
+.insights{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.panel h3{margin:0 0 16px;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+.panel h3 i{color:var(--mint);font-size:18px}
+.bar-row{display:flex;align-items:center;gap:12px;margin:11px 0}
+.bar-lab{width:130px;flex:none;color:var(--ink-4);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bar-track{flex:1;height:7px;border-radius:99px;background:var(--hover);overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--mint));transition:width .7s cubic-bezier(.22,1,.36,1)}
+.bar-num{width:26px;text-align:right;font-size:11px;color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+.empty{text-align:center;padding:60px 20px;color:var(--ink-7)}
+.empty i{font-size:48px;color:var(--brand-line);display:block;margin-bottom:14px}
+.empty strong{display:block;color:var(--ink-3);font-size:16px;margin-bottom:6px}
+
+/* ---------- SYSTEM RECORD ---------- */
+.system-panel{margin-top:14px;border-color:var(--brand-line)}
+.sys-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.sys-box{background:var(--accent-blue-soft);border:1px solid var(--brand-line);border-radius:12px;padding:13px}
+.sys-box .k{font-size:10px;color:var(--ink-5);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.sys-box .v{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--mint);margin-top:4px;word-break:break-word}
+.sys-box .s{font-size:10px;color:var(--ink-7);margin-top:3px}
+details.raw{margin-top:12px;border:1px solid var(--line);border-radius:10px;background:var(--raw-bg)}
+details.raw summary{cursor:pointer;padding:10px 13px;font-size:12px;font-weight:600;color:var(--ink-3);display:flex;align-items:center;gap:8px;list-style:none}
+details.raw summary::-webkit-details-marker{display:none}
+details.raw summary i{color:var(--mint);font-size:16px}
+details.raw[open] summary{border-bottom:1px solid var(--line)}
+details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.6;color:var(--code-text);white-space:pre-wrap;word-break:break-word}
+.code-list{display:flex;flex-wrap:wrap;gap:5px;max-height:120px;overflow:auto;margin-top:8px}
+.code-list span{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 7px;border-radius:6px;background:var(--brand-tint);border:1px solid var(--brand-line);color:var(--mint)}
+
+/* ---------- DRAWER ---------- */
+#drawer{position:fixed;inset:0;z-index:80;display:none}
+#drawer.on{display:block}
+.drawer-bg{position:absolute;inset:0;background:var(--scrim);backdrop-filter:blur(5px)}
+.drawer{position:absolute;right:0;top:0;bottom:0;width:min(100%,520px);background:var(--navy2);border-left:1px solid var(--brand-line);box-shadow:-20px 0 60px var(--shadow-deep);overflow-y:auto;padding:26px;animation:slideIn .35s cubic-bezier(.22,1,.36,1)}
+@keyframes slideIn{from{transform:translateX(40px);opacity:0}to{transform:none;opacity:1}}
+.drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px}
+.drawer-head h3{margin:0;font-size:22px;font-weight:800}
+.drawer-head .code{margin-bottom:8px;display:inline-block}
+.xbtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-3);font-size:18px;display:flex;align-items:center;justify-content:center}
+.xbtn:hover{background:var(--hover-2)}
+.d-section{margin-bottom:22px}
+.d-section h4{margin:0 0 10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mint);font-weight:700;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.d-field{margin:9px 0}
+.d-field .k{font-size:10px;color:var(--ink-7);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+.d-field .v{font-size:14px;color:var(--ink-2);line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.d-desc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--ink-3);font-size:13px;line-height:1.7}
+.actions-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.abtn{padding:11px;border-radius:11px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
+.abtn:hover{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
+.abtn.primary{background:linear-gradient(100deg,var(--teal),var(--mint));color:var(--on-primary);border:0;font-weight:800}
+.timeline{position:relative;padding-left:20px}
+.timeline::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:1px;background:var(--brand-line)}
+.t-item{position:relative;margin:12px 0;font-size:12px;color:var(--ink-4)}
+.t-item::before{content:'';position:absolute;left:-19px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 3px var(--brand-soft)}
+.t-item b{color:var(--ink-2);font-weight:600}
+.t-item time{display:block;color:var(--ink-7);font-size:10px;margin-top:2px}
+
+/* ---------- MANAGEMENT FORMS ---------- */
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.admin-input,.admin-select,.admin-textarea{width:100%;padding:10px 12px;border-radius:11px;background:var(--surface-2);border:1px solid var(--border);color:var(--ink-2);font-size:13px;outline:none;transition:.2s}
+.admin-input:focus,.admin-select:focus,.admin-textarea:focus{border-color:var(--mint);box-shadow:0 0 0 3px var(--brand-soft)}
+.admin-select option{background:var(--navy2);color:var(--ink-2)}
+.admin-textarea{resize:vertical;min-height:90px;line-height:1.6}
+.form-row{margin:9px 0}
+.form-row label{display:block;color:var(--ink-5);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.var-chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+.var-chip{padding:4px 9px;border-radius:999px;border:1px solid var(--brand-line);background:var(--brand-tint);color:var(--mint);font-family:'JetBrains Mono',monospace;font-size:10px;cursor:pointer;transition:.2s}
+.var-chip:hover{background:var(--brand-line)}
+.preview-box{margin-top:10px;padding:13px;border-radius:12px;background:var(--accent-blue-soft);border:1px solid var(--brand-line);color:var(--ink-3);font-size:12px;line-height:1.65;white-space:pre-wrap;max-height:260px;overflow:auto}
+.section-note{color:var(--ink-7);font-size:11px;line-height:1.5;margin:0 0 10px}
+.status-row{display:flex;gap:8px;align-items:center}
+.status-row select{flex:1}
+
+/* ---------- VIEWS: CRM, TEMPLATES, SETTINGS ---------- */
+.split{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:16px;align-items:start}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.panel-head h3{margin:0}
+.panel-sub{color:var(--ink-7);font-size:11px;line-height:1.5}
+.mini-btn{padding:7px 11px;border-radius:9px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-3);font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+.mini-btn:hover{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
+.mini-btn.on{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
+.mini-btn.danger:hover{background:var(--red-soft);border-color:var(--red-line);color:var(--red)}
+.contact-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.contact-tools .search{flex:1;min-width:180px}
+.contact-table{border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.contact-row{display:grid;grid-template-columns:26px 34px minmax(0,1.2fr) minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px 12px;border-bottom:1px solid var(--line);transition:.2s}
+.contact-row:last-child{border-bottom:0}
+.contact-row:hover{background:var(--brand-softest)}
+.contact-row.sel{background:var(--brand-soft)}
+.contact-row input{width:15px;height:15px;accent-color:var(--mint);cursor:pointer}
+.contact-avatar{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--brand-soft);border:1px solid var(--brand-line);color:var(--mint);font-size:11px;font-weight:800}
+.contact-main{min-width:0}
+.contact-main b{display:block;font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contact-main small{display:block;color:var(--ink-7);font-size:10px;margin-top:2px;font-family:'JetBrains Mono',monospace}
+.contact-detail{min-width:0;color:var(--ink-5);font-size:10px;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact-actions{display:flex;gap:4px}
+.contact-actions .qbtn{width:28px;height:28px;font-size:13px}
+.target-line{padding:10px 12px;border-radius:11px;background:var(--accent-blue-soft);border:1px solid var(--brand-line);color:var(--ink-3);font-size:11px;line-height:1.5;margin-bottom:12px}
+.channel-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.channel-tab{padding:8px 13px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-4);font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.channel-tab i{font-size:15px}
+.channel-tab.on{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
+.composer-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.composer-actions .abtn{font-size:11px;padding:10px 8px}
+.preview-label{display:block;color:var(--ink-7);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin:12px 0 5px}
+.link-list{display:grid;gap:7px;margin-top:10px;max-height:220px;overflow:auto}
+.link-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 11px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--ink-3);font-size:11px}
+.link-row a{color:var(--mint);font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.tpl-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.tpl-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.tpl-card{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:14px;display:flex;flex-direction:column;min-height:170px}
+.tpl-card .tpl-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.tpl-card h4{margin:0;font-size:13px;color:var(--ink-2);line-height:1.35}
+.tpl-card .tpl-body{color:var(--ink-5);font-size:11px;line-height:1.6;white-space:pre-wrap;flex:1;max-height:92px;overflow:auto}
+.tpl-card .tpl-actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.tpl-badge{font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--brand-soft);color:var(--mint);white-space:nowrap}
+.tpl-badge.whatsapp{background:var(--green-soft);color:var(--green)}
+.tpl-badge.call{background:var(--accent-blue-soft);color:var(--accent-blue)}
+.tpl-editor{margin-bottom:18px;border-color:var(--brand-line)}
+.settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.setting-card h3{margin:0 0 14px}
+.setting-line{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.setting-line:last-child{border-bottom:0}
+.setting-line .k{font-size:12px;color:var(--ink-2);font-weight:600}
+.setting-line .s{display:block;font-size:10px;color:var(--ink-7);margin-top:2px;font-weight:400}
+.switch{position:relative;width:40px;height:22px;flex:none}
+.switch input{opacity:0;width:0;height:0}
+.switch span{position:absolute;inset:0;border-radius:999px;background:var(--border);border:1px solid var(--border-strong);transition:.2s;cursor:pointer}
+.switch span::before{content:'';position:absolute;width:16px;height:16px;left:2px;top:2px;border-radius:50%;background:var(--ink-3);transition:.2s}
+.switch input:checked+span{background:var(--brand-line);border-color:var(--mint)}
+.switch input:checked+span::before{transform:translateX(18px);background:var(--mint)}
+.kv-line{display:flex;justify-content:space-between;gap:10px;font-size:11px;padding:8px 0;border-bottom:1px solid var(--line)}
+.kv-line:last-child{border-bottom:0}
+.kv-line span{color:var(--ink-7)}
+.kv-line b{color:var(--ink-3);font-weight:600;text-align:right;word-break:break-word}
+.activity-list{max-height:620px;overflow:auto;padding-right:6px}
+.activity-item{display:grid;grid-template-columns:90px minmax(0,1fr);gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.activity-item time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-7)}
+.activity-item b{color:var(--ink-2);font-size:12px;font-weight:600}
+.activity-item p{margin:3px 0 0;color:var(--ink-5);font-size:11px;line-height:1.5}
+.recent-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.recent-row:last-child{border-bottom:0}
+.recent-row b{display:block;font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-row small{color:var(--ink-7);font-size:10px;font-family:'JetBrains Mono',monospace}
+.empty-mini{padding:26px 12px;text-align:center;color:var(--ink-7);font-size:12px}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.quick-card{padding:13px;border-radius:12px;border:1px solid var(--line);background:var(--surface);text-align:left;color:var(--ink-2);transition:.2s}
+.quick-card:hover{border-color:var(--brand-line);background:var(--brand-tint)}
+.quick-card i{display:block;color:var(--mint);font-size:20px;margin-bottom:8px}
+.quick-card b{display:block;font-size:12px}
+.quick-card span{display:block;font-size:10px;color:var(--ink-7);margin-top:3px}
+.menu-btn{display:none}
+#app.compact .card{padding:14px}
+#app.compact .card-desc{display:none}
+#app.compact .stat{padding:13px}
+
+
+/* ---------- THEME + COLLAPSIBLE SIDEBAR ---------- */
+.switch span{background:var(--switch-off);border-color:var(--border)}
+.switch span::before{background:var(--switch-knob)}
+.switch input:checked+span::before{background:var(--mint)}
+#sideToggle{display:inline-flex}
+@media(max-width:1000px){#sideToggle{display:none}}
+@media(min-width:1001px){
+  #sidebar{transition:width .26s cubic-bezier(.22,1,.36,1)}
+  .shell{transition:margin-left .26s cubic-bezier(.22,1,.36,1)}
+  #app.sidebar-collapsed #sidebar{width:72px;padding:16px 10px}
+  #app.sidebar-collapsed .side-brand{justify-content:center;padding:4px 0 14px}
+  #app.sidebar-collapsed .side-brand>div,
+  #app.sidebar-collapsed .nav-label,
+  #app.sidebar-collapsed .nav-text,
+  #app.sidebar-collapsed .nav-count,
+  #app.sidebar-collapsed .side-foot{display:none}
+  #app.sidebar-collapsed .nav-group{margin-bottom:12px}
+  #app.sidebar-collapsed .nav-item{justify-content:center;padding:11px 0}
+  #app.sidebar-collapsed .nav-item i{font-size:20px}
+  #app.sidebar-collapsed .shell{margin-left:72px}
+  #app.sidebar-collapsed #sideToggle .toggle-text{display:none}
+  #app.sidebar-collapsed #sideToggle{width:38px;height:38px;padding:0;justify-content:center}
+}
+
+/* ---------- ANALYTICS / LIVE TELEMETRY ---------- */
+.an-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.an-tab{padding:10px 15px;border-radius:999px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-4);font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:.2s}
+.an-tab:hover{background:var(--hover-2);color:var(--ink)}
+.an-tab.on{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
+.an-tab i{font-size:16px}
+.an-grid{display:grid;gap:14px;margin-bottom:14px}
+.an-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.an-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.an-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.an-stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;position:relative;overflow:hidden;min-height:112px}
+.an-stat::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--mint);opacity:.7}
+.an-stat .lab{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;position:relative;z-index:1}
+.an-stat .val{font-size:27px;font-weight:800;letter-spacing:-.03em;line-height:1.25;margin-top:5px;position:relative;z-index:1;word-break:break-word}
+.an-stat .sub{font-size:10px;color:var(--ink-7);margin-top:3px;position:relative;z-index:1;line-height:1.4}
+.an-stat .spark{position:absolute;right:8px;bottom:8px;opacity:.85;pointer-events:none}
+.an-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;min-width:0}
+.an-panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.an-panel-head h3{margin:0;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--ink-2)}
+.an-panel-head h3 i{color:var(--mint);font-size:18px}
+.an-panel-sub{font-size:10px;color:var(--ink-7);font-weight:600}
+.an-chart{display:block;width:100%;height:190px}
+.an-chart.tall{height:225px}
+.an-legend{display:flex;flex-wrap:wrap;gap:9px 14px;margin-top:10px}
+.an-legend span{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--ink-6)}
+.an-legend span b{color:var(--ink-3);font-family:'JetBrains Mono',monospace}
+.an-legend i{width:9px;height:9px;border-radius:3px;display:inline-block;flex:none}
+.an-health{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.an-check{display:flex;gap:11px;align-items:flex-start;padding:13px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.an-dot{width:10px;height:10px;border-radius:50%;flex:none;margin-top:4px;box-shadow:0 0 0 3px var(--brand-softest)}
+.an-dot.ok{background:#0a8f7a}.an-dot.warn,.an-dot.attention,.an-dot.pending,.an-dot.new{background:#d18a12}
+.an-dot.error,.an-dot.degraded,.an-dot.rejected{background:#d9534f}
+.an-check .name{font-size:12px;font-weight:700;color:var(--ink-2);line-height:1.35}
+.an-check .detail{font-size:10px;color:var(--ink-6);margin-top:4px;line-height:1.5;word-break:break-word}
+.an-check .lat{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-7);white-space:nowrap}
+.an-table-wrap{overflow:auto;max-height:420px}
+.an-table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}
+.an-table th{position:sticky;top:0;background:var(--surface-2);text-align:left;padding:10px 12px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-7);font-weight:700;border-bottom:1px solid var(--line)}
+.an-table td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--ink-4);max-width:230px;overflow:hidden;text-overflow:ellipsis}
+.an-table tr:last-child td{border-bottom:0}
+.an-table tr:hover td{background:var(--hover)}
+.an-table td b{color:var(--ink-2);font-weight:600}
+.an-table td.mono{font-family:'JetBrains Mono',monospace;font-size:10px}
+.an-badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:var(--hover-2);color:var(--ink-5)}
+.an-badge.green,.an-badge.approved,.an-badge.contacted,.an-badge.ok,.an-badge.healthy{background:var(--green-soft);color:var(--green)}
+.an-badge.amber,.an-badge.pending,.an-badge.new,.an-badge.warn,.an-badge.attention,.an-badge.interview,.an-badge.waitlist{background:var(--amber-soft);color:var(--amber)}
+.an-badge.red,.an-badge.rejected,.an-badge.error,.an-badge.degraded{background:var(--red-soft);color:var(--red)}
+.an-badge.blue,.an-badge.read{background:var(--accent-blue-soft);color:var(--accent-blue)}
+.an-gauge-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.an-gauge{width:120px;height:120px;flex:none}
+.an-gauge-meta{flex:1;min-width:130px}
+.an-gauge-meta .k{font-size:11px;color:var(--ink-3);font-weight:700}
+.an-gauge-meta .v{font-size:18px;font-weight:800;color:var(--ink);margin:3px 0 8px;word-break:break-word}
+.an-gauge-meta .s{font-size:10px;color:var(--ink-7);line-height:1.5;margin-top:8px}
+.an-meter{height:7px;border-radius:99px;background:var(--hover);overflow:hidden}
+.an-meter i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--teal),var(--mint))}
+.an-note{font-size:10px;color:var(--ink-7);line-height:1.6}
+.an-empty{padding:38px 12px;text-align:center;color:var(--ink-7);font-size:12px}
+.an-empty i{display:block;font-size:30px;color:var(--brand-line);margin-bottom:8px}
+.an-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mint);font-weight:800;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.an-section-title::after{content:'';flex:1;height:1px;background:var(--line)}
+@media(max-width:1250px){.an-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:900px){.an-3,.an-2{grid-template-columns:1fr}.an-chart{height:175px}}
+@media(max-width:600px){.an-4{grid-template-columns:1fr}.an-stat{min-height:96px}.an-chart{height:160px}.an-gauge{width:100px;height:100px}.an-table{font-size:10px}}
+
+/* ---------- TOAST ---------- */
+#toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);z-index:200;background:var(--toast-bg);border:1px solid var(--brand-line);color:var(--ink-2);padding:12px 18px;border-radius:12px;font-size:13px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;display:flex;align-items:center;gap:9px}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast i{color:var(--mint);font-size:17px}
+#toast.err{border-color:var(--red-line)}
+#toast.err i{color:var(--red)}
+
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.split{grid-template-columns:1fr}}
+@media(max-width:1000px){
+  #sidebar{transform:translateX(-102%);transition:transform .28s cubic-bezier(.22,1,.36,1)}
+  #sidebar.open{transform:none}
+  .shell{margin-left:0;padding:0 20px 50px}
+  .menu-btn{display:inline-flex}
+  .xbtn.side-close{display:flex}
+}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}.insights{grid-template-columns:1fr}}
+@media(max-width:600px){
+  .shell{padding:0 14px 40px}
+  .stats{gap:9px}
+  .stat{padding:14px}
+  .stat .val{font-size:24px}
+  .grid{grid-template-columns:1fr}
+  .topbar{gap:10px}
+  .topbar .tb-btn{font-size:11px;padding:8px 10px}
+  .drawer{padding:20px 16px}
+  .bar-lab{width:90px}
+  .actions-grid,.composer-actions{grid-template-columns:1fr}
+  .edit-grid{grid-template-columns:1fr}
+  .page-head h2{font-size:26px}
+  .contact-row{grid-template-columns:22px 28px minmax(0,1fr) auto;gap:8px;padding:10px 9px}
+  .contact-detail{display:none}
+  .contact-actions .qbtn:nth-child(1){display:none}
+  .recent-row{grid-template-columns:minmax(0,1fr) auto}
+  .recent-row small,.recent-row .status{display:none}
+  .activity-item{grid-template-columns:1fr;gap:2px}
+  .side-actions{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="login-card">
+    <div class="login-icon"><i class="ph ph-shield-check"></i></div>
+    <h1>ARACS Control Center</h1>
+    <p>Private access to website inquiries and lead activity.</p>
+    <label class="field-label" for="email">Admin email</label>
+    <input id="email" class="login-input" type="email" placeholder="admin@your-domain.com" autocomplete="username" spellcheck="false">
+    <label class="field-label" for="pw">Password</label>
+    <input id="pw" class="login-input" type="password" placeholder="Supabase account password" autocomplete="current-password">
+    <button id="unlock" class="login-btn"><i class="ph ph-lock-key"></i> Sign in securely</button>
+    <p class="login-hint" id="loginHint"></p>
+    <p class="login-note">Credentials are verified by Supabase Auth, not stored in this page. Admin users are created in Supabase → Authentication → Users.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <aside id="sidebar">
+    <div class="side-brand">
+      <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS">
+      <div><strong>ARACS</strong><span>Control Center</span></div>
+      <button class="xbtn side-close" id="sideClose" title="Close menu" style="margin-left:auto;width:28px;height:28px;font-size:14px"><i class="ph ph-x"></i></button>
+    </div>
+    <div class="side-scroll">
+      <div class="nav-group">
+        <span class="nav-label">Workspace</span>
+        <button class="nav-item on" data-view="overview"><i class="ph ph-squares-four"></i> <span class="nav-text">Overview</span></button>
+        <button class="nav-item" data-view="inquiries"><i class="ph ph-inbox"></i> <span class="nav-text">Inquiries</span> <span class="nav-count" id="navActive">0</span></button>
+        <button class="nav-item" data-view="archive"><i class="ph ph-archive"></i> <span class="nav-text">Archive</span> <span class="nav-count" id="navArchived">0</span></button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">CRM</span>
+        <button class="nav-item" data-view="crm"><i class="ph ph-address-book"></i> <span class="nav-text">Outreach desk</span> <span class="nav-count" id="navContacts">0</span></button>
+        <button class="nav-item" data-view="templates"><i class="ph ph-chat-centered-text"></i> <span class="nav-text">Messages &amp; templates</span> <span class="nav-count" id="navTemplates">0</span></button>
+        <button class="nav-item" data-view="activity"><i class="ph ph-clock-counter-clockwise"></i> <span class="nav-text">Activity log</span></button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">Insights</span>
+        <button class="nav-item" data-view="analytics"><i class="ph ph-chart-line-up"></i> <span class="nav-text">Analytics</span> <span class="nav-count" id="navAnalytics">LIVE</span></button>
+      </div>
+      <div class="nav-group">
+        <span class="nav-label">System</span>
+        <button class="nav-item" data-view="settings"><i class="ph ph-sliders-horizontal"></i> <span class="nav-text">Settings</span></button>
+        <button class="nav-item" data-view="system"><i class="ph ph-gear-six"></i> <span class="nav-text">System record</span></button>
+      </div>
+    </div>
+    <div class="side-foot">
+      <div class="side-user"><i class="ph ph-user-circle"></i><span id="sideUserEmail">—</span></div>
+      <div class="side-actions">
+        <button class="tb-btn" id="sideExport"><i class="ph ph-download-simple"></i> Export</button>
+        <button class="tb-btn" id="sideSignOut"><i class="ph ph-sign-out"></i> Sign out</button>
+      </div>
+    </div>
+  </aside>
+  <div id="sideScrim"></div>
+
+  <div class="shell">
+    <header class="topbar">
+      <button class="tb-btn menu-btn" id="menuBtn" title="Open menu"><i class="ph ph-list"></i></button>
+      <button class="tb-btn" id="sideToggle" title="Collapse or expand the sidebar"><i class="ph ph-caret-double-left" id="sideToggleIcon"></i><span class="toggle-text" id="sideToggleText">Collapse</span></button>
+      <div class="brand">
+        <img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS">
+        <div class="brand-txt"><strong>ARACS</strong><span>Control Center</span></div>
+      </div>
+      <span class="pill-live"><span class="dot" id="liveDot"></span><span id="liveTxt">Connecting</span></span>
+      <span class="user-chip" id="userChip"><i class="ph ph-user-circle"></i><span id="userEmail"></span></span>
+      <button class="tb-btn" id="refresh"><i class="ph ph-arrow-clockwise"></i> Refresh</button>
+      <button class="tb-btn" id="exportBtn"><i class="ph ph-download-simple"></i> Export CSV</button>
+      <button class="tb-btn" id="logout"><i class="ph ph-sign-out"></i></button>
+    </header>
+
+    <main class="content">
+      <section class="view on" id="view-overview">
+        <div class="page-head">
+          <div>
+            <h2>Workspace <em>overview</em></h2>
+            <p>Live picture of <span class="source-tag">Aracs Technologies</span>. Jump into a workspace from the left.</p>
+          </div>
+          <span class="pill-live" id="updatedAt">—</span>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><div class="ic"><i class="ph ph-files"></i></div><div class="lab">Total records</div><div class="val" id="sTotal">0</div><div class="sub">all rows</div></div>
+          <div class="stat"><div class="ic"><i class="ph ph-inbox"></i></div><div class="lab">Active</div><div class="val" id="sActive">0</div><div class="sub">live inquiries</div></div>
+          <div class="stat"><div class="ic blue"><i class="ph ph-archive"></i></div><div class="lab">Archived</div><div class="val" id="sArchived">0</div><div class="sub">permanent record</div></div>
+          <div class="stat"><div class="ic amber"><i class="ph ph-warning-circle"></i></div><div class="lab">New leads</div><div class="val" id="sNew">0</div><div class="sub">awaiting reply</div></div>
+          <div class="stat"><div class="ic blue"><i class="ph ph-clock"></i></div><div class="lab">Last 7 days</div><div class="val" id="sWeek">0</div><div class="sub">incoming pace</div></div>
+          <div class="stat"><div class="ic"><i class="ph ph-users"></i></div><div class="lab">Unique contacts</div><div class="val" id="sUnique">0</div><div class="sub">by email</div></div>
+        </div>
+
+        <div class="panel" style="margin-bottom:16px">
+          <div class="panel-head"><h3><i class="ph ph-lightning"></i> Quick actions</h3><span class="panel-sub">One click to the right workspace</span></div>
+          <div class="quick-grid">
+            <button class="quick-card" data-goto="inquiries"><i class="ph ph-inbox"></i><b>Inquiries</b><span>Review and manage leads</span></button>
+            <button class="quick-card" data-goto="crm"><i class="ph ph-paper-plane-tilt"></i><b>Outreach</b><span>Email, call, WhatsApp</span></button>
+            <button class="quick-card" data-goto="templates"><i class="ph ph-chat-centered-text"></i><b>Templates</b><span>Defaults and custom messages</span></button>
+            <button class="quick-card" data-goto="settings"><i class="ph ph-sliders-horizontal"></i><b>Settings</b><span>Alerts, sync, preferences</span></button>
+          </div>
+        </div>
+
+        <div class="insights">
+          <div class="panel"><h3><i class="ph ph-chart-bar"></i> By project type</h3><div id="typeBars"></div></div>
+          <div class="panel"><h3><i class="ph ph-git-branch"></i> By status</h3><div id="statusBars"></div></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <div class="panel-head"><h3><i class="ph ph-clock"></i> Recent inquiries</h3><button class="mini-btn" data-goto="inquiries">View all <i class="ph ph-arrow-right"></i></button></div>
+          <div id="recentList"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-inquiries">
+        <div class="page-head">
+          <div><h2>Inquiry <em>workspace</em></h2><p>Active and archived records. Click a card to edit, note, archive, or email.</p></div>
+          <span class="pill-live" id="inquiriesCount">0 records</span>
+        </div>
+        <div class="toolbar">
+          <div class="search"><i class="ph ph-magnifying-glass"></i><input id="search" placeholder="Search name, email, code, project, description…"></div>
+          <div class="chips" id="chips">
+            <button class="chip on" data-status="all">All</button>
+            <button class="chip" data-status="active">Active</button>
+            <button class="chip" data-status="archived">Archived</button>
+            <button class="chip" data-status="new">New</button>
+            <button class="chip" data-status="contacted">Contacted</button>
+            <button class="chip" data-status="approved">Approved</button>
+            <button class="chip" data-status="rejected">Rejected</button>
+          </div>
+          <select class="sort" id="sort">
+            <option value="new">Newest first</option>
+            <option value="old">Oldest first</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+        <div class="grid" id="grid"></div>
+      </section>
+
+      <section class="view" id="view-archive">
+        <div class="page-head">
+          <div><h2>Permanent <em>archive</em></h2><p>Every closed or removed inquiry stays here with notes, replies, and raw data.</p></div>
+          <span class="pill-live" id="archiveCount">0 archived</span>
+        </div>
+        <div class="toolbar">
+          <div class="search"><i class="ph ph-magnifying-glass"></i><input id="archiveSearch" placeholder="Search the archive…"></div>
+        </div>
+        <div class="grid" id="archiveGrid"></div>
+      </section>
+
+      <section class="view" id="view-crm">
+        <div class="page-head">
+          <div><h2>CRM <em>outreach desk</em></h2><p>Select contacts, choose a channel, personalize the message, and send or open the right app.</p></div>
+          <span class="pill-live" id="crmCount">0 selected</span>
+        </div>
+        <div class="split">
+          <div class="panel">
+            <div class="panel-head"><h3><i class="ph ph-address-book"></i> Contacts</h3><span class="panel-sub">Select one or several, then compose on the right</span></div>
+            <div class="contact-tools">
+              <div class="search"><i class="ph ph-magnifying-glass"></i><input id="crmSearch" placeholder="Search contacts, email, phone, code…"></div>
+              <button class="mini-btn" id="crmSelectAll"><i class="ph ph-check-square-offset"></i> Select all</button>
+              <button class="mini-btn" id="crmClear"><i class="ph ph-x"></i> Clear</button>
+            </div>
+            <div class="contact-table" id="contactRows"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3><i class="ph ph-paper-plane-tilt"></i> Composer</h3><span class="panel-sub" id="crmTemplateCount">0 templates</span></div>
+            <div class="target-line" id="crmTarget">Select a contact to personalize the message.</div>
+            <div class="channel-tabs" id="crmTabs">
+              <button class="channel-tab on" data-channel="email"><i class="ph ph-envelope"></i> Email</button>
+              <button class="channel-tab" data-channel="whatsapp"><i class="ph ph-whatsapp-logo"></i> WhatsApp</button>
+              <button class="channel-tab" data-channel="call"><i class="ph ph-phone"></i> Call script</button>
+            </div>
+            <div id="crmComposer"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-templates">
+        <div class="page-head">
+          <div><h2>Message <em>library</em></h2><p>Default messages are always available. Custom ones are saved by the bot and shared across devices.</p></div>
+          <span class="pill-live" id="tplCount">0 templates</span>
+        </div>
+        <div class="panel tpl-editor">
+          <div class="panel-head"><h3><i class="ph ph-plus-circle"></i> Template editor</h3><span class="panel-sub" id="tplEditorHint">Create a new custom message or edit an existing one</span></div>
+          <div class="edit-grid">
+            <div class="form-row"><label>Template name</label><input class="admin-input" id="tplEditName" placeholder="e.g. Interview invitation"></div>
+            <div class="form-row"><label>Channel</label><select class="admin-select" id="tplEditChannel"><option value="email">Email</option><option value="whatsapp">WhatsApp</option><option value="call">Call script</option></select></div>
+          </div>
+          <div class="form-row"><label>Subject (email only, optional)</label><input class="admin-input" id="tplEditSubject" placeholder="Re: Your project inquiry {{code}}"></div>
+          <div class="form-row"><label>Message</label><textarea class="admin-textarea" id="tplEditBody" style="min-height:120px"></textarea></div>
+          <div class="var-chips" id="tplVars"></div>
+          <div class="actions-grid">
+            <button class="abtn primary" id="tplEditSave"><i class="ph ph-floppy-disk"></i> Save template</button>
+            <button class="abtn" id="tplEditCancel"><i class="ph ph-x"></i> Clear editor</button>
+          </div>
+        </div>
+        <div class="tpl-toolbar" id="tplTabs">
+          <button class="mini-btn on" data-tpl-channel="all">All</button>
+          <button class="mini-btn" data-tpl-channel="email">Email</button>
+          <button class="mini-btn" data-tpl-channel="whatsapp">WhatsApp</button>
+          <button class="mini-btn" data-tpl-channel="call">Call scripts</button>
+        </div>
+        <div class="tpl-list" id="tplList"></div>
+      </section>
+
+      <section class="view" id="view-activity">
+        <div class="page-head">
+          <div><h2>Activity <em>log</em></h2><p>Every note, reply, status change, and edit across all inquiries.</p></div>
+          <span class="pill-live" id="activityCount">0 events</span>
+        </div>
+        <div class="panel"><div class="activity-list" id="activityList"></div></div>
+      </section>
+
+      <section class="view" id="view-analytics">
+        <div class="page-head">
+          <div><h2>Live <em>analytics</em></h2><p>Grafana-style telemetry from the running bot, Supabase tables, NeoChip members, and the ARACS inbox. Every figure is read from real data.</p></div>
+          <span class="pill-live" id="anUpdated">—</span>
+        </div>
+        <div class="an-tabs" id="anTabs">
+          <button class="an-tab on" data-an="overview"><i class="ph ph-squares-four"></i> Overview</button>
+          <button class="an-tab" data-an="neochip"><i class="ph ph-users-three"></i> NeoChip management</button>
+          <button class="an-tab" data-an="aracs"><i class="ph ph-inbox"></i> ARACS &amp; clients</button>
+          <button class="an-tab" data-an="system"><i class="ph ph-heartbeat"></i> System &amp; infrastructure</button>
+          <button class="mini-btn" id="anRefresh" style="margin-left:auto"><i class="ph ph-arrow-clockwise"></i> Refresh metrics</button>
+        </div>
+        <div id="anBody"></div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="page-head">
+          <div><h2>Workspace <em>settings</em></h2><p>Alerts, sync, display preferences, and connection details.</p></div>
+        </div>
+        <div class="settings-grid">
+          <div class="setting-card panel">
+            <h3><i class="ph ph-plug"></i> Connection</h3>
+            <div id="setConnection"></div>
+          </div>
+          <div class="setting-card panel">
+            <h3><i class="ph ph-bell"></i> Admin alerts</h3>
+            <div class="setting-line"><div><div class="k">Telegram notifications</div><span class="s">New inquiry alerts sent to admins</span></div><label class="switch"><input type="checkbox" id="setMute"><span></span></label></div>
+            <p class="panel-sub" style="margin-top:10px">Turning this off does not stop confirmation emails to customers.</p>
+          </div>
+          <div class="setting-card panel">
+            <h3><i class="ph ph-cloud-arrow-up"></i> Data sync</h3>
+            <p class="panel-sub">Force the bot to write its current database to Supabase. Use this if the table looks empty after a redeploy.</p>
+            <button class="abtn primary" id="setSync" style="width:100%;margin-top:12px"><i class="ph ph-cloud-arrow-up"></i> Push to Supabase now</button>
+          </div>
+          <div class="setting-card panel">
+            <h3><i class="ph ph-eye"></i> Display</h3>
+            <div class="setting-line"><div><div class="k">Light theme</div><span class="s">Clean light interface — turn off for dark navy</span></div><label class="switch"><input type="checkbox" id="prefLight" checked><span></span></label></div>
+            <div class="setting-line"><div><div class="k">Auto refresh</div><span class="s">Reload data every 30 seconds</span></div><label class="switch"><input type="checkbox" id="prefRefresh" checked><span></span></label></div>
+            <div class="setting-line"><div><div class="k">Compact cards</div><span class="s">Hide descriptions in grids</span></div><label class="switch"><input type="checkbox" id="prefCompact"><span></span></label></div>
+          </div>
+          <div class="setting-card panel">
+            <h3><i class="ph ph-user-circle"></i> Session</h3>
+            <div id="setSession"></div>
+            <button class="abtn" id="setSignOut" style="width:100%;margin-top:12px"><i class="ph ph-sign-out"></i> Sign out</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-system">
+        <div class="page-head">
+          <div><h2>System <em>record</em></h2><p>Counter, issued codes, settings, and the raw META row behind the archive.</p></div>
+          <span class="code" id="metaCode">ARACS#META</span>
+        </div>
+        <div class="panel system-panel"><div id="systemBody"></div></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- DRAWER -->
+<div id="drawer"><div class="drawer-bg" id="drawerBg"></div><div class="drawer" id="drawerCard"></div></div>
+<div id="toast"><i class="ph ph-check-circle"></i><span id="toastTxt"></span></div>
+
+<script>
+/* ============================================================
+   ARACS Control Center — single file, no build step.
+   Real authentication: Supabase Auth email/password, verified
+   server-side. Only the PUBLISHABLE key lives in this page.
+   ALL rows are read from the live "Aracs Technologies" table with the
+   signed-in user's access token: active inquiries, archived rows,
+   notes, replies, audit trail, and the ARACS#META system record.
+   Changes are written through the bot's authenticated admin API so its
+   archive stays the single source of truth.
+   ============================================================ */
+const CONFIG = {
+  url: 'https://atyvwjtfaxhvgpydgqwn.supabase.co',
+  key: 'sb_publishable_wM5Sj1XcfuKgb0q05oTWhw_e_TR2-Dm',
+  table: 'Aracs Technologies',
+  refreshMs: 30000
+};
+const AUTH = CONFIG.url + '/auth/v1';
+const SESSION_KEY = 'aracs_admin_session';
+const BOT_URL = 'https://neochip-bot.onrender.com';
+
+const $ = (id) => document.getElementById(id);
+const on = (id, event, fn) => { const el = $(id); if (el) el.addEventListener(event, fn); };
+let DATA = [], FILTER = 'all', QUERY = '', SORT = 'new', TIMER = null, SESSION = null;
+let META = null, META_UPDATED = '', ALL_ROWS = [];
+let BOT_STATE = null, DATA_SOURCE = 'supabase', SELECTED = null, TEMPLATES = [];
+let CURRENT_VIEW = 'overview', CRM_SELECTED = [], CRM_CHANNEL = 'email', CRM_QUERY = '';
+let CRM_DRAFTS = { email: { subject: '', body: '' }, whatsapp: { body: '' }, call: { body: '' } };
+let CRM_CONFIRM = false, TPL_FILTER = 'all', TPL_EDIT_ID = '';
+let PREF_REFRESH = localStorage.getItem('aracs_pref_refresh') !== 'off';
+let PREF_COMPACT = localStorage.getItem('aracs_pref_compact') === 'on';
+let PREF_LIGHT = localStorage.getItem('aracs_theme') !== 'dark';
+let SIDE_COLLAPSED = localStorage.getItem('aracs_sidebar') === 'collapsed';
+let ANALYTICS = null, AN_TAB = 'overview', AN_LOADING = false;
+
+/* All writes go through the bot. It owns the in-memory database and
+   upserts whole rows to Supabase, so writing from a static page directly
+   would be silently overwritten on the bot's next save. */
+async function adminApi(path, body) {
+  if (!SESSION || !SESSION.access) throw new Error('Not signed in');
+  const options = { method: body === undefined ? 'GET' : 'POST', headers: authHeaders(true) };
+  if (body !== undefined) options.body = JSON.stringify(body);
+  const res = await fetch(BOT_URL + path, options);
+  let data;
+  try { data = await res.json(); } catch (_) { data = {}; }
+  if (!res.ok || data.ok === false) throw new Error(data.error || 'Bot HTTP ' + res.status);
+  return data;
+}
+
+const STATUSES = ['new', 'read', 'contacted', 'waitlist', 'approved', 'rejected', 'won', 'lost'];
+const VARIABLES = ['name','first_name','last_name','email','phone','wilaya','code','project_type','description','promo_code','invited_by','heard_about','site_name'];
+const CHANNELS = { email: 'Email', whatsapp: 'WhatsApp', call: 'Call script' };
+const DEFAULT_TEMPLATES = [
+  {
+    id: 'default_email_followup', channel: 'email', name: 'New inquiry follow-up',
+    subject: 'Re: Your project inquiry {{code}} — {{site_name}}',
+    body: 'Hi {{first_name}},\n\nThank you for contacting {{site_name}} about {{project_type}}. I have received your inquiry ({{code}}) and I am reviewing the details now.\n\nI will get back to you shortly. If anything urgent comes up, you can reply to this email.\n\nBest regards,\n{{site_name}}'
+  },
+  {
+    id: 'default_email_interview', channel: 'email', name: 'Discovery call invitation',
+    subject: 'A quick call about {{code}} — {{site_name}}',
+    body: 'Hi {{first_name}},\n\nI enjoyed reading your inquiry about {{project_type}}. I would like to schedule a short discovery call to understand the project better and explain how we can help.\n\nAre you available in the next few days? Reply with a time that suits you and I will confirm.\n\nBest regards,\n{{site_name}}'
+  },
+  {
+    id: 'default_email_waitlist', channel: 'email', name: 'Waitlist update',
+    subject: 'Update on your inquiry {{code}} — {{site_name}}',
+    body: 'Hi {{first_name}},\n\nThank you for your patience regarding {{code}}. Your {{project_type}} request is currently on our waitlist. We are reviewing capacity and will contact you as soon as a slot opens.\n\nBest regards,\n{{site_name}}'
+  },
+  {
+    id: 'default_wa_ack', channel: 'whatsapp', name: 'WhatsApp acknowledgment',
+    body: 'Hi {{first_name}}, this is {{site_name}}. We received your inquiry {{code}} about {{project_type}}. Thank you — we will contact you soon.'
+  },
+  {
+    id: 'default_wa_call', channel: 'whatsapp', name: 'WhatsApp call offer',
+    body: 'Hi {{first_name}}, I have reviewed your inquiry {{code}}. Would you be available for a quick call about {{project_type}} today or tomorrow?'
+  },
+  {
+    id: 'default_call_script', channel: 'call', name: 'Discovery call script',
+    body: 'Opening: Hi {{first_name}}, this is {{site_name}}. Is now still a good time?\n\nConfirm: I am calling about inquiry {{code}}, your {{project_type}} request from {{wilaya}}.\n\nDiscover: Tell me what the project must deliver, your timeline, and whether a budget is already set.\n\nNext step: Summarize what you heard, propose the best fit, and agree on a date to send the offer.\n\nClose: Thank you, {{first_name}}. I will send everything to {{email}} today.'
+  },
+];
+function allTemplates() {
+  return DEFAULT_TEMPLATES.concat((TEMPLATES || []).map((t) => ({ ...t, channel: t.channel || 'email', custom: true })));
+}
+function statusOptions(current) {
+  return STATUSES.map((s) => `<option value="${s}"${s === String(current || '').toLowerCase() ? ' selected' : ''}>${s}</option>`).join('');
+}
+
+function renderVars(text, inquiry) {
+  if (!inquiry) return String(text || '');
+  const map = {
+    name: inquiry.name,
+    first_name: inquiry.first,
+    last_name: (inquiry.raw && inquiry.raw.lastName) || '',
+    email: inquiry.email,
+    phone: inquiry.phone,
+    wilaya: inquiry.wilaya,
+    code: inquiry.code,
+    project_type: inquiry.type,
+    description: inquiry.description,
+    promo_code: inquiry.promo,
+    invited_by: inquiry.invitor,
+    heard_about: inquiry.heard,
+    site_name: 'ARACS Technologies',
+  };
+  return String(text || '').replace(/\{\{\s*(\w+)\s*\}\}/g, (match, key) =>
+    Object.prototype.hasOwnProperty.call(map, key) ? String(map[key] == null ? '' : map[key]) : match);
+}
+
+/* Use the values currently visible in the editor so the preview reflects
+   unsaved edits too. Falls back to the loaded inquiry when a field is blank. */
+function previewInquiry() {
+  const base = SELECTED || {};
+  const value = (id) => { const el = $(id); return el ? String(el.value || '').trim() : ''; };
+  const first = value('edFirstName') || base.first || '';
+  const last = value('edLastName') || (base.raw && base.raw.lastName) || '';
+  return {
+    ...base,
+    first,
+    name: (first || last) ? `${first} ${last}`.trim() : base.name,
+    email: value('edEmail') || base.email,
+    phone: value('edPhone') || base.phone,
+    wilaya: value('edWilaya') || base.wilaya,
+    type: value('edType') || base.type,
+    description: value('edDescription') || base.description,
+    promo: value('edPromo') || base.promo,
+    invitor: value('edInvitedBy') || base.invitor,
+    heard: value('edHeard') || base.heard,
+    raw: { ...(base.raw || {}), lastName: last || (base.raw && base.raw.lastName) || '' },
+  };
+}
+
+function updatePreview() {
+  const box = $('mailPreview');
+  if (!box) return;
+  box.textContent = renderVars($('mailBody') ? $('mailBody').value : '', previewInquiry()) || 'Nothing to preview yet.';
+}
+
+function applyTemplate(tpl) {
+  if (!$('mailBody')) { toast('Open an inquiry first, then load a template', true); return; }
+  if (tpl.subject) $('mailSubject').value = renderVars(tpl.subject, previewInquiry());
+  $('mailBody').value = tpl.body || '';
+  if ($('tplName')) $('tplName').value = tpl.name || '';
+  updatePreview();
+  toast('Template loaded');
+}
+
+function insertVar(variable) {
+  const el = $('mailBody');
+  if (!el) return;
+  const token = '{{' + variable + '}}';
+  const start = el.selectionStart == null ? el.value.length : el.selectionStart;
+  const end = el.selectionEnd == null ? start : el.selectionEnd;
+  el.value = el.value.slice(0, start) + token + el.value.slice(end);
+  el.focus();
+  el.selectionStart = el.selectionEnd = start + token.length;
+  updatePreview();
+}
+
+async function mutate(path, body, message) {
+  try {
+    await adminApi(path, body);
+    toast(message || 'Saved');
+    closeDrawer();
+    await load(false);
+  } catch (e) {
+    toast(e.message, true);
+  }
+}
+
+function authHeaders(includeToken) {
+  const h = { apikey: CONFIG.key, Accept: 'application/json', 'Content-Type': 'application/json' };
+  if (includeToken && SESSION && SESSION.access) h.Authorization = 'Bearer ' + SESSION.access;
+  return h;
+}
+
+const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pick = (...vals) => vals.find((v) => v !== undefined && v !== null && String(v).trim() !== '') || '';
+const waNumber = (p) => { let d = String(p || '').replace(/\D/g, ''); if (d.startsWith('0')) d = '213' + d.slice(1); else if (!d.startsWith('213') && d.length <= 9) d = '213' + d; return d; };
+
+function toast(msg, err) {
+  $('toastTxt').textContent = msg;
+  $('toast').classList.toggle('err', !!err);
+  $('toast').classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => $('toast').classList.remove('show'), 3200);
+}
+
+function parseExtra(desc) {
+  const out = {};
+  const text = String(desc || '');
+  const marker = '— Additional details —';
+  const idx = text.indexOf(marker);
+  if (idx < 0) return { out, clean: text };
+  const clean = text.slice(0, idx).trim();
+  text.slice(idx + marker.length).split('\n').forEach((line) => {
+    const m = line.match(/^\s*([^:]+):\s*(.*)$/);
+    if (m) out[m[1].trim()] = m[2].trim();
+  });
+  return { out, clean };
+}
+
+function normalize(row) {
+  const f = row.form_data || {};
+  const parsed = parseExtra(f.description || '');
+  const created = pick(f.createdAt, row.created_at, row.updated_at);
+  return {
+    code: pick(row.code, f.code, '—'),
+    number: pick(row.number, f.number),
+    name: pick([f.firstName, f.lastName].filter(Boolean).join(' '), f.full_name, 'Unknown'),
+    first: pick(f.firstName, (f.full_name || '').split(' ')[0]),
+    email: pick(f.email),
+    phone: pick(parseExtra(f.description || '').out.Phone, f.phone),
+    wilaya: pick(parseExtra(f.description || '').out.Wilaya, f.wilaya),
+    whatsapp: pick(f.whatsapp, f.has_whatsapp === true || f.has_whatsapp === 'yes' ? 'Yes' : ''),
+    promo: pick(parseExtra(f.description || '').out['Promo code'], f.promoCode, f.promo_code),
+    invitor: pick(parseExtra(f.description || '').out['Invited by'], f.invitor),
+    heard: pick(parseExtra(f.description || '').out['Heard about us'], f.heardAbout, f.heard_about),
+    type: pick(f.projectType, f.project_type, 'Unknown'),
+    description: parsed.clean,
+    extra: parsed.out,
+    rawDescription: f.description || '',
+    status: pick(row.status, f.status, 'new'),
+    created,
+    source: pick(f.source),
+    page: pick(f.page),
+    audit: Array.isArray(f.audit) ? f.audit : [],
+    replies: Array.isArray(f.replies) ? f.replies : [],
+    notes: Array.isArray(f.notes) ? f.notes : [],
+    confirmationSentAt: pick(f.confirmationSentAt),
+    archived: Boolean(row.deleted),
+    updated: pick(row.updated_at),
+    rowCreated: pick(row.created_at),
+    rowId: pick(row.id),
+    raw: f
+  };
+}
+
+function fmtDate(v) {
+  if (!v) return '—';
+  const d = new Date(v);
+  if (isNaN(d)) return String(v);
+  return d.toLocaleString(undefined, { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+function relTime(v) {
+  if (!v) return '';
+  const diff = Date.now() - new Date(v).getTime();
+  if (isNaN(diff)) return '';
+  const m = Math.round(diff/60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.round(m/60);
+  if (h < 24) return h + 'h ago';
+  const d = Math.round(h/24);
+  if (d < 30) return d + 'd ago';
+  return fmtDate(v);
+}
+
+/* ============================================================
+   ANALYTICS RENDER ENGINE — inline SVG, no external library.
+   Built for Grafana-style stat / gauge / time-series / table panels.
+   ============================================================ */
+const AN_COLORS = ['#0aa58f', '#0b7ea8', '#e09b1c', '#d9534f', '#7c6cf0', '#c2419b', '#4f9d69', '#6b7f93'];
+let AN_UID = 0;
+
+function anEmpty(message) {
+  return `<div class="an-empty"><i class="ph ph-chart-line"></i>${esc(message || 'No data available yet')}</div>`;
+}
+
+function anSpark(values, color) {
+  const list = Array.isArray(values) ? values : [];
+  if (!list.length) return '';
+  const w = 90, h = 30, max = Math.max(1, ...list);
+  const pts = list.map((v, i) => `${(i / Math.max(1, list.length - 1) * w).toFixed(1)},${(h - 2 - (v / max) * (h - 6)).toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 0 ${w} ${h}" width="90" height="30" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${color || AN_COLORS[0]}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity=".9"/></svg>`;
+}
+
+function anLine(series, labels, opts = {}) {
+  const list = Array.isArray(series) ? series.filter((s) => s && Array.isArray(s.values)) : [];
+  const names = Array.isArray(labels) ? labels.map(String) : [];
+  if (!list.length) return anEmpty();
+  const w = 640, h = opts.height || 190;
+  const pad = { l: 34, r: 12, t: 14, b: 28 };
+  const max = Math.max(1, ...list.reduce((acc, s) => acc.concat(s.values), []));
+  const n = Math.max(names.length, ...list.map((s) => s.values.length));
+  const x = (i) => pad.l + (n <= 1 ? 0 : (i / (n - 1)) * (w - pad.l - pad.r));
+  const y = (v) => h - pad.b - (v / max) * (h - pad.t - pad.b);
+  const base = 'an' + (++AN_UID);
+  const parts = [];
+
+  for (let g = 0; g <= 3; g++) {
+    const gy = pad.t + (g / 3) * (h - pad.t - pad.b);
+    const label = Math.round(max * (1 - g / 3));
+    parts.push(`<line x1="${pad.l}" y1="${gy.toFixed(1)}" x2="${w - pad.r}" y2="${gy.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>`);
+    parts.push(`<text x="${pad.l - 6}" y="${(gy + 3).toFixed(1)}" text-anchor="end" font-size="9" fill="var(--ink-7)">${label}</text>`);
+  }
+
+  const defs = list.map((s, si) => {
+    const color = s.color || AN_COLORS[si % AN_COLORS.length];
+    return `<linearGradient id="${base}${si}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".7"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient>`;
+  }).join('');
+
+  list.forEach((s, si) => {
+    const color = s.color || AN_COLORS[si % AN_COLORS.length];
+    const pts = s.values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    if (!pts) return;
+    if (s.area !== false && s.values.length > 1) {
+      parts.push(`<polygon points="${x(0).toFixed(1)},${h - pad.b} ${pts} ${x(s.values.length - 1).toFixed(1)},${h - pad.b}" fill="url(#${base}${si})" opacity=".45"/>`);
+    }
+    parts.push(`<polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>`);
+    s.values.forEach((v, i) => {
+      parts.push(`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="2.5" fill="${color}"><title>${esc(names[i] || String(i + 1))} · ${esc(s.name || 'Series')}: ${v}</title></circle>`);
+    });
+  });
+
+  const step = Math.max(1, Math.ceil(n / 7));
+  for (let i = 0; i < n; i += step) {
+    parts.push(`<text x="${x(i).toFixed(1)}" y="${h - 8}" text-anchor="middle" font-size="9" fill="var(--ink-7)">${esc(String(names[i] || '').slice(5))}</text>`);
+  }
+
+  const legend = list.map((s, si) => `<span><i style="background:${s.color || AN_COLORS[si % AN_COLORS.length]}"></i>${esc(s.name || 'Series')} <b>${s.values.reduce((a, b) => a + b, 0)}</b></span>`).join('');
+  return `<svg class="an-chart" viewBox="0 0 ${w} ${h}" role="img"><defs>${defs}</defs>${parts.join('')}</svg><div class="an-legend">${legend}</div>`;
+}
+
+function anLegend(items) {
+  return `<div class="an-legend">${items.map((it, i) => `<span><i style="background:${it.color || AN_COLORS[i % AN_COLORS.length]}"></i>${esc(it.label)} <b>${it.count}</b></span>`).join('')}</div>`;
+}
+
+function anDonut(items, centerLabel) {
+  const list = Array.isArray(items) ? items.filter((i) => i.count > 0) : [];
+  const total = list.reduce((sum, i) => sum + i.count, 0);
+  if (!total) return anEmpty();
+  const size = 190, cx = 95, cy = 92, r = 66, sw = 23;
+  let angle = -Math.PI / 2;
+  const arcs = list.map((it, i) => {
+    const fraction = it.count / total;
+    const start = angle;
+    const end = angle + fraction * Math.PI * 2;
+    angle = end;
+    const color = it.color || AN_COLORS[i % AN_COLORS.length];
+    const point = (a) => `${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`;
+    if (fraction >= 0.9999) {
+      return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${sw}"><title>${esc(it.label)}: ${it.count}</title></circle>`;
+    }
+    const large = end - start > Math.PI ? 1 : 0;
+    return `<path d="M ${point(start)} A ${r} ${r} 0 ${large} 1 ${point(end)}" fill="none" stroke="${color}" stroke-width="${sw}" stroke-linecap="butt"><title>${esc(it.label)}: ${it.count} (${Math.round(fraction * 100)}%)</title></path>`;
+  }).join('');
+  return `<svg class="an-chart" viewBox="0 0 ${size} ${size}" role="img">${arcs}<text x="${cx}" y="${cy + 2}" text-anchor="middle" font-size="23" font-weight="800" fill="var(--ink)">${total}</text><text x="${cx}" y="${cy + 19}" text-anchor="middle" font-size="9" fill="var(--ink-7)">${esc(centerLabel || 'TOTAL')}</text></svg>` + anLegend(list);
+}
+
+function anGauge(value, label, color) {
+  const pct = Math.max(0, Math.min(100, Number(value) || 0));
+  const cx = 60, cy = 58, r = 45, sw = 12;
+  const start = Math.PI * 0.75, span = Math.PI * 1.5;
+  const point = (a) => `${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`;
+  const bg = `<path d="M ${point(start)} A ${r} ${r} 0 1 1 ${point(start + span)}" fill="none" stroke="var(--hover-2)" stroke-width="${sw}" stroke-linecap="round"/>`;
+  const fg = pct > 0.1
+    ? `<path d="M ${point(start)} A ${r} ${r} 0 ${pct > 50 ? 1 : 0} 1 ${point(start + span * pct / 100)}" fill="none" stroke="${color || AN_COLORS[0]}" stroke-width="${sw}" stroke-linecap="round"><title>${esc(label)}: ${Math.round(pct)}%</title></path>`
+    : '';
+  return `<svg class="an-gauge" viewBox="0 0 120 120" role="img">${bg}${fg}<text x="${cx}" y="${cy + 4}" text-anchor="middle" font-size="20" font-weight="800" fill="var(--ink)">${Math.round(pct)}%</text><text x="${cx}" y="${cy + 21}" text-anchor="middle" font-size="8" fill="var(--ink-7)">${esc(label || '')}</text></svg>`;
+}
+
+function anBars(items) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) return anEmpty();
+  const max = Math.max(1, ...list.map((i) => i.count));
+  return `<div>${list.map((it, i) => {
+    const color = it.color || AN_COLORS[i % AN_COLORS.length];
+    return `<div class="bar-row"><span class="bar-lab" title="${esc(it.label)}">${esc(it.label)}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.round(it.count / max * 100)}%;background:linear-gradient(90deg,${color},${color}bb)"></span></span><span class="bar-num">${it.count}</span></div>`;
+  }).join('')}</div>`;
+}
+
+function anStat(label, value, sub, spark, color) {
+  return `<div class="an-stat"><div class="lab">${esc(label)}</div><div class="val">${esc(value == null || value === '' ? '—' : value)}</div><div class="sub">${esc(sub || '')}</div>${Array.isArray(spark) && spark.length ? `<div class="spark">${anSpark(spark, color)}</div>` : ''}</div>`;
+}
+
+function anPanel(icon, title, body, sub, cls) {
+  return `<div class="an-panel ${cls || ''}"><div class="an-panel-head"><h3><i class="ph ph-${esc(icon)}"></i>${esc(title)}</h3>${sub ? `<span class="an-panel-sub">${esc(sub)}</span>` : ''}</div>${body}</div>`;
+}
+
+function anTable(headers, rows, emptyMessage) {
+  if (!rows.length) return anEmpty(emptyMessage || 'No rows in this dataset');
+  return `<div class="an-table-wrap"><table class="an-table"><thead><tr>${headers.map((h) => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+
+function anBadge(value) {
+  const key = String(value == null ? '' : value).toLowerCase();
+  return `<span class="an-badge ${esc(key)}">${esc(value == null || value === '' ? '—' : value)}</span>`;
+}
+
+function anMeter(value, label, note) {
+  const pct = Math.max(0, Math.min(100, Number(value) || 0));
+  return `<div style="margin:12px 0"><div style="display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--ink-4)"><span>${esc(label)}</span><b class="mono">${pct}%</b></div><div class="an-meter"><i style="width:${pct}%"></i></div>${note ? `<div class="an-note" style="margin-top:5px">${esc(note)}</div>` : ''}</div>`;
+}
+
+function anNum(value, suffix) {
+  if (value === null || value === undefined || value === '') return '—';
+  const n = Number(value);
+  if (!Number.isFinite(n)) return esc(value);
+  const rounded = Math.abs(n) >= 100 ? Math.round(n) : Math.round(n * 10) / 10;
+  return esc(rounded) + (suffix ? esc(suffix) : '');
+}
+
+async function ensureFreshToken() {
+  if (SESSION && Date.now() > SESSION.expiresAt - 60000) {
+    if (!SESSION.refresh) throw new Error('Session expired');
+    const r = await fetch(AUTH + '/token?grant_type=refresh_token', {
+      method: 'POST', headers: authHeaders(false),
+      body: JSON.stringify({ refresh_token: SESSION.refresh })
+    });
+    if (!r.ok) throw new Error('Session expired');
+    const d = await r.json();
+    SESSION.access = d.access_token;
+    SESSION.refresh = d.refresh_token;
+    SESSION.expiresAt = Date.now() + (d.expires_in || 3600) * 1000;
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(SESSION));
+  }
+}
+
+function botRow(inquiry, isActive) {
+  return {
+    code: inquiry.code,
+    status: inquiry.status,
+    deleted: !isActive,
+    id: inquiry.number,
+    created_at: inquiry.createdAt,
+    updated_at: inquiry.updatedAt || inquiry.contactedAt || inquiry.createdAt,
+    form_data: inquiry,
+  };
+}
+
+async function loadFromBot() {
+  const state = await adminApi('/api/admin/state');
+  if (!state || !Array.isArray(state.archive)) throw new Error('No state returned');
+  BOT_STATE = state;
+  DATA_SOURCE = 'bot';
+  const active = new Set(state.activeCodes || []);
+  const byCode = new Map();
+  (state.archive || []).forEach((inq) => { if (inq && inq.code) byCode.set(inq.code, botRow(inq, active.has(inq.code))); });
+  (state.inquiries || []).forEach((inq) => { if (inq && inq.code) byCode.set(inq.code, botRow(inq, true)); });
+  ALL_ROWS = [...byCode.values()];
+  DATA = ALL_ROWS.map(normalize);
+  META = {
+    version: (state.settings || {}).version,
+    counter: state.counter,
+    settings: state.settings || {},
+    usedCodes: state.usedCodes || [],
+  };
+  META_UPDATED = state.time;
+  TEMPLATES = Array.isArray(state.settings && state.settings.emailTemplates) ? state.settings.emailTemplates : [];
+}
+
+async function loadFromSupabase() {
+  const q = encodeURIComponent(CONFIG.table);
+  const res = await fetch(CONFIG.url + '/rest/v1/' + q + '?select=*&order=created_at.desc&limit=2000', {
+    headers: authHeaders(true)
+  });
+  if (res.status === 401 || res.status === 403) throw new Error('Session expired');
+  if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+  const rows = await res.json();
+  const metaRow = rows.find((r) => r.code === 'ARACS#META');
+  META = metaRow ? metaRow.form_data || {} : null;
+  META_UPDATED = metaRow ? metaRow.updated_at : '';
+  ALL_ROWS = rows;
+  DATA = rows.filter((r) => r.code !== 'ARACS#META').map(normalize);
+  TEMPLATES = Array.isArray(META && META.settings && META.settings.emailTemplates) ? META.settings.emailTemplates : [];
+  BOT_STATE = null;
+  DATA_SOURCE = 'supabase';
+}
+
+async function load(showToast) {
+  const dot = $('liveDot'), txt = $('liveTxt');
+  try {
+    await ensureFreshToken();
+    try {
+      await loadFromBot();
+    } catch (_) {
+      await loadFromSupabase();
+    }
+    renderSystem();
+    loadAnalytics();
+    dot.classList.remove('bad');
+    txt.textContent = DATA_SOURCE === 'bot' ? 'Bot live' : 'Supabase only';
+    $('updatedAt').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    render();
+    if (showToast) toast('Dashboard updated');
+  } catch (e) {
+    if (/session expired/i.test(e.message)) { await signOut(); toast('Session expired — please sign in again', true); return; }
+    dot.classList.add('bad');
+    txt.textContent = 'Offline';
+    $('updatedAt').textContent = 'Connection issue';
+    if (showToast) toast('Could not reach Supabase: ' + e.message, true);
+  }
+}
+
+/* ============================================================
+   ANALYTICS DATA LOADING — bot endpoint first, live REST fallback.
+   ============================================================ */
+function anFetch(url, options, ms) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms || 8000);
+  return fetch(url, { ...(options || {}), signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
+function anDay(value) {
+  const d = new Date(value);
+  if (isNaN(d.getTime())) return '';
+  return d.toISOString().slice(0, 10);
+}
+
+function anDayKeys(days) {
+  const out = [];
+  for (let i = days - 1; i >= 0; i--) out.push(anDay(new Date(Date.now() - i * 86400000)));
+  return out;
+}
+
+function anSeries(items, dateOf, days) {
+  const keys = anDayKeys(days);
+  const counts = new Map(keys.map((k) => [k, 0]));
+  items.forEach((item) => {
+    const key = anDay(dateOf(item));
+    if (counts.has(key)) counts.set(key, counts.get(key) + 1);
+  });
+  return keys.map((date) => ({ date, count: counts.get(date) }));
+}
+
+function anTop(items, labelOf, limit) {
+  const counts = new Map();
+  items.forEach((item) => {
+    const label = String(labelOf(item) || 'Unknown').trim() || 'Unknown';
+    counts.set(label, (counts.get(label) || 0) + 1);
+  });
+  return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit || 8).map(([label, count]) => ({ label, count }));
+}
+
+function anCounts(object) {
+  return Object.entries(object || {}).map(([label, count]) => ({ label, count }));
+}
+
+function anRate(part, total) {
+  return total > 0 ? Math.round((part / total) * 1000) / 10 : 0;
+}
+
+function anLocalAracs() {
+  const all = DATA.slice();
+  const active = all.filter((x) => !x.archived);
+  const statusCounts = {};
+  active.forEach((x) => { const s = String(x.status || 'new').toLowerCase(); statusCounts[s] = (statusCounts[s] || 0) + 1; });
+  const emailCounts = new Map();
+  all.forEach((x) => { const e = String(x.email || '').toLowerCase(); if (e) emailCounts.set(e, (emailCounts.get(e) || 0) + 1); });
+  const repeat = [...emailCounts.entries()].filter(([, count]) => count > 1).sort((a, b) => b[1] - a[1]).slice(0, 10)
+    .map(([email, count]) => ({ email, count, name: (all.find((x) => String(x.email || '').toLowerCase() === email) || {}).name || 'Unknown' }));
+  let high = 0, medium = 0, normal = 0;
+  active.forEach((x) => {
+    const text = String(x.description || '').toLowerCase();
+    let score = text.length > 700 ? 2 : (text.length > 200 ? 1 : 0);
+    if (/urgent|asap|deadline|launch|this week|immediately|ready to start|quote|quotation|budget/.test(text)) score += 2;
+    if (/e-commerce|mobile application|web application|api|automation|cloud|saas|platform/.test(String(x.type || '').toLowerCase())) score += 1;
+    if (x.email && !/@(gmail|yahoo|hotmail|outlook|icloud|proton|live|msn)\./i.test(x.email)) score += 1;
+    if (score >= 5) high++; else if (score >= 3) medium++; else normal++;
+  });
+  const contacted = active.filter((x) => x.status === 'contacted');
+  const timed = contacted.filter((x) => x.contactedAt || x.raw && x.raw.contactedAt);
+  return {
+    summary: {
+      total: all.length, active: active.length, archived: all.length - active.length,
+      archiveStored: all.length, new: statusCounts.new || 0, contacted: contacted.length,
+      read: statusCounts.read || 0, unanswered: active.filter((x) => x.status !== 'contacted').length,
+      highPriority: high, mediumPriority: medium, normalPriority: normal,
+      avgPriorityScore: active.length ? Math.round(((high * 6 + medium * 4 + normal * 1) / active.length) * 10) / 10 : 0,
+      today: all.filter((x) => anDay(x.created) === anDay(new Date())).length,
+      last7: all.filter((x) => Date.now() - new Date(x.created).getTime() < 7 * 86400000).length,
+      last30: all.filter((x) => Date.now() - new Date(x.created).getTime() < 30 * 86400000).length,
+      uniqueEmails: emailCounts.size, repeatClients: repeat.length,
+      notes: all.reduce((a, x) => a + (x.notes || []).length, 0),
+      replies: all.reduce((a, x) => a + (x.replies || []).length, 0),
+      auditEvents: all.reduce((a, x) => a + (x.audit || []).length, 0),
+      avgResponseHours: null, medianResponseHours: null, fastestResponseHours: null, slowestResponseHours: null,
+      responseCoverage: anRate(timed.length, active.length),
+      withEmail: all.filter((x) => !!x.email).length,
+      withPhone: all.filter((x) => !!x.phone).length,
+      withWhatsapp: all.filter((x) => !!x.whatsapp).length,
+      withPromo: all.filter((x) => !!x.promo).length,
+      avgDescriptionChars: all.length ? Math.round(all.reduce((a, x) => a + String(x.description || '').length, 0) / all.length) : 0,
+      codesIssued: (META && META.usedCodes || []).length,
+      counter: META ? META.counter : null,
+    },
+    statusCounts,
+    allStatusCounts: statusCounts,
+    priority: [{ label: 'High', count: high }, { label: 'Medium', count: medium }, { label: 'Normal', count: normal }],
+    projectTypes: anTop(all, (x) => x.type || 'Unknown', 10),
+    sources: anTop(all, (x) => x.source || 'website', 8),
+    wilayas: anTop(all, (x) => x.wilaya || 'Unknown', 10),
+    responseBuckets: [],
+    days: anSeries(all, (x) => x.created, 14),
+    topClients: repeat,
+    recent: active.slice(0, 12).map((x) => ({
+      code: x.code, name: x.name, email: x.email, type: x.type, status: x.status,
+      createdAt: x.created, priority: null, notes: (x.notes || []).length, replies: (x.replies || []).length,
+    })),
+  };
+}
+
+function anLocalNeo(rows) {
+  const fdOf = (row) => {
+    let value = row && row.form_data;
+    if (typeof value === 'string') { try { value = JSON.parse(value); } catch (_) { value = {}; } }
+    return value && typeof value === 'object' ? value : {};
+  };
+  const members = rows.filter((row) => {
+    const fd = fdOf(row);
+    return fd.is_bot_config !== true && String(fd.firstName || '') !== 'SYSTEM_CONFIG';
+  });
+  const statusCounts = { pending: 0, interview: 0, waitlist: 0, approved: 0, rejected: 0, other: 0 };
+  const roles = new Map(), focuses = new Map(), education = new Map(), interests = new Map(), wilayas = new Map(), skills = new Map();
+  const emailLog = [];
+  let withEmail = 0, withPhone = 0, withRole = 0, withFocus = 0, emailSent = 0, emailFailed = 0, auditEvents = 0, withAudit = 0, withInterviewDate = 0, withNotes = 0;
+  members.forEach((row) => {
+    const fd = fdOf(row);
+    const raw = String(fd.admin_status || 'pending').trim().toLowerCase();
+    const status = raw === 'waitlisted' ? 'waitlist' : (raw || 'pending');
+    if (Object.prototype.hasOwnProperty.call(statusCounts, status)) statusCounts[status]++; else statusCounts.other++;
+    const role = String(fd.admin_role || 'Unassigned').trim() || 'Unassigned';
+    const focus = String(fd.admin_focus || 'Unassigned').trim() || 'Unassigned';
+    roles.set(role, (roles.get(role) || 0) + 1);
+    focuses.set(focus, (focuses.get(focus) || 0) + 1);
+    education.set(String(fd.education || 'Unknown'), (education.get(String(fd.education || 'Unknown')) || 0) + 1);
+    interests.set(String(fd.interest || 'Unknown'), (interests.get(String(fd.interest || 'Unknown')) || 0) + 1);
+    wilayas.set(String(fd.willaya || 'Unknown'), (wilayas.get(String(fd.willaya || 'Unknown')) || 0) + 1);
+    const skillList = Array.isArray(fd.skills) ? fd.skills : String(fd.skills || '').split(/[,;|]/);
+    skillList.forEach((rawSkill) => {
+      const skill = String(rawSkill || '').trim().toLowerCase();
+      if (skill && skill.length < 40) skills.set(skill, (skills.get(skill) || 0) + 1);
+    });
+    if (fd.email) withEmail++;
+    if (fd.phone) withPhone++;
+    if (fd.admin_role) withRole++;
+    if (fd.admin_focus) withFocus++;
+    if (fd.interview_date) withInterviewDate++;
+    if (fd.admin_notes) withNotes++;
+    const audit = Array.isArray(fd.audit_log) ? fd.audit_log : [];
+    auditEvents += audit.length;
+    if (audit.length) withAudit++;
+    (Array.isArray(fd.email_log) ? fd.email_log : []).forEach((entry) => {
+      if (!entry || typeof entry !== 'object') return;
+      const sent = entry.sent === true || entry.sent === 'true';
+      if (sent) emailSent++; else emailFailed++;
+      emailLog.push({ at: entry.at || null, status: String(entry.status || 'unknown'), to: String(entry.to || fd.email || ''), sent, name: `${fd.firstName || ''} ${fd.lastName || ''}`.trim() });
+    });
+  });
+  emailLog.sort((a, b) => new Date(b.at || 0) - new Date(a.at || 0));
+  const sorted = members.slice().sort((a, b) => new Date(b.created_at || fdOf(b).createdAt || 0) - new Date(a.created_at || fdOf(a).createdAt || 0));
+  const list = (map, limit) => [...map.entries()].sort((a, b) => b[1] - a[1]).slice(0, limit || 8).map(([label, count]) => ({ label, count }));
+  return {
+    available: true, error: null, table: 'NeoChip Members',
+    summary: {
+      totalRows: rows.length, configRows: rows.length - members.length, members: members.length,
+      pending: statusCounts.pending, interview: statusCounts.interview, waitlist: statusCounts.waitlist,
+      approved: statusCounts.approved, rejected: statusCounts.rejected, other: statusCounts.other,
+      approvalRate: anRate(statusCounts.approved, members.length),
+      interviewRate: anRate(statusCounts.interview, members.length),
+      pendingRate: anRate(statusCounts.pending, members.length),
+      rejectionRate: anRate(statusCounts.rejected, members.length),
+      emailSent, emailFailed, emailEvents: emailSent + emailFailed,
+      emailSuccessRate: anRate(emailSent, emailSent + emailFailed),
+      auditEvents, avgAuditEntries: members.length ? Math.round((auditEvents / members.length) * 10) / 10 : 0,
+      reviewCoverage: anRate(withAudit, members.length), contactCoverage: anRate(withEmail, members.length),
+      phoneCoverage: anRate(withPhone, members.length), roleAssigned: anRate(withRole, members.length),
+      focusAssigned: anRate(withFocus, members.length), withInterviewDate, withNotes,
+      today: members.filter((r) => anDay(r.created_at || fdOf(r).createdAt) === anDay(new Date())).length,
+      last7: members.filter((r) => Date.now() - new Date(r.created_at || fdOf(r).createdAt).getTime() < 7 * 86400000).length,
+      last30: members.filter((r) => Date.now() - new Date(r.created_at || fdOf(r).createdAt).getTime() < 30 * 86400000).length,
+      lastSubmitted: sorted.length ? (sorted[0].created_at || fdOf(sorted[0]).createdAt || null) : null,
+    },
+    statusCounts,
+    roles: list(roles, 10), focuses: list(focuses, 10), education: list(education, 8),
+    interests: list(interests, 8), wilayas: list(wilayas, 10), skills: list(skills, 12),
+    days: anSeries(members, (r) => r.created_at || fdOf(r).createdAt, 14),
+    recent: sorted.slice(0, 15).map((row) => {
+      const fd = fdOf(row);
+      const raw = String(fd.admin_status || 'pending').trim().toLowerCase();
+      return {
+        id: String(row.id || ''), name: `${fd.firstName || ''} ${fd.lastName || ''}`.trim() || 'Unknown',
+        email: String(fd.email || ''), phone: String(fd.phone || ''),
+        status: raw === 'waitlisted' ? 'waitlist' : (raw || 'pending'),
+        role: String(fd.admin_role || 'Unassigned'), focus: String(fd.admin_focus || 'Unassigned'),
+        education: String(fd.education || ''), submittedAt: row.created_at || fd.createdAt || null,
+        auditEntries: Array.isArray(fd.audit_log) ? fd.audit_log.length : 0,
+        emailEvents: Array.isArray(fd.email_log) ? fd.email_log.length : 0,
+      };
+    }),
+    emailLog: emailLog.slice(0, 30),
+  };
+}
+
+async function anProbeTable(table, column) {
+  const started = Date.now();
+  try {
+    const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent(table) + '?select=' + encodeURIComponent(column) + '&limit=0', {
+      headers: { ...authHeaders(true), Prefer: 'count=exact' },
+    }, 6000);
+    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    const range = String(res.headers.get('content-range') || '');
+    const count = Number(range.split('/').pop());
+    return { table, status: 'ok', latencyMs: Date.now() - started, rowCount: Number.isFinite(count) ? count : null, lastUpdated: null, error: null };
+  } catch (e) {
+    return { table, status: 'error', latencyMs: Date.now() - started, rowCount: null, lastUpdated: null, error: e.message };
+  }
+}
+
+function anSystemFrom(botHealth, checks, tables) {
+  const statuses = checks.map((c) => c.status);
+  const overall = statuses.includes('error') ? 'degraded' : (statuses.includes('warn') || statuses.includes('attention') ? 'attention' : 'healthy');
+  return {
+    overall,
+    checks,
+    summary: {
+      healthy: checks.filter((c) => c.status === 'ok').length,
+      warnings: checks.filter((c) => c.status !== 'ok' && c.status !== 'error').length,
+      errors: checks.filter((c) => c.status === 'error').length,
+      total: checks.length,
+    },
+    botHealth: botHealth || null,
+    tables: tables || [],
+  };
+}
+
+async function loadAnalyticsFallback() {
+  let botHealth = null;
+  try { botHealth = await anFetch(BOT_URL + '/health', {}, 5000).then((r) => r.json()); } catch (_) {}
+  const tables = await Promise.all([anProbeTable(CONFIG.table, 'code'), anProbeTable('NeoChip Members', 'id')]);
+  let neochip = { available: false, error: 'NeoChip Members rows could not be read', table: 'NeoChip Members', summary: {}, statusCounts: {}, roles: [], focuses: [], education: [], interests: [], wilayas: [], skills: [], days: [], recent: [], emailLog: [] };
+  try {
+    const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 8000);
+    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    const rows = await res.json();
+    neochip = { ...anLocalNeo(rows), readSource: 'supabase-user-token' };
+    const probe = tables.find((t) => t.table === 'NeoChip Members');
+    if (probe && probe.status === 'ok' && probe.rowCount === null) probe.rowCount = rows.length;
+  } catch (e) { neochip.error = e.message; }
+  const checks = [
+    { name: 'Bot process', status: botHealth && botHealth.ok ? 'ok' : 'error', detail: botHealth ? `Online for ${Math.round((botHealth.uptimeSeconds || 0) / 60)} min` : '/health unreachable', latencyMs: null },
+    { name: `Supabase ${CONFIG.table}`, status: tables[0].status, detail: tables[0].status === 'ok' ? `${tables[0].rowCount} rows · ${tables[0].latencyMs} ms` : tables[0].error, latencyMs: tables[0].latencyMs },
+    { name: 'Supabase NeoChip Members', status: tables[1].status, detail: tables[1].status === 'ok' ? `${tables[1].rowCount} rows · ${tables[1].latencyMs} ms` : tables[1].error, latencyMs: tables[1].latencyMs },
+    { name: 'NeoChip member read', status: neochip.available ? 'ok' : 'warn', detail: neochip.available ? `${neochip.summary.members} members` : neochip.error, latencyMs: null },
+    { name: 'Supabase Auth', status: SESSION ? 'ok' : 'error', detail: 'Panel session loaded', latencyMs: null },
+    { name: 'Email delivery', status: botHealth && botHealth.emailReplies ? 'ok' : 'warn', detail: botHealth ? botHealth.emailProvider : 'Unknown', latencyMs: null },
+    { name: 'Storage mode', status: botHealth && String(botHealth.storage || '').indexOf('supabase') === 0 ? 'ok' : 'warn', detail: botHealth ? botHealth.storage : 'Unknown', latencyMs: null },
+  ];
+  const bot = botHealth ? { ...botHealth, uptimeHuman: botHealth.uptimeSeconds ? `${Math.round(botHealth.uptimeSeconds / 60)}m` : '—', memory: {}, cpu: {}, loadAvg: [], hostMemory: {}, templates: 0, templatesByChannel: {}, supabaseReady: false } : { uptimeHuman: '—', memory: {}, cpu: {}, loadAvg: [], hostMemory: {}, templatesByChannel: {} };
+  return {
+    ok: true, source: 'panel-fallback', generatedAt: new Date().toISOString(), timezone: 'UTC',
+    aracs: anLocalAracs(), neochip, bot,
+    supabase: { configured: true, ready: tables[0].status === 'ok', auth: { configured: true, verification: 'Supabase Auth', keyType: 'publishable' }, tables },
+    system: anSystemFrom(botHealth, checks, tables),
+  };
+}
+
+async function fetchNeoFromSupabase() {
+  try {
+    const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 9000);
+    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) return null;
+    return { ...anLocalNeo(rows), readSource: 'supabase-user-token' };
+  } catch (_) { return null; }
+}
+
+async function loadAnalytics(force) {
+  if (AN_LOADING && !force) return;
+  AN_LOADING = true;
+  if (CURRENT_VIEW === 'analytics' && $('anBody') && !ANALYTICS) {
+    $('anBody').innerHTML = '<div class="an-empty"><i class="ph ph-circle-notch"></i>Reading live metrics from the bot and Supabase…</div>';
+  }
+  try {
+    await ensureFreshToken();
+    const res = await anFetch(BOT_URL + '/api/admin/analytics', { headers: authHeaders(true) }, 11000);
+    if (!res.ok) throw new Error('Bot HTTP ' + res.status);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Invalid analytics response');
+    ANALYTICS = { ...data, source: 'bot' };
+    const botMembers = Number((data.neochip && data.neochip.summary && data.neochip.summary.members) || 0);
+    if (!data.neochip || !data.neochip.available || botMembers === 0) {
+      const direct = await fetchNeoFromSupabase();
+      if (direct && Number(direct.summary.members || 0) > 0) {
+        ANALYTICS.neochip = direct;
+        const check = ((ANALYTICS.system && ANALYTICS.system.checks) || []).find((c) => c.name === 'NeoChip member read');
+        if (check) { check.status = 'ok'; check.detail = direct.summary.members + ' members · Supabase admin read'; }
+      }
+    }
+  } catch (_) {
+    ANALYTICS = await loadAnalyticsFallback();
+  } finally {
+    AN_LOADING = false;
+    if ($('anUpdated')) $('anUpdated').textContent = 'Metrics ' + new Date().toLocaleTimeString();
+    if ($('navAnalytics')) $('navAnalytics').textContent = ANALYTICS && ANALYTICS.system ? String(ANALYTICS.system.overall || 'LIVE').toUpperCase() : 'LIVE';
+    if (CURRENT_VIEW === 'analytics') renderAnalytics();
+  }
+}
+
+function filtered() {
+  let list = DATA.slice();
+  if (FILTER === 'active') list = list.filter((x) => !x.archived);
+  else if (FILTER === 'archived') list = list.filter((x) => x.archived);
+  else if (FILTER !== 'all') list = list.filter((x) => x.status.toLowerCase() === FILTER);
+  if (QUERY) {
+    const q = QUERY.toLowerCase();
+    list = list.filter((x) => [x.name,x.email,x.code,x.type,x.description,x.phone,x.wilaya,x.promo,x.invitor,x.heard]
+      .join(' ').toLowerCase().includes(q));
+  }
+  if (SORT === 'old') list.sort((a,b) => new Date(a.created) - new Date(b.created));
+  else if (SORT === 'name') list.sort((a,b) => a.name.localeCompare(b.name));
+  else list.sort((a,b) => new Date(b.created) - new Date(a.created));
+  return list;
+}
+
+function stats() {
+  const now = Date.now();
+  const week = DATA.filter((x) => now - new Date(x.created).getTime() < 7*864e5).length;
+  $('sTotal').textContent = DATA.length;
+  $('sActive').textContent = DATA.filter((x) => !x.archived).length;
+  $('sArchived').textContent = DATA.filter((x) => x.archived).length;
+  $('sNew').textContent = DATA.filter((x) => !x.archived && x.status.toLowerCase() === 'new').length;
+  $('sWeek').textContent = week;
+  $('sUnique').textContent = new Set(DATA.map((x) => x.email.toLowerCase()).filter(Boolean)).size;
+}
+
+function renderSystem() {
+  const el = $('systemBody');
+  if (!META) {
+    el.innerHTML = '<div style="color:#6f8796;font-size:12px">No system record found in this table yet.</div>';
+    return;
+  }
+  const s = META.settings || {};
+  const codes = Array.isArray(META.usedCodes) ? META.usedCodes : [];
+  const boxes = [
+    ['Code counter', META.counter, 'next ARACS# number'],
+    ['Issued codes', codes.length, 'unique codes generated'],
+    ['Schema version', META.version, 'database version'],
+    ['Notifications', s.muted ? 'Muted' : 'Active', 'admin alerts'],
+  ];
+  el.innerHTML = `
+    <div class="sys-grid">${boxes.map(([k,v,sub]) => `<div class="sys-box"><div class="k">${esc(k)}</div><div class="v">${esc(v == null ? '—' : v)}</div><div class="s">${esc(sub)}</div></div>`).join('')}</div>
+    <div class="d-field" style="margin-top:14px"><div class="k">System created</div><div class="v">${fmtDate(s.createdAt)}</div></div>
+    <div class="d-field"><div class="k">Record last updated</div><div class="v">${fmtDate(META_UPDATED)}</div></div>
+    <div class="d-field"><div class="k">Issued code list (${codes.length})</div>
+      <div class="code-list">${codes.length ? codes.slice().reverse().map(c => `<span>${esc(c)}</span>`).join('') : '<span style="color:#6f8796;border:0;background:none">none</span>'}</div>
+    </div>
+    <details class="raw" style="margin-top:16px"><summary><i class="ph ph-brackets-curly"></i> Raw system record (JSON)</summary><pre>${esc(JSON.stringify(META, null, 2))}</pre></details>`;
+}
+
+/* ============================================================
+   ANALYTICS VIEWS
+   ============================================================ */
+function anRaw(title, object) {
+  return `<details class="raw" style="margin-top:14px"><summary><i class="ph ph-brackets-curly"></i> ${esc(title)}</summary><pre>${esc(JSON.stringify(object || {}, null, 2))}</pre></details>`;
+}
+
+function anHealthList(checks) {
+  const list = Array.isArray(checks) ? checks : [];
+  if (!list.length) return anEmpty('No health checks available');
+  return `<div class="an-health">${list.map((c) => `<div class="an-check"><span class="an-dot ${esc(c.status)}"></span><div style="flex:1;min-width:0"><div class="name">${esc(c.name)}</div><div class="detail">${esc(c.detail || '')}</div></div>${c.latencyMs !== null && c.latencyMs !== undefined ? `<span class="lat">${esc(c.latencyMs)} ms</span>` : ''}</div>`).join('')}</div>`;
+}
+
+function anOverview(A) {
+  const ar = A.aracs || {}, ne = A.neochip || {}, bo = A.bot || {}, sy = A.system || {}, sup = A.supabase || {};
+  const a = ar.summary || {}, n = ne.summary || {};
+  const labels = (ar.days || []).map((d) => d.date);
+  const arVals = (ar.days || []).map((d) => d.count);
+  const neVals = (ne.days || []).map((d) => d.count);
+  const health = String(sy.overall || 'unknown');
+  const tableCount = (sup.tables || []).length;
+
+  return `
+    <div class="an-grid an-4">
+      ${anStat('Supabase health', (sy.summary ? sy.summary.healthy + '/' + sy.summary.total : '—'), health + ' · ' + tableCount + ' tables probed', null)}
+      ${anStat('Bot uptime', bo.uptimeHuman || '—', bo.inquiries != null ? bo.inquiries + ' active · ' + bo.archived + ' archived' : 'Process telemetry', null)}
+      ${anStat('ARACS inquiries', a.total, a.active + ' active · ' + a.archived + ' archived', arVals)}
+      ${anStat('NeoChip members', n.members, n.pending + ' pending · ' + n.approved + ' approved', neVals)}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('chart-line-up', 'Submission activity', anLine([
+        { name: 'ARACS inquiries', values: arVals, color: AN_COLORS[0] },
+        { name: 'NeoChip applications', values: neVals, color: AN_COLORS[4] },
+      ], labels, { height: 215 }), 'Last 14 days · real timestamps')}
+      ${anPanel('heartbeat', 'Live health checks', anHealthList(sy.checks), health)}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('chart-pie', 'ARACS pipeline', anDonut(anCounts(ar.statusCounts), 'ACTIVE'), (a.new || 0) + ' new · ' + (a.unanswered || 0) + ' unanswered')}
+      ${anPanel('chart-pie', 'NeoChip pipeline', anDonut(Object.keys(n).length ? [
+        { label: 'Pending', count: n.pending || 0 }, { label: 'Interview', count: n.interview || 0 },
+        { label: 'Waitlist', count: n.waitlist || 0 }, { label: 'Approved', count: n.approved || 0 },
+        { label: 'Rejected', count: n.rejected || 0 },
+      ] : [], 'MEMBERS'), (n.configRows || 0) + ' config rows skipped')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('gauge', 'Inbox response coverage', `<div class="an-gauge-row">${anGauge(a.responseCoverage, 'answered', AN_COLORS[0])}<div class="an-gauge-meta"><div class="k">Time to first contact</div><div class="v">${anNum(a.avgResponseHours, ' h')}</div><div class="an-meter"><i style="width:${Math.min(100, Number(a.responseCoverage) || 0)}%"></i></div><div class="s">Median ${anNum(a.medianResponseHours, ' h')} · fastest ${anNum(a.fastestResponseHours, ' h')} · slowest ${anNum(a.slowestResponseHours, ' h')}</div></div></div>`, 'Active inquiries')}
+      ${anPanel('gauge', 'NeoChip selection rate', `<div class="an-gauge-row">${anGauge(n.approvalRate, 'approved', AN_COLORS[2])}<div class="an-gauge-meta"><div class="k">Decision spread</div><div class="v">${anNum(n.interview)} interviewing</div><div class="an-meter"><i style="width:${Math.min(100, Number(n.interviewRate) || 0)}%"></i></div><div class="s">${anNum(n.pending)} pending · ${anNum(n.waitlist)} waitlist · ${anNum(n.rejected)} rejected</div></div></div>`, 'Members')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('inbox', 'Recent inquiries', anTable(['Code', 'Client', 'Project', 'Status', 'Received'], (ar.recent || []).slice(0, 8).map((r) => [
+        `<span class="mono">${esc(r.code)}</span>`, `<b>${esc(r.name)}</b>`, esc(r.type), anBadge(r.status), esc(relTime(r.createdAt)),
+      ])), 'Live from the ARACS inbox')}
+      ${anPanel('users-three', 'Recent applicants', anTable(['Name', 'Status', 'Role', 'Focus', 'Submitted'], (ne.recent || []).slice(0, 8).map((r) => [
+        `<b>${esc(r.name)}</b>`, anBadge(r.status), esc(r.role), esc(r.focus), esc(relTime(r.submittedAt)),
+      ])), 'Live from NeoChip Members')}
+    </div>
+    <div class="an-note">Source: ${esc(A.source === 'bot' ? 'Bot analytics API /api/admin/analytics' : 'Panel fallback with live Supabase REST reads')} · generated ${esc(fmtDate(A.generatedAt))} · timezone ${esc(A.timezone || 'UTC')}</div>`;
+}
+
+function anNeoView(A) {
+  const ne = A.neochip || {}, s = ne.summary || {};
+  const labels = (ne.days || []).map((d) => d.date);
+  const values = (ne.days || []).map((d) => d.count);
+  const pipeline = [
+    { label: 'Pending', count: s.pending || 0 }, { label: 'Interview', count: s.interview || 0 },
+    { label: 'Waitlist', count: s.waitlist || 0 }, { label: 'Approved', count: s.approved || 0 },
+    { label: 'Rejected', count: s.rejected || 0 }, { label: 'Other', count: s.other || 0 },
+  ].filter((i) => i.count > 0);
+
+  return `
+    <div class="an-grid an-4">
+      ${anStat('Total members', s.members, s.totalRows + ' rows · ' + (s.configRows || 0) + ' config skipped', values)}
+      ${anStat('Pending review', s.pending, anNum(s.pendingRate, '%') + ' of members', values)}
+      ${anStat('Interview stage', s.interview, anNum(s.interviewRate, '%') + ' of members', null)}
+      ${anStat('Approved', s.approved, anNum(s.approvalRate, '%') + ' selection rate', null)}
+      ${anStat('Waitlisted', s.waitlist, 'held for a future intake', null)}
+      ${anStat('Rejected', s.rejected, anNum(s.rejectionRate, '%') + ' of members', null)}
+      ${anStat('Emails delivered', s.emailSent, (s.emailFailed || 0) + ' failed · ' + anNum(s.emailSuccessRate, '%') + ' success', null)}
+      ${anStat('Submitted today', s.today, anNum(s.last7) + ' in 7 days · ' + anNum(s.last30) + ' in 30 days', null)}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('chart-line-up', 'Application submissions', anLine([{ name: 'Applications', values, color: AN_COLORS[4] }], labels, { height: 215 }), 'Last 14 days')}
+      ${anPanel('chart-pie', 'Selection pipeline', anDonut(pipeline, 'MEMBERS'), 'Status from form_data.admin_status')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('user-gear', 'Admin roles', anBars(ne.roles || []), 'admin_role')}
+      ${anPanel('target', 'Focus areas', anBars(ne.focuses || []), 'admin_focus')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('graduation-cap', 'Education', anBars(ne.education || []), 'education')}
+      ${anPanel('sparkles', 'Interests', anBars(ne.interests || []), 'interest')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('map-pin', 'Willayas', anBars(ne.wilayas || []), 'willaya')}
+      ${anPanel('wrench', 'Top skills', anBars(ne.skills || []), 'skills')}
+    </div>
+    <div class="an-grid an-4">
+      ${anPanel('gauge', 'Email delivery', `<div class="an-gauge-row">${anGauge(s.emailSuccessRate, 'sent', AN_COLORS[0])}<div class="an-gauge-meta"><div class="k">Email events</div><div class="v">${anNum(s.emailEvents)}</div><div class="s">${anNum(s.emailSent)} sent · ${anNum(s.emailFailed)} failed</div></div></div>`)}
+      ${anPanel('gauge', 'Review coverage', `<div class="an-gauge-row">${anGauge(s.reviewCoverage, 'reviewed', AN_COLORS[4])}<div class="an-gauge-meta"><div class="k">Audit entries</div><div class="v">${anNum(s.auditEvents)}</div><div class="s">${anNum(s.avgAuditEntries)} per member on average</div></div></div>`)}
+      ${anPanel('gauge', 'Roles assigned', `<div class="an-gauge-row">${anGauge(s.roleAssigned, 'roles', AN_COLORS[6])}<div class="an-gauge-meta"><div class="k">Focus assigned</div><div class="v">${anNum(s.focusAssigned, '%')}</div><div class="s">${anNum(s.withInterviewDate)} with interview date · ${anNum(s.withNotes)} with notes</div></div></div>`)}
+      ${anPanel('gauge', 'Contact coverage', `<div class="an-gauge-row">${anGauge(s.contactCoverage, 'email', AN_COLORS[2])}<div class="an-gauge-meta"><div class="k">Phone coverage</div><div class="v">${anNum(s.phoneCoverage, '%')}</div><div class="s">Last application ${esc(relTime(s.lastSubmitted) || '—')}</div></div></div>`)}
+    </div>
+    <div class="an-section-title"><i class="ph ph-list-bullets"></i> Max details — member records</div>
+    ${anPanel('users-three', 'Applicant register', anTable(['Name', 'Email', 'Status', 'Role', 'Focus', 'Education', 'Submitted', 'Audit', 'Mail'], (ne.recent || []).map((r) => [
+      `<b>${esc(r.name)}</b>`, esc(r.email), anBadge(r.status), esc(r.role), esc(r.focus), esc(r.education),
+      esc(relTime(r.submittedAt)), anNum(r.auditEntries), anNum(r.emailEvents),
+    ]), 'No member rows returned by Supabase'))}
+    ${anPanel('envelope-simple', 'Email event log', anTable(['When', 'Status', 'Recipient', 'Applicant', 'Result'], (ne.emailLog || []).map((r) => [
+      esc(relTime(r.at)), anBadge(r.status), esc(r.to), esc(r.name), anBadge(r.sent ? 'sent' : 'failed'),
+    ]), 'No email events recorded'), 'Latest 30 events from form_data.email_log')}
+    <div class="an-note">NeoChip table: ${esc(ne.table || 'NeoChip Members')} · source: ${esc(ne.readSource || (ANALYTICS.source === 'bot' ? 'bot analytics API' : 'panel Supabase REST'))}</div>
+    ${ne.error ? `<div class="an-note" style="color:var(--red)">NeoChip read error: ${esc(ne.error)}</div>` : ''}
+    ${anRaw('NeoChip analytics payload — complete', ne)}`;
+}
+
+function anAracsView(A) {
+  const ar = A.aracs || {}, s = ar.summary || {};
+  const labels = (ar.days || []).map((d) => d.date);
+  const values = (ar.days || []).map((d) => d.count);
+  const status = anCounts(ar.statusCounts);
+  return `
+    <div class="an-grid an-4">
+      ${anStat('Total inquiries', s.total, s.archiveStored + ' rows in archive', values)}
+      ${anStat('Active', s.active, s.new + ' new · ' + s.contacted + ' contacted', values)}
+      ${anStat('High priority', s.highPriority, s.mediumPriority + ' medium · ' + s.normalPriority + ' normal', null)}
+      ${anStat('Avg response', anNum(s.avgResponseHours, ' h'), anNum(s.medianResponseHours, ' h') + ' median', null)}
+      ${anStat('New today', s.today, anNum(s.last7) + ' in 7 days · ' + anNum(s.last30) + ' in 30 days', values)}
+      ${anStat('Unique contacts', s.uniqueEmails, anNum(s.repeatClients) + ' repeat clients', null)}
+      ${anStat('Unanswered', s.unanswered, 'not yet contacted', null)}
+      ${anStat('Engagement', anNum((s.notes || 0) + (s.replies || 0) + (s.auditEvents || 0)), anNum(s.notes) + ' notes · ' + anNum(s.replies) + ' replies · ' + anNum(s.auditEvents) + ' audit', null)}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('chart-line-up', 'Inquiry submissions', anLine([{ name: 'Inquiries', values, color: AN_COLORS[0] }], labels, { height: 215 }), 'Last 14 days')}
+      ${anPanel('chart-pie', 'Inbox pipeline', anDonut(status, 'ACTIVE'), 'status on active inquiries')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('chart-pie', 'Lead priority', anDonut(ar.priority || [], 'LEADS'), 'leadScore: detail, urgency, budget, email')}
+      ${anPanel('chart-bar', 'Response time buckets', anBars(ar.responseBuckets || []), 'createdAt → contactedAt')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('briefcase', 'Project types', anBars(ar.projectTypes || []), 'Top 10')}
+      ${anPanel('globe', 'Sources & locations', anBars((ar.sources || []).concat(ar.wilayas || []).slice(0, 10)), 'source + wilaya')}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('gauge', 'Response coverage', `<div class="an-gauge-row">${anGauge(s.responseCoverage, 'answered', AN_COLORS[0])}<div class="an-gauge-meta"><div class="k">Fastest / slowest</div><div class="v">${anNum(s.fastestResponseHours, ' h')} / ${anNum(s.slowestResponseHours, ' h')}</div><div class="s">Measured only on inquiries that have a contactedAt timestamp.</div></div></div>`)}
+      ${anPanel('gauge', 'Contact data quality', `<div class="an-gauge-row">${anGauge(ar.summary && s.total ? anRate(s.withEmail, s.total) : 0, 'email', AN_COLORS[4])}<div class="an-gauge-meta"><div class="k">Phone / WhatsApp</div><div class="v">${anNum(s.withPhone)} / ${anNum(s.withWhatsapp)}</div><div class="s">Average brief ${anNum(s.avgDescriptionChars)} characters · ${anNum(s.withPromo)} promo codes</div></div></div>`)}
+    </div>
+    <div class="an-section-title"><i class="ph ph-list-bullets"></i> Max details — inquiries &amp; clients</div>
+    ${anPanel('inbox', 'Active inquiry register', anTable(['Code', 'Client', 'Email', 'Project', 'Status', 'Received', 'Priority', 'Notes', 'Replies'], (ar.recent || []).map((r) => [
+      `<span class="mono">${esc(r.code)}</span>`, `<b>${esc(r.name)}</b>`, esc(r.email), esc(r.type), anBadge(r.status),
+      esc(relTime(r.createdAt)), r.priority === null || r.priority === undefined ? '—' : anNum(r.priority), anNum(r.notes), anNum(r.replies),
+    ]), 'No active inquiries'))}
+    ${anPanel('users', 'Repeat clients', anTable(['Client', 'Email', 'Inquiries', 'Last seen'], (ar.topClients || []).map((r) => [
+      `<b>${esc(r.name)}</b>`, esc(r.email), anNum(r.count), esc(relTime(r.lastSeen)),
+    ]), 'No repeat email addresses yet'))}
+    ${anRaw('ARACS analytics payload — complete', ar)}`;
+}
+
+function anSystemView(A) {
+  const bo = A.bot || {}, sup = A.supabase || {}, sy = A.system || {}, mem = bo.memory || {}, cpu = bo.cpu || {}, host = bo.hostMemory || {};
+  const tables = sup.tables || [];
+  const checks = sy.checks || [];
+  const status = String(sy.overall || 'unknown');
+  const tableRows = tables.map((t) => [
+    `<b>${esc(t.table)}</b>`, anBadge(t.status), anNum(t.rowCount), anNum(t.latencyMs, ' ms'), esc(fmtDate(t.lastUpdated)), esc(t.error || '—'),
+  ]);
+  const kvRows = [
+    ['Service', bo.service], ['Process PID', bo.pid], ['Node', bo.node], ['Platform', bo.platform + ' / ' + bo.arch],
+    ['Uptime', bo.uptimeHuman], ['Storage mode', bo.storage], ['Email provider', bo.emailProvider],
+    ['Email replies', bo.emailReplies ? 'Ready' : 'Not configured'], ['Admin alerts', bo.muted ? 'Muted' : 'Active'],
+    ['Admins', bo.admins], ['Inquiries (active)', bo.inquiries], ['Archive records', bo.archived],
+    ['Issued codes', bo.codesIssued], ['Counter', bo.counter], ['Templates', bo.templates],
+    ['Rate-limited IPs', bo.rateLimitedIps], ['Public URL', bo.publicUrl],
+    ['CPU user / system', anNum(cpu.userMs, ' ms') + ' / ' + anNum(cpu.systemMs, ' ms')],
+    ['Load average', (bo.loadAvg || []).join(' / ') || '—'],
+    ['Memory RSS', anNum(mem.rssMb, ' MB')], ['Heap used', anNum(mem.heapUsedMb, ' MB') + ' / ' + anNum(mem.heapTotalMb, ' MB')],
+    ['External memory', anNum(mem.externalMb, ' MB')], ['Host memory', anNum(host.freeMb, ' MB') + ' free / ' + anNum(host.totalMb, ' MB')],
+  ];
+  const auth = sup.auth || {};
+  const configRows = [
+    ['Supabase configured', sup.configured ? 'Yes' : 'No'], ['Supabase ready', sup.ready ? 'Yes' : 'No'],
+    ['Admin auth', esc(auth.verification || '—')], ['Publishable key on bot', auth.configured ? 'Present' : 'Missing'],
+    ['Key type exposed to browser', esc(auth.keyType || 'publishable')],
+    ['Admin allowlist', auth.allowlistEnabled ? (anNum(auth.allowedAdminCount) + ' email(s)') : 'Any verified Supabase user'],
+    ['Webhook secret', 'Server-side only — never sent to the browser'],
+    ['Mail credentials', 'Server-side only — never sent to the browser'],
+    ['Telemetry source', A.source === 'bot' ? 'Authenticated bot API' : 'Panel read-only fallback'],
+  ];
+  return `
+    <div class="an-grid an-4">
+      ${anStat('Overall status', status, (sy.summary ? sy.summary.healthy + ' healthy · ' + sy.summary.warnings + ' warnings · ' + sy.summary.errors + ' errors' : ''), null)}
+      ${anStat('Bot uptime', bo.uptimeHuman || '—', 'PID ' + anNum(bo.pid), null)}
+      ${anStat('Heap usage', anNum(mem.heapUsagePercent, '%'), anNum(mem.heapUsedMb, ' MB') + ' of ' + anNum(mem.heapTotalMb, ' MB'), null)}
+      ${anStat('Supabase tables', tables.length, tables.filter((t) => t.status === 'ok').length + ' responding', null)}
+      ${anStat('Memory RSS', anNum(mem.rssMb, ' MB'), anNum(host.freeMb, ' MB') + ' MB host memory free', null)}
+      ${anStat('Load average', (bo.loadAvg || []).join(' / ') || '—', '1 / 5 / 15 minute', null)}
+      ${anStat('Admins', bo.admins, anNum(bo.rateLimitedIps) + ' rate-limited IPs', null)}
+      ${anStat('Templates', bo.templates, Object.entries(bo.templatesByChannel || {}).map(([k, v]) => k + ':' + v).join(' · '), null)}
+    </div>
+    <div class="an-grid an-2">
+      ${anPanel('heartbeat', 'Subsystem health', anHealthList(checks), status)}
+      ${anPanel('gauge', 'Capacity & configuration', `<div class="an-gauge-row">
+        ${anGauge(mem.heapUsagePercent, 'heap', AN_COLORS[2])}
+        ${anGauge(tables.length ? anRate(tables.filter((t) => t.status === 'ok').length, tables.length) : 0, 'tables', AN_COLORS[0])}
+        ${anGauge(bo.emailReplies ? 100 : 0, 'email', AN_COLORS[4])}
+        ${anGauge(auth.configured ? 100 : 0, 'auth', AN_COLORS[6])}
+      </div>`, 'Live process + Supabase checks')}
+    </div>
+    <div class="an-section-title"><i class="ph ph-cloud"></i> Supabase probes</div>
+    ${anPanel('hard-drives', 'Table health & latency', anTable(['Table', 'Status', 'Rows', 'Latency', 'Last updated', 'Error'], tableRows, 'No probes returned'))}
+    <div class="an-section-title"><i class="ph ph-list-bullets"></i> Max details — both systems</div>
+    <div class="an-grid an-2">
+      ${anPanel('bug', 'Bot process detail', anTable(['Metric', 'Value'], kvRows.map(([k, v]) => [`<b>${esc(k)}</b>`, esc(v)])))}
+      ${anPanel('shield-check', 'Security & configuration', anTable(['Setting', 'Value'], configRows))}
+    </div>
+    ${anPanel('checklist', 'Health checks — raw', anTable(['Check', 'Status', 'Detail', 'Latency'], checks.map((c) => [
+      `<b>${esc(c.name)}</b>`, anBadge(c.status), esc(c.detail || ''), c.latencyMs === null || c.latencyMs === undefined ? '—' : anNum(c.latencyMs, ' ms'),
+    ])))}
+    ${anRaw('Complete telemetry payload — both systems', A)}`;
+}
+
+function renderAnalytics() {
+  const body = $('anBody');
+  if (!body) return;
+  if (!ANALYTICS) {
+    body.innerHTML = anEmpty('Live metrics could not be loaded. Use Refresh metrics to retry.');
+    return;
+  }
+  if (AN_TAB === 'neochip') body.innerHTML = anNeoView(ANALYTICS);
+  else if (AN_TAB === 'aracs') body.innerHTML = anAracsView(ANALYTICS);
+  else if (AN_TAB === 'system') body.innerHTML = anSystemView(ANALYTICS);
+  else body.innerHTML = anOverview(ANALYTICS);
+}
+
+function bars(el, counts) {
+  const entries = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0,6);
+  const max = Math.max(1, ...entries.map((e) => e[1]));
+  el.innerHTML = entries.length ? entries.map(([k,v]) =>
+    `<div class="bar-row"><span class="bar-lab" title="${esc(k)}">${esc(k)}</span><span class="bar-track"><span class="bar-fill" style="width:${Math.round(v/max*100)}%"></span></span><span class="bar-num">${v}</span></div>`
+  ).join('') : '<div style="color:#6f8796;font-size:12px">No data yet</div>';
+}
+
+function initials(name) {
+  return String(name || '?').split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join('') || '?';
+}
+
+function cardHtml(x) {
+  return `
+    <article class="card${x.archived ? ' archived' : ''}" data-i="${DATA.indexOf(x)}">
+      <div class="card-top"><span class="code">${esc(x.code)}</span><span><span class="status ${esc(x.status.toLowerCase())}">${esc(x.status)}</span>${x.archived ? '<span class="arch-tag"><i class="ph ph-archive"></i> Archived</span>' : ''}</span></div>
+      <h4 class="card-name">${esc(x.name)}</h4>
+      <div class="card-type">${esc(x.type)}</div>
+      ${x.email ? `<div class="meta-line"><i class="ph ph-envelope"></i><span>${esc(x.email)}</span></div>` : ''}
+      ${x.phone ? `<div class="meta-line"><i class="ph ph-phone"></i><span>${esc(x.phone)}${x.whatsapp === 'Yes' ? ' · WhatsApp' : ''}</span></div>` : ''}
+      ${x.wilaya ? `<div class="meta-line"><i class="ph ph-map-pin"></i><span>${esc(x.wilaya)}</span></div>` : ''}
+      <p class="card-desc">${esc(x.description || 'No description')}</p>
+      <div class="card-foot"><span class="time">${relTime(x.created)}</span>
+        <span class="quick">
+          ${x.email ? `<a class="qbtn" href="mailto:${encodeURIComponent(x.email)}" title="Email" onclick="event.stopPropagation()"><i class="ph ph-envelope"></i></a>` : ''}
+          ${x.phone ? `<a class="qbtn" href="https://wa.me/${esc(waNumber(x.phone))}" target="_blank" rel="noopener" title="WhatsApp" onclick="event.stopPropagation()"><i class="ph ph-whatsapp-logo"></i></a>` : ''}
+          <button class="qbtn" data-copy="${esc(x.code)}" title="Copy code" onclick="event.stopPropagation()"><i class="ph ph-copy"></i></button>
+        </span>
+      </div>
+    </article>`;
+}
+
+function bindCards(container) {
+  if (!container) return;
+  container.querySelectorAll('.card').forEach((c) => c.addEventListener('click', () => openDrawer(DATA[+c.dataset.i])));
+  container.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); toast('Code copied'); } catch (_) { toast('Copy failed', true); }
+  }));
+}
+
+function emptyGrid(message) {
+  return `<div class="empty" style="grid-column:1/-1"><i class="ph ph-magnifying-glass"></i><strong>${esc(message)}</strong><span>Try another search or filter.</span></div>`;
+}
+
+function renderInquiries() {
+  const list = filtered();
+  $('grid').innerHTML = list.length ? list.map(cardHtml).join('') : emptyGrid(DATA.length ? 'No matching inquiries' : 'No inquiries yet');
+  bindCards($('grid'));
+  $('inquiriesCount').textContent = list.length + ' records';
+}
+
+function renderArchive() {
+  const q = ($('archiveSearch') ? $('archiveSearch').value : '').trim().toLowerCase();
+  const list = DATA.filter((x) => x.archived && (!q || [x.name,x.email,x.code,x.type,x.description].join(' ').toLowerCase().includes(q)))
+    .sort((a,b) => new Date(b.created) - new Date(a.created));
+  $('archiveGrid').innerHTML = list.length ? list.map(cardHtml).join('') : emptyGrid(q ? 'No archived matches' : 'Nothing archived yet');
+  bindCards($('archiveGrid'));
+  $('archiveCount').textContent = list.length + ' archived';
+}
+
+function renderRecent() {
+  const list = DATA.slice().sort((a,b) => new Date(b.created) - new Date(a.created)).slice(0, 6);
+  $('recentList').innerHTML = list.length ? list.map((x) => `
+    <div class="recent-row">
+      <div><b>${esc(x.name)}</b><small>${esc(x.code)} · ${esc(x.type)}</small></div>
+      <span class="status ${esc(x.status.toLowerCase())}">${esc(x.status)}</span>
+      <span class="time">${relTime(x.created)}</span>
+      <button class="mini-btn" data-recent="${esc(x.code)}">Open <i class="ph ph-arrow-right"></i></button>
+    </div>`).join('') : '<div class="empty-mini">No inquiries yet. New submissions appear here automatically.</div>';
+  $('recentList').querySelectorAll('[data-recent]').forEach((b) => b.addEventListener('click', () => {
+    const x = DATA.find((item) => item.code === b.dataset.recent);
+    if (x) openDrawer(x);
+  }));
+}
+
+function renderCharts() {
+  const tc = {}, sc = {};
+  DATA.forEach((x) => { tc[x.type] = (tc[x.type]||0)+1; sc[x.status] = (sc[x.status]||0)+1; });
+  bars($('typeBars'), tc);
+  bars($('statusBars'), sc);
+}
+
+function updateNavCounts() {
+  const active = DATA.filter((x) => !x.archived).length;
+  const archived = DATA.filter((x) => x.archived).length;
+  const set = (id, value) => { const el = $(id); if (el) el.textContent = value; };
+  set('navActive', active);
+  set('navArchived', archived);
+  set('navContacts', DATA.length);
+  set('navTemplates', allTemplates().length);
+  set('crmCount', CRM_SELECTED.length + ' selected');
+  set('tplCount', allTemplates().length + ' templates');
+  set('crmTemplateCount', allTemplates().length + ' templates');
+}
+
+function render() {
+  stats();
+  renderSystem();
+  renderInquiries();
+  renderArchive();
+  renderRecent();
+  renderCharts();
+  renderCrmContacts();
+  renderTemplateList();
+  renderActivity();
+  renderSettings();
+  renderAnalytics();
+  updateNavCounts();
+  applyPrefs();
+}
+
+function openDrawer(x) {
+  if (!x) return;
+  SELECTED = x;
+  const actions = [
+    x.email ? `<a class="abtn primary" href="mailto:${encodeURIComponent(x.email)}?subject=Re:%20${encodeURIComponent(x.code)}%20-%20ARACS"><i class="ph ph-envelope"></i> Email</a>` : '',
+    x.phone ? `<a class="abtn" href="tel:${encodeURIComponent(x.phone)}"><i class="ph ph-phone"></i> Call</a>` : '',
+    x.phone ? `<a class="abtn" href="https://wa.me/${esc(waNumber(x.phone))}" target="_blank" rel="noopener"><i class="ph ph-whatsapp-logo"></i> WhatsApp</a>` : '',
+    `<button class="abtn" data-crm="${esc(x.code)}"><i class="ph ph-address-book"></i> Open in CRM</button>`,
+    `<button class="abtn" data-cd="${esc(x.code)}"><i class="ph ph-copy"></i> Copy code</button>`,
+    x.email ? `<button class="abtn" data-ce="${esc(x.email)}"><i class="ph ph-copy"></i> Copy email</button>` : '',
+    x.page ? `<a class="abtn" href="${esc(x.page)}" target="_blank" rel="noopener"><i class="ph ph-globe"></i> Source page</a>` : ''
+  ].filter(Boolean).join('');
+
+  const extras = Object.entries(x.extra || {}).map(([k,v]) => `<div class="d-field"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('');
+
+  const timeline = x.audit.length ? x.audit.slice().reverse().map((a) =>
+    `<div class="t-item"><b>${esc(a.action || 'Update')}</b> ${a.by ? 'by ' + esc(a.by) : ''}<time>${fmtDate(a.at)}</time></div>`
+  ).join('') : '<div style="color:#6f8796;font-size:12px">No activity recorded</div>';
+
+  const replies = x.replies.length ? x.replies.slice().reverse().map((r) =>
+    `<div class="t-item"><b>Email to ${esc(r.to || x.email)}</b><div style="color:#cbd5e1;margin-top:4px">${esc(r.subject || '')}</div><div style="color:#9fb3bf;margin-top:4px;white-space:pre-wrap">${esc(r.body || '')}</div><time>${fmtDate(r.at)}${r.by ? ' · ' + esc(r.by) : ''}</time></div>`
+  ).join('') : '<div style="color:#6f8796;font-size:12px">No email replies sent</div>';
+
+  const notes = x.notes.length ? x.notes.slice().reverse().map((n) =>
+    `<div class="t-item"><div style="color:#cbd5e1;white-space:pre-wrap">${esc(n.text || '')}</div><time>${fmtDate(n.at)}${n.by ? ' · ' + esc(n.by) : ''}</time></div>`
+  ).join('') : '<div style="color:#6f8796;font-size:12px">No internal notes</div>';
+
+  $('drawerCard').innerHTML = `
+    <div class="drawer-head"><div><span class="code">${esc(x.code)}</span>${x.archived ? '<span class="arch-tag"><i class="ph ph-archive"></i> Archived</span>' : ''}<h3>${esc(x.name)}</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
+    <div class="d-section"><h4><i class="ph ph-lightning"></i> Quick actions</h4><div class="actions-grid">${actions}</div></div>
+    <div class="d-section"><h4><i class="ph ph-user"></i> Contact</h4>
+      <div class="d-field"><div class="k">Email</div><div class="v">${esc(x.email || '—')}</div></div>
+      <div class="d-field"><div class="k">Phone</div><div class="v">${esc(x.phone || '—')}${x.whatsapp === 'Yes' ? ' · WhatsApp available' : ''}</div></div>
+      <div class="d-field"><div class="k">Wilaya</div><div class="v">${esc(x.wilaya || '—')}</div></div>
+      <div class="d-field"><div class="k">Received</div><div class="v">${fmtDate(x.created)} <span style="color:#6f8796">(${relTime(x.created)})</span></div></div>
+      <div class="d-field"><div class="k">Status</div><div class="v"><span class="status ${esc(x.status.toLowerCase())}">${esc(x.status)}</span>${x.archived ? '<span class="arch-tag"><i class="ph ph-archive"></i> Archived</span>' : ''}</div></div>
+    </div>
+    <div class="d-section"><h4><i class="ph ph-briefcase"></i> Project</h4>
+      <div class="d-field"><div class="k">Type</div><div class="v">${esc(x.type)}</div></div>
+      <div class="d-field"><div class="k">Description</div><div class="d-desc">${esc(x.description || '—')}</div></div>
+      ${extras ? `<div class="d-field" style="margin-top:12px"><div class="k">Additional details</div>${extras}</div>` : ''}
+    </div>
+    ${DATA_SOURCE === 'bot' ? `
+    <div class="d-section"><h4><i class="ph ph-pencil-simple"></i> Manage inquiry</h4>
+      <p class="section-note">Saved through the bot so its archive stays the single source of truth.</p>
+      <div class="edit-grid">
+        <div class="form-row"><label>First name</label><input class="admin-input" id="edFirstName" value="${esc(x.first)}"></div>
+        <div class="form-row"><label>Last name</label><input class="admin-input" id="edLastName" value="${esc((x.raw && x.raw.lastName) || '')}"></div>
+      </div>
+      <div class="form-row"><label>Email</label><input class="admin-input" id="edEmail" value="${esc(x.email)}"></div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Phone</label><input class="admin-input" id="edPhone" value="${esc(x.phone)}"></div>
+        <div class="form-row"><label>Wilaya</label><input class="admin-input" id="edWilaya" value="${esc(x.wilaya)}"></div>
+      </div>
+      <div class="form-row"><label>Project type</label><input class="admin-input" id="edType" value="${esc(x.type)}"></div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Promo code</label><input class="admin-input" id="edPromo" value="${esc(x.promo)}"></div>
+        <div class="form-row"><label>WhatsApp</label><select class="admin-select" id="edWhatsapp"><option value=""${!x.whatsapp ? ' selected' : ''}>No</option><option value="Yes"${String(x.whatsapp).toLowerCase() === 'yes' ? ' selected' : ''}>Yes</option></select></div>
+      </div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Invited by</label><input class="admin-input" id="edInvitedBy" value="${esc(x.invitor)}"></div>
+        <div class="form-row"><label>Heard about us</label><input class="admin-input" id="edHeard" value="${esc(x.heard)}"></div>
+      </div>
+      <div class="form-row"><label>Description</label><textarea class="admin-textarea" id="edDescription">${esc(x.description)}</textarea></div>
+      <div class="form-row"><label>Status</label><div class="status-row"><select class="admin-select" id="edStatus">${statusOptions(x.status)}</select><button class="abtn" id="btnStatus"><i class="ph ph-check"></i> Set</button></div></div>
+      <div class="actions-grid">
+        <button class="abtn primary" id="btnSaveInquiry"><i class="ph ph-floppy-disk"></i> Save changes</button>
+        <button class="abtn" id="btnResend"><i class="ph ph-paper-plane-tilt"></i> Resend confirmation</button>
+        <button class="abtn" id="btnArchive">${x.archived ? '<i class="ph ph-arrow-counter-clockwise"></i> Restore to active' : '<i class="ph ph-archive"></i> Archive'}</button>
+      </div>
+      <div class="form-row" style="margin-top:14px"><label>Internal note</label><textarea class="admin-textarea" id="noteText" placeholder="Write a note for the team…"></textarea></div>
+      <button class="abtn primary" id="btnAddNote" style="width:100%"><i class="ph ph-note-pencil"></i> Add note</button>
+    </div>
+    <div class="d-section"><h4><i class="ph ph-paper-plane-tilt"></i> Compose email</h4>
+      <p class="section-note">Variables are replaced with this inquiry's details in the preview and in the email that is sent.</p>
+      <div class="form-row"><label>Saved template</label><select class="admin-select" id="tplSelect"><option value="">— Choose a template —</option>${TEMPLATES.map((t) => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('')}</select></div>
+      <div class="form-row"><label>Subject</label><input class="admin-input" id="mailSubject" value="Re: Your project inquiry ${esc(x.code)} — ARACS Technologies"></div>
+      <div class="form-row"><label>Message</label><textarea class="admin-textarea" id="mailBody" style="min-height:150px"></textarea></div>
+      <div class="var-chips">${['name','first_name','last_name','email','phone','wilaya','code','project_type','description','promo_code','invited_by','heard_about','site_name'].map((v) => `<button type="button" class="var-chip" data-var="${v}">{{${v}}}</button>`).join('')}</div>
+      <button class="abtn" id="btnPreview" style="width:100%"><i class="ph ph-eye"></i> Preview with this inquiry</button>
+      <div class="preview-box" id="mailPreview">Choose a template or write a message, then preview it here.</div>
+      <div class="edit-grid" style="margin-top:12px">
+        <div class="form-row"><label>Template name</label><input class="admin-input" id="tplName" placeholder="e.g. Interview invite"></div>
+        <div class="form-row" style="display:flex;align-items:flex-end"><button class="abtn" id="btnSaveTpl" style="width:100%"><i class="ph ph-floppy-disk"></i> Save template</button></div>
+      </div>
+      <button class="abtn primary" id="btnSendMail" style="width:100%;margin-top:8px"><i class="ph ph-paper-plane-tilt"></i> Send email</button>
+    </div>` : '<div class="d-section"><p class="section-note">Management tools need the bot admin API. Redeploy the bot with the admin endpoints to enable notes, status changes, edits, and email sending.</p></div>'}
+    <div class="d-section"><h4><i class="ph ph-clock-counter-clockwise"></i> Activity (${x.audit.length})</h4><div class="timeline">${timeline}</div></div>
+    <div class="d-section"><h4><i class="ph ph-envelope-open"></i> Email replies (${x.replies.length})</h4><div class="timeline">${replies}</div></div>
+    <div class="d-section"><h4><i class="ph ph-note"></i> Internal notes (${x.notes.length})</h4><div class="timeline">${notes}</div></div>
+    <div class="d-section"><h4><i class="ph ph-database"></i> Supabase row</h4>
+      <div class="d-field"><div class="k">Row ID</div><div class="v mono">${esc(x.rowId || '—')}</div></div>
+      <div class="d-field"><div class="k">Row created</div><div class="v">${fmtDate(x.rowCreated)}</div></div>
+      <div class="d-field"><div class="k">Row updated</div><div class="v">${fmtDate(x.updated)}</div></div>
+      <div class="d-field"><div class="k">Archive flag</div><div class="v">${x.archived ? 'Yes — kept permanently in the archive' : 'No — active inquiry'}</div></div>
+      <div class="d-field"><div class="k">Source</div><div class="v">${esc(x.source || '—')}${x.page ? ' · ' + esc(x.page) : ''}</div></div>
+      <details class="raw"><summary><i class="ph ph-brackets-curly"></i> Full raw form_data (JSON)</summary><pre>${esc(JSON.stringify(x.raw, null, 2))}</pre></details>
+    </div>
+    <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">${DATA_SOURCE === 'bot' ? 'Managed through the ARACS bot · changes sync to Supabase' : 'Read-only fallback · bot admin API unavailable'}</p>`;
+
+  $('drawer').classList.add('on');
+  $('drawerClose').addEventListener('click', closeDrawer);
+  $('drawerCard').querySelectorAll('[data-cd],[data-ce]').forEach((b) => b.addEventListener('click', async () => {
+    const v = b.dataset.cd || b.dataset.ce;
+    try { await navigator.clipboard.writeText(v); toast('Copied'); } catch (_) { toast('Copy failed', true); }
+  }));
+  $('drawerCard').querySelectorAll('[data-crm]').forEach((b) => b.addEventListener('click', () => {
+    CRM_SELECTED = [b.dataset.crm];
+    CRM_CONFIRM = false;
+    closeDrawer();
+    switchView('crm');
+  }));
+
+  const val = (id) => { const el = $(id); return el ? String(el.value || '').trim() : ''; };
+
+  on('btnSaveInquiry', 'click', () => {
+    const email = val('edEmail');
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast('Enter a valid email address', true);
+      return;
+    }
+    mutate('/api/admin/inquiry', {
+      code: x.code,
+      firstName: val('edFirstName'),
+      lastName: val('edLastName'),
+      email,
+      phone: val('edPhone'),
+      wilaya: val('edWilaya'),
+      projectType: val('edType'),
+      promoCode: val('edPromo'),
+      invitor: val('edInvitedBy'),
+      heardAbout: val('edHeard'),
+      whatsapp: val('edWhatsapp'),
+      description: val('edDescription'),
+    }, 'Inquiry updated');
+  });
+
+  on('btnStatus', 'click', () => {
+    mutate('/api/admin/status', { code: x.code, status: val('edStatus') }, 'Status updated');
+  });
+
+  on('btnResend', 'click', () => {
+    mutate('/api/admin/confirmation', { code: x.code }, 'Confirmation email sent');
+  });
+
+  on('btnArchive', 'click', () => {
+    const path = x.archived ? '/api/admin/unarchive' : '/api/admin/archive';
+    mutate(path, { code: x.code }, x.archived ? 'Restored to active' : 'Inquiry archived');
+  });
+
+  on('btnAddNote', 'click', () => {
+    const text = val('noteText');
+    if (!text) { toast('Write a note first', true); return; }
+    mutate('/api/admin/note', { code: x.code, text }, 'Note saved');
+  });
+
+  on('btnPreview', 'click', updatePreview);
+  on('mailBody', 'input', updatePreview);
+  ['edFirstName','edLastName','edEmail','edPhone','edWilaya','edType','edPromo','edInvitedBy','edHeard','edDescription']
+    .forEach((id) => on(id, 'input', updatePreview));
+
+  on('tplSelect', 'change', () => {
+    const tpl = TEMPLATES.find((t) => t.id === val('tplSelect'));
+    if (tpl) applyTemplate(tpl);
+  });
+
+  $('drawerCard').querySelectorAll('[data-var]').forEach((b) => b.addEventListener('click', () => insertVar(b.dataset.var)));
+
+  on('btnSaveTpl', 'click', async () => {
+    const name = val('tplName');
+    const body = val('mailBody');
+    const subject = val('mailSubject');
+    if (!name) { toast('Give the template a name first', true); return; }
+    if (!body) { toast('Write a message before saving a template', true); return; }
+    try {
+      const r = await adminApi('/api/admin/templates', { template: { name, subject, body, channel: 'email' } });
+      TEMPLATES = Array.isArray(r.templates) ? r.templates : TEMPLATES;
+      renderSystem();
+      const saved = TEMPLATES.find((t) => t.name === name && t.body === body);
+      const select = $('tplSelect');
+      if (saved && select) {
+        if (![...select.options].some((o) => o.value === saved.id)) {
+          const opt = document.createElement('option');
+          opt.value = saved.id;
+          opt.textContent = saved.name;
+          select.appendChild(opt);
+        }
+        select.value = saved.id;
+      }
+      toast('Template saved');
+    } catch (e) {
+      toast(e.message, true);
+    }
+  });
+
+  on('btnSendMail', 'click', async () => {
+    const body = val('mailBody');
+    if (!body) { toast('Write a message first', true); return; }
+    if (!x.email) { toast('This inquiry has no email address', true); return; }
+    const current = previewInquiry();
+    const message = renderVars(body, current);
+    const subject = renderVars(val('mailSubject') || `Re: Your project inquiry ${x.code} — ARACS Technologies`, current);
+    const unresolved = [...new Set([...`${subject}\n${message}`.matchAll(/\{\{\s*(\w+)\s*\}\}/g)].map((m) => m[1]))];
+    if (unresolved.length) { toast('Unknown variable: {{' + unresolved[0] + '}}', true); return; }
+    await mutate('/api/admin/reply', { code: x.code, subject, message }, 'Email sent');
+  });
+}
+function closeDrawer() { $('drawer').classList.remove('on'); }
+
+function exportCsv() {
+  const list = filtered();
+  if (!list.length) { toast('Nothing to export', true); return; }
+  const cols = ['Code','Name','Email','Phone','Wilaya','Project type','Status','Archived','Received','Updated','Description'];
+  const q = (v) => '"' + String(v == null ? '' : v).replace(/"/g,'""') + '"';
+  const lines = [cols.map(q).join(',')].concat(list.map((x) => [
+    x.code,x.name,x.email,x.phone,x.wilaya,x.type,x.status,x.archived ? 'Yes' : 'No',x.created,x.updated,x.description
+  ].map(q).join(',')));
+  const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'aracs-inquiries-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Exported ' + list.length + ' inquiries');
+}
+
+function switchView(view) {
+  CURRENT_VIEW = view;
+  document.querySelectorAll('.view').forEach((v) => v.classList.toggle('on', v.id === 'view-' + view));
+  document.querySelectorAll('.nav-item').forEach((n) => n.classList.toggle('on', n.dataset.view === view));
+  $('sideScrim').classList.remove('on');
+  $('sidebar').classList.remove('open');
+  if (view === 'crm') { renderCrmContacts(); renderComposer(); }
+  if (view === 'templates') renderTemplateList();
+  if (view === 'activity') renderActivity();
+  if (view === 'settings') renderSettings();
+  if (view === 'system') renderSystem();
+  if (view === 'analytics') { renderAnalytics(); if (!ANALYTICS) loadAnalytics(true); }
+  window.scrollTo(0, 0);
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute('data-theme', PREF_LIGHT ? 'light' : 'dark');
+  if ($('prefLight')) $('prefLight').checked = PREF_LIGHT;
+}
+
+function applySidebar() {
+  $('app').classList.toggle('sidebar-collapsed', SIDE_COLLAPSED);
+  const icon = $('sideToggleIcon');
+  const text = $('sideToggleText');
+  if (icon) icon.className = SIDE_COLLAPSED ? 'ph ph-caret-double-right' : 'ph ph-caret-double-left';
+  if (text) text.textContent = SIDE_COLLAPSED ? 'Expand' : 'Collapse';
+}
+
+function applyPrefs() {
+  $('app').classList.toggle('compact', PREF_COMPACT);
+  if ($('prefCompact')) $('prefCompact').checked = PREF_COMPACT;
+  if ($('prefRefresh')) $('prefRefresh').checked = PREF_REFRESH;
+  applyTheme();
+  applySidebar();
+}
+
+function setupAutoRefresh() {
+  clearInterval(TIMER);
+  if (PREF_REFRESH && SESSION) TIMER = setInterval(() => load(false), CONFIG.refreshMs);
+}
+
+function crmContacts() {
+  const q = CRM_QUERY.trim().toLowerCase();
+  return DATA.filter((x) => !q || [x.name,x.email,x.phone,x.code,x.type,x.wilaya,x.description].join(' ').toLowerCase().includes(q))
+    .sort((a,b) => new Date(b.created) - new Date(a.created));
+}
+
+function crmTargets() {
+  return CRM_SELECTED.map((code) => DATA.find((x) => x.code === code)).filter(Boolean);
+}
+
+function renderCrmContacts() {
+  CRM_SELECTED = CRM_SELECTED.filter((code) => DATA.some((x) => x.code === code));
+  const list = crmContacts();
+  const el = $('contactRows');
+  el.innerHTML = list.length ? list.map((x) => `
+    <div class="contact-row${CRM_SELECTED.includes(x.code) ? ' sel' : ''}" data-row="${esc(x.code)}">
+      <input type="checkbox" data-crm-check="${esc(x.code)}"${CRM_SELECTED.includes(x.code) ? ' checked' : ''} title="Select ${esc(x.name)}">
+      <span class="contact-avatar">${esc(initials(x.name))}</span>
+      <span class="contact-main"><b>${esc(x.name)}</b><small>${esc(x.code)} · ${esc(x.status)}${x.archived ? ' · archived' : ''}</small></span>
+      <span class="contact-detail">${esc(x.email || 'No email')}${x.phone ? '<br>' + esc(x.phone) : ''}</span>
+      <span class="contact-actions">
+        ${x.email ? `<a class="qbtn" href="mailto:${encodeURIComponent(x.email)}" title="Email"><i class="ph ph-envelope"></i></a>` : ''}
+        ${x.phone ? `<a class="qbtn" href="https://wa.me/${esc(waNumber(x.phone))}" target="_blank" rel="noopener" title="WhatsApp"><i class="ph ph-whatsapp-logo"></i></a>` : ''}
+        ${x.phone ? `<a class="qbtn" href="tel:${encodeURIComponent(x.phone)}" title="Call"><i class="ph ph-phone"></i></a>` : ''}
+        <button class="qbtn" data-crm-open="${esc(x.code)}" title="Open record"><i class="ph ph-arrow-square-out"></i></button>
+      </span>
+    </div>`).join('') : '<div class="empty-mini">No contacts match this search.</div>';
+
+  el.querySelectorAll('[data-crm-check]').forEach((box) => box.addEventListener('change', () => {
+    const code = box.dataset.crmCheck;
+    if (box.checked && !CRM_SELECTED.includes(code)) CRM_SELECTED.push(code);
+    if (!box.checked) CRM_SELECTED = CRM_SELECTED.filter((c) => c !== code);
+    CRM_CONFIRM = false;
+    renderCrmContacts();
+    renderComposer();
+    updateNavCounts();
+  }));
+  el.querySelectorAll('[data-crm-open]').forEach((b) => b.addEventListener('click', () => {
+    const x = DATA.find((item) => item.code === b.dataset.crmOpen);
+    if (x) openDrawer(x);
+  }));
+}
+
+function crmVarChips() {
+  return VARIABLES.map((v) => `<button type="button" class="var-chip" data-crm-var="${v}">{{${v}}}</button>`).join('');
+}
+
+function renderComposer() {
+  const wrap = $('crmComposer');
+  if (!wrap) return;
+  const active = document.activeElement;
+  const focusId = active && wrap.contains(active) ? active.id : '';
+  const caretStart = focusId && active.selectionStart != null ? active.selectionStart : null;
+  const caretEnd = focusId && active.selectionEnd != null ? active.selectionEnd : null;
+  const targets = crmTargets();
+  const first = targets[0] || SELECTED || null;
+  const draft = CRM_DRAFTS[CRM_CHANNEL];
+  const templates = allTemplates().filter((t) => t.channel === CRM_CHANNEL);
+  $('crmTarget').textContent = targets.length
+    ? `${targets.length} contact${targets.length === 1 ? '' : 's'} selected. Preview uses ${first ? first.name : 'the first contact'}.`
+    : SELECTED ? 'No contacts selected. Preview uses the last opened inquiry. Select contacts to send.' : 'Select contacts to personalize and send a message.';
+
+  const primaryLabel = CRM_CONFIRM
+    ? 'Confirm send to ' + targets.filter((x) => x.email).length
+    : CRM_CHANNEL === 'email' ? 'Send email' : CRM_CHANNEL === 'whatsapp' ? 'Open WhatsApp links' : 'Open dialer';
+
+  wrap.innerHTML = `
+    <div class="form-row"><label>Template</label><select class="admin-select" id="crmTemplate"><option value="">— Choose a template —</option>${templates.map((t) => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join('')}</select></div>
+    ${CRM_CHANNEL === 'email' ? `<div class="form-row"><label>Subject</label><input class="admin-input" id="crmSubject" value="${esc(draft.subject || '')}"></div>` : ''}
+    <div class="form-row"><label>Message</label><textarea class="admin-textarea" id="crmBody" style="min-height:130px">${esc(draft.body || '')}</textarea></div>
+    <div class="var-chips">${crmVarChips()}</div>
+    <div class="edit-grid" style="margin-top:10px">
+      <div class="form-row"><label>Save as name</label><input class="admin-input" id="crmTplName" placeholder="e.g. Follow-up reminder"></div>
+      <div class="form-row" style="display:flex;align-items:flex-end"><button class="abtn" id="crmSaveTpl" style="width:100%"><i class="ph ph-floppy-disk"></i> Save template</button></div>
+    </div>
+    <div class="composer-actions">
+      <button class="abtn${CRM_CONFIRM ? ' primary' : ' primary'}" id="crmPrimary" style="width:100%"><i class="ph ph-paper-plane-tilt"></i> ${esc(primaryLabel)}</button>
+      <button class="abtn" id="crmCopy" style="width:100%"><i class="ph ph-copy"></i> Copy message</button>
+    </div>
+    <span class="preview-label">Preview for ${esc(first ? first.name : 'selected contact')}</span>
+    <div class="preview-box" id="crmPreview">${esc(renderVars(draft.body || '', first) || 'Write a message to see the personalized preview.')}</div>
+    <div class="link-list" id="crmLinks"></div>`;
+
+  const body = $('crmBody');
+  body.addEventListener('input', () => { draft.body = body.value; updateCrmPreview(); });
+  if ($('crmSubject')) $('crmSubject').addEventListener('input', (e) => { draft.subject = e.target.value; });
+  $('crmTemplate').addEventListener('change', (e) => loadCrmTemplate(e.target.value));
+  $('crmPrimary').addEventListener('click', CRM_CHANNEL === 'email' ? sendCrmEmail : CRM_CHANNEL === 'whatsapp' ? openCrmWhatsApp : openCrmCall);
+  $('crmCopy').addEventListener('click', async () => {
+    const text = renderVars(body.value, first);
+    try { await navigator.clipboard.writeText(text); toast('Message copied'); } catch (_) { toast('Copy failed', true); }
+  });
+  $('crmSaveTpl').addEventListener('click', saveCrmTemplate);
+  wrap.querySelectorAll('[data-crm-var]').forEach((b) => b.addEventListener('click', () => insertCrmVar(b.dataset.crmVar)));
+  if (focusId) {
+    const el = $(focusId);
+    if (el) {
+      el.focus();
+      if (caretStart != null) { try { el.setSelectionRange(caretStart, caretEnd); } catch (_) {} }
+    }
+  }
+}
+
+function updateCrmPreview() {
+  const body = $('crmBody'), preview = $('crmPreview');
+  if (!body || !preview) return;
+  const first = crmTargets()[0] || SELECTED || null;
+  preview.textContent = renderVars(body.value, first) || 'Write a message to see the personalized preview.';
+}
+
+function insertCrmVar(variable) {
+  const el = $('crmBody');
+  if (!el) return;
+  const token = '{{' + variable + '}}';
+  const start = el.selectionStart == null ? el.value.length : el.selectionStart;
+  const end = el.selectionEnd == null ? start : el.selectionEnd;
+  el.value = el.value.slice(0, start) + token + el.value.slice(end);
+  CRM_DRAFTS[CRM_CHANNEL].body = el.value;
+  el.focus();
+  el.selectionStart = el.selectionEnd = start + token.length;
+  updateCrmPreview();
+}
+
+function loadCrmTemplate(id) {
+  const tpl = allTemplates().find((t) => t.id === id);
+  if (!tpl) return;
+  CRM_CHANNEL = tpl.channel;
+  document.querySelectorAll('[data-channel]').forEach((b) => b.classList.toggle('on', b.dataset.channel === CRM_CHANNEL));
+  const draft = CRM_DRAFTS[CRM_CHANNEL];
+  draft.body = tpl.body || '';
+  if (tpl.subject) draft.subject = tpl.subject;
+  if ($('crmTplName')) $('crmTplName').value = tpl.custom ? tpl.name : 'Copy of ' + tpl.name;
+  CRM_CONFIRM = false;
+  renderComposer();
+  toast('Template loaded');
+}
+
+function unresolvedVars(text) {
+  return [...new Set([...String(text || '').matchAll(/\{\{\s*(\w+)\s*\}\}/g)].map((m) => m[1]))];
+}
+
+async function sendCrmEmail() {
+  const targets = crmTargets().filter((x) => x.email);
+  if (!targets.length) { toast('Select contacts with an email address', true); return; }
+  if (DATA_SOURCE !== 'bot') { toast('Email sending needs the live bot admin API', true); return; }
+  const body = $('crmBody') ? $('crmBody').value.trim() : '';
+  const subject = $('crmSubject') ? $('crmSubject').value.trim() : '';
+  if (!body) { toast('Write a message first', true); return; }
+  const prepared = targets.map((x) => ({
+    x,
+    message: renderVars(body, x),
+    subject: renderVars(subject || `Re: Your project inquiry ${x.code} — ARACS Technologies`, x),
+  }));
+  const bad = unresolvedVars(prepared.map((p) => p.subject + '\n' + p.message).join('\n'));
+  if (bad.length) { toast('Unknown variable: {{' + bad[0] + '}}', true); return; }
+  if (!CRM_CONFIRM) {
+    CRM_CONFIRM = true;
+    renderComposer();
+    toast('Click send again to confirm ' + targets.length + ' email(s)');
+    return;
+  }
+  CRM_CONFIRM = false;
+  let sent = 0;
+  try {
+    for (const item of prepared) {
+      await adminApi('/api/admin/reply', { code: item.x.code, subject: item.subject, message: item.message });
+      sent += 1;
+    }
+    toast('Sent ' + sent + ' email(s)');
+    renderComposer();
+    load(false);
+  } catch (e) {
+    toast('Stopped after ' + sent + ' email(s): ' + e.message, true);
+  }
+}
+
+function openCrmWhatsApp() {
+  const targets = crmTargets().filter((x) => x.phone);
+  if (!targets.length) { toast('Select contacts with a phone number', true); return; }
+  const body = $('crmBody') ? $('crmBody').value.trim() : '';
+  if (!body) { toast('Write a message first', true); return; }
+  const links = targets.map((x) => ({
+    label: x.name + ' · ' + x.phone,
+    href: 'https://wa.me/' + waNumber(x.phone) + '?text=' + encodeURIComponent(renderVars(body, x)),
+  }));
+  if (links.length === 1) { window.open(links[0].href, '_blank', 'noopener'); toast('WhatsApp opened'); return; }
+  $('crmLinks').innerHTML = links.map((l) => `<div class="link-row"><span>${esc(l.label)}</span><a href="${esc(l.href)}" target="_blank" rel="noopener">Open <i class="ph ph-arrow-square-out"></i></a></div>`).join('');
+  toast(links.length + ' personalized WhatsApp links ready');
+}
+
+function openCrmCall() {
+  const targets = crmTargets().filter((x) => x.phone);
+  if (!targets.length) { toast('Select contacts with a phone number', true); return; }
+  const links = targets.map((x) => ({ label: x.name + ' · ' + x.phone, href: 'tel:' + encodeURIComponent(x.phone) }));
+  if (links.length === 1) { window.location.href = links[0].href; return; }
+  $('crmLinks').innerHTML = links.map((l) => `<div class="link-row"><span>${esc(l.label)}</span><a href="${esc(l.href)}">Call <i class="ph ph-phone"></i></a></div>`).join('');
+  toast(links.length + ' dial links ready');
+}
+
+async function saveCrmTemplate() {
+  if (DATA_SOURCE !== 'bot') { toast('Saving templates needs the live bot admin API', true); return; }
+  const name = $('crmTplName') ? $('crmTplName').value.trim() : '';
+  const body = $('crmBody') ? $('crmBody').value.trim() : '';
+  const subject = $('crmSubject') ? $('crmSubject').value.trim() : '';
+  if (!name) { toast('Give the template a name first', true); return; }
+  if (!body) { toast('Write a message before saving a template', true); return; }
+  try {
+    const r = await adminApi('/api/admin/templates', { template: { name, subject, body, channel: CRM_CHANNEL } });
+    TEMPLATES = Array.isArray(r.templates) ? r.templates : TEMPLATES;
+    renderTemplateList();
+    updateNavCounts();
+    toast('Template saved');
+  } catch (e) { toast(e.message, true); }
+}
+
+function renderTemplateList() {
+  const list = allTemplates().filter((t) => TPL_FILTER === 'all' || t.channel === TPL_FILTER);
+  $('tplList').innerHTML = list.length ? list.map((t) => `
+    <div class="tpl-card">
+      <div class="tpl-top"><h4>${esc(t.name)}</h4><span class="tpl-badge ${esc(t.channel)}">${esc(CHANNELS[t.channel] || t.channel)}</span></div>
+      ${t.subject ? `<span class="panel-sub">${esc(t.subject)}</span>` : ''}
+      <div class="tpl-body">${esc(t.body || '')}</div>
+      <div class="tpl-actions">
+        <button class="mini-btn" data-tpl-use="${esc(t.id)}"><i class="ph ph-arrow-square-out"></i> Use</button>
+        <button class="mini-btn" data-tpl-copy="${esc(t.id)}"><i class="ph ph-copy"></i> ${t.custom ? 'Duplicate' : 'Copy to custom'}</button>
+        ${t.custom ? `<button class="mini-btn" data-tpl-edit="${esc(t.id)}"><i class="ph ph-pencil-simple"></i> Edit</button><button class="mini-btn danger" data-tpl-del="${esc(t.id)}"><i class="ph ph-trash"></i></button>` : ''}
+      </div>
+    </div>`).join('') : '<div class="empty-mini">No templates in this channel yet.</div>';
+
+  $('tplList').querySelectorAll('[data-tpl-use]').forEach((b) => b.addEventListener('click', () => {
+    CRM_CONFIRM = false;
+    switchView('crm');
+    loadCrmTemplate(b.dataset.tplUse);
+  }));
+  $('tplList').querySelectorAll('[data-tpl-copy]').forEach((b) => b.addEventListener('click', () => {
+    const tpl = allTemplates().find((t) => t.id === b.dataset.tplCopy);
+    if (!tpl) return;
+    TPL_EDIT_ID = '';
+    $('tplEditName').value = 'Copy of ' + tpl.name;
+    $('tplEditChannel').value = tpl.channel;
+    $('tplEditSubject').value = tpl.subject || '';
+    $('tplEditBody').value = tpl.body || '';
+    $('tplEditorHint').textContent = 'Editing a copy — save to create a custom template.';
+    $('tplEditName').focus();
+  }));
+  $('tplList').querySelectorAll('[data-tpl-edit]').forEach((b) => b.addEventListener('click', () => {
+    const tpl = allTemplates().find((t) => t.id === b.dataset.tplEdit);
+    if (!tpl) return;
+    TPL_EDIT_ID = tpl.id;
+    $('tplEditName').value = tpl.name;
+    $('tplEditChannel').value = tpl.channel;
+    $('tplEditSubject').value = tpl.subject || '';
+    $('tplEditBody').value = tpl.body || '';
+    $('tplEditorHint').textContent = 'Editing custom template: ' + tpl.name;
+    $('tplEditName').focus();
+  }));
+  $('tplList').querySelectorAll('[data-tpl-del]').forEach((b) => b.addEventListener('click', async () => {
+    try {
+      await adminApi('/api/admin/templates/delete', { id: b.dataset.tplDel });
+      TEMPLATES = TEMPLATES.filter((t) => t.id !== b.dataset.tplDel);
+      renderTemplateList();
+      updateNavCounts();
+      toast('Template deleted');
+    } catch (e) { toast(e.message, true); }
+  }));
+  document.querySelectorAll('[data-tpl-channel]').forEach((b) => b.classList.toggle('on', b.dataset.tplChannel === TPL_FILTER));
+}
+
+function clearTemplateEditor() {
+  TPL_EDIT_ID = '';
+  $('tplEditName').value = '';
+  $('tplEditSubject').value = '';
+  $('tplEditBody').value = '';
+  $('tplEditChannel').value = 'email';
+  $('tplEditorHint').textContent = 'Create a new custom message or edit an existing one';
+}
+
+async function saveTemplateEditor() {
+  if (DATA_SOURCE !== 'bot') { toast('Saving templates needs the live bot admin API', true); return; }
+  const name = $('tplEditName').value.trim();
+  const body = $('tplEditBody').value.trim();
+  const subject = $('tplEditSubject').value.trim();
+  const channel = $('tplEditChannel').value;
+  if (!name || !body) { toast('Template needs a name and message', true); return; }
+  try {
+    const payload = { name, body, subject, channel };
+    if (TPL_EDIT_ID) payload.id = TPL_EDIT_ID;
+    const r = await adminApi('/api/admin/templates', { template: payload });
+    TEMPLATES = Array.isArray(r.templates) ? r.templates : TEMPLATES;
+    clearTemplateEditor();
+    renderTemplateList();
+    updateNavCounts();
+    toast('Template saved');
+  } catch (e) { toast(e.message, true); }
+}
+
+function renderActivity() {
+  const events = [];
+  DATA.forEach((x) => {
+    (x.audit || []).forEach((a) => events.push({ at: a.at, action: a.action || 'Update', by: a.by, detail: `${x.name} · ${x.code}` }));
+    (x.notes || []).forEach((n) => events.push({ at: n.at, action: 'Internal note', by: n.by, detail: n.text }));
+    (x.replies || []).forEach((r) => events.push({ at: r.at, action: 'Email sent', by: r.by, detail: `${r.subject || ''} — ${r.body || ''}` }));
+  });
+  events.sort((a,b) => new Date(b.at) - new Date(a.at));
+  $('activityList').innerHTML = events.length ? events.slice(0, 150).map((e) => `
+    <div class="activity-item"><time>${fmtDate(e.at)}</time><div><b>${esc(e.action)}${e.by ? ' · ' + esc(e.by) : ''}</b><p>${esc(e.detail || '')}</p></div></div>`).join('') : '<div class="empty-mini">No activity recorded yet.</div>';
+  $('activityCount').textContent = events.length + ' events';
+}
+
+function renderSettings() {
+  const s = (META && META.settings) || {};
+  const kv = (k, v) => `<div class="kv-line"><span>${esc(k)}</span><b>${esc(v == null || v === '' ? '—' : v)}</b></div>`;
+  $('setConnection').innerHTML =
+    kv('Live status', DATA_SOURCE === 'bot' ? 'Bot admin API' : 'Supabase read-only') +
+    kv('Email sending', BOT_STATE ? (BOT_STATE.emailEnabled ? 'Ready' : 'Not configured') : 'Unknown') +
+    kv('Storage', DATA_SOURCE === 'bot' ? 'Bot database + Supabase' : 'Supabase REST') +
+    kv('Last update', $('updatedAt').textContent);
+  $('setMute').checked = Boolean(s.muted);
+  $('setSession').innerHTML = kv('Signed in as', SESSION ? SESSION.email : '—') + kv('Access', 'Supabase Auth user token');
+}
+
+function showApp() {
+  $('login').style.display = 'none';
+  $('app').style.display = 'block';
+  $('userChip').style.display = 'inline-flex';
+  $('userEmail').textContent = SESSION ? SESSION.email : '';
+  $('sideUserEmail').textContent = SESSION ? SESSION.email : '—';
+  applyPrefs();
+  load(true);
+  setupAutoRefresh();
+}
+
+async function signIn() {
+  const email = $('email').value.trim();
+  const password = $('pw').value;
+  if (!email || !password) { toast('Enter your admin email and password', true); return; }
+  const btn = $('unlock');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="ph ph-circle-notch"></i> Signing in…';
+  $('loginHint').textContent = '';
+  try {
+    const r = await fetch(AUTH + '/token?grant_type=password', {
+      method: 'POST', headers: authHeaders(false),
+      body: JSON.stringify({ email, password })
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      const msg = data.msg || data.error_description || data.error || 'Sign in failed';
+      if (/invalid login credentials/i.test(msg)) {
+        $('loginHint').textContent = 'No Supabase user matches those credentials. Create one in Supabase → Authentication → Users → Add user.';
+      }
+      throw new Error(msg);
+    }
+    if (!data.access_token) throw new Error('No access token returned');
+    SESSION = {
+      access: data.access_token,
+      refresh: data.refresh_token,
+      expiresAt: Date.now() + (data.expires_in || 3600) * 1000,
+      email: (data.user && data.user.email) || email
+    };
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(SESSION));
+    showApp();
+  } catch (e) {
+    toast('Sign in failed: ' + e.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="ph ph-lock-key"></i> Sign in securely';
+  }
+}
+
+async function signOut() {
+  try {
+    if (SESSION && SESSION.access) {
+      await fetch(AUTH + '/logout', { method: 'POST', headers: authHeaders(true) });
+    }
+  } catch (_) {}
+  sessionStorage.removeItem(SESSION_KEY);
+  SESSION = null;
+  clearInterval(TIMER);
+  $('app').style.display = 'none';
+  $('login').style.display = 'flex';
+  $('userChip').style.display = 'none';
+  $('pw').value = '';
+}
+
+async function restoreSession() {
+  const raw = sessionStorage.getItem(SESSION_KEY);
+  if (!raw) return;
+  try {
+    SESSION = JSON.parse(raw);
+    if (!SESSION.access) throw new Error('bad session');
+    await ensureFreshToken();
+    showApp();
+  } catch (_) {
+    sessionStorage.removeItem(SESSION_KEY);
+    SESSION = null;
+  }
+}
+
+/* ---------- AUTH + GLOBAL TOOLS ---------- */
+$('unlock').addEventListener('click', signIn);
+$('email').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('pw').focus(); });
+$('pw').addEventListener('keydown', (e) => { if (e.key === 'Enter') signIn(); });
+$('logout').addEventListener('click', signOut);
+$('refresh').addEventListener('click', () => load(true));
+$('exportBtn').addEventListener('click', exportCsv);
+$('sideExport').addEventListener('click', exportCsv);
+$('sideSignOut').addEventListener('click', signOut);
+$('setSignOut').addEventListener('click', signOut);
+$('drawerBg').addEventListener('click', closeDrawer);
+
+/* ---------- SIDEBAR NAVIGATION ---------- */
+document.querySelectorAll('.nav-item').forEach((b) => b.addEventListener('click', () => switchView(b.dataset.view)));
+document.querySelectorAll('[data-goto]').forEach((b) => b.addEventListener('click', () => switchView(b.dataset.goto)));
+$('anTabs').addEventListener('click', (e) => {
+  const tab = e.target.closest('[data-an]');
+  if (!tab) return;
+  AN_TAB = tab.dataset.an;
+  document.querySelectorAll('[data-an]').forEach((t) => t.classList.toggle('on', t === tab));
+  renderAnalytics();
+});
+$('anRefresh').addEventListener('click', async () => {
+  toast('Reading live metrics…');
+  await loadAnalytics(true);
+  toast('Metrics refreshed');
+});
+$('menuBtn').addEventListener('click', () => { $('sidebar').classList.add('open'); $('sideScrim').classList.add('on'); });
+$('sideClose').addEventListener('click', () => { $('sidebar').classList.remove('open'); $('sideScrim').classList.remove('on'); });
+$('sideScrim').addEventListener('click', () => { $('sidebar').classList.remove('open'); $('sideScrim').classList.remove('on'); });
+
+/* ---------- INQUIRIES + ARCHIVE ---------- */
+$('search').addEventListener('input', (e) => { QUERY = e.target.value.trim(); render(); });
+$('sort').addEventListener('change', (e) => { SORT = e.target.value; render(); });
+$('chips').addEventListener('click', (e) => {
+  const b = e.target.closest('.chip');
+  if (!b) return;
+  FILTER = b.dataset.status;
+  $('chips').querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c === b));
+  render();
+});
+$('archiveSearch').addEventListener('input', renderArchive);
+
+/* ---------- CRM OUTREACH DESK ---------- */
+$('crmSearch').addEventListener('input', (e) => { CRM_QUERY = e.target.value; renderCrmContacts(); });
+$('crmSelectAll').addEventListener('click', () => {
+  const list = crmContacts();
+  list.forEach((x) => { if (!CRM_SELECTED.includes(x.code)) CRM_SELECTED.push(x.code); });
+  CRM_CONFIRM = false;
+  renderCrmContacts(); renderComposer(); updateNavCounts();
+  toast(list.length + ' contact' + (list.length === 1 ? '' : 's') + ' selected');
+});
+$('crmClear').addEventListener('click', () => {
+  CRM_SELECTED = []; CRM_CONFIRM = false;
+  renderCrmContacts(); renderComposer(); updateNavCounts();
+});
+document.querySelectorAll('[data-channel]').forEach((b) => b.addEventListener('click', () => {
+  CRM_CHANNEL = b.dataset.channel;
+  CRM_CONFIRM = false;
+  document.querySelectorAll('[data-channel]').forEach((tab) => tab.classList.toggle('on', tab === b));
+  renderComposer();
+}));
+
+/* ---------- TEMPLATE LIBRARY ---------- */
+$('tplVars').innerHTML = VARIABLES.map((v) => `<button type="button" class="var-chip" data-tpl-var="${v}">{{${v}}}</button>`).join('');
+$('tplVars').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-tpl-var]');
+  if (!b) return;
+  const el = $('tplEditBody');
+  const token = '{{' + b.dataset.tplVar + '}}';
+  const start = el.selectionStart == null ? el.value.length : el.selectionStart;
+  const end = el.selectionEnd == null ? start : el.selectionEnd;
+  el.value = el.value.slice(0, start) + token + el.value.slice(end);
+  el.focus();
+  el.selectionStart = el.selectionEnd = start + token.length;
+});
+$('tplTabs').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-tpl-channel]');
+  if (!b) return;
+  TPL_FILTER = b.dataset.tplChannel;
+  document.querySelectorAll('[data-tpl-channel]').forEach((tab) => tab.classList.toggle('on', tab === b));
+  renderTemplateList();
+});
+$('tplEditSave').addEventListener('click', saveTemplateEditor);
+$('tplEditCancel').addEventListener('click', clearTemplateEditor);
+
+/* ---------- SETTINGS ---------- */
+on('setMute', 'change', async (e) => {
+  const muted = e.target.checked;
+  try {
+    await adminApi('/api/admin/settings', { muted });
+    toast(muted ? 'Admin alerts muted' : 'Admin alerts active');
+  } catch (err) {
+    e.target.checked = !muted;
+    toast(err.message, true);
+  }
+});
+$('setSync').addEventListener('click', async () => {
+  const btn = $('setSync');
+  btn.disabled = true;
+  try {
+    const r = await adminApi('/api/admin/sync', {});
+    toast('Pushed ' + r.rows + ' rows to Supabase');
+    load(true);
+  } catch (e) { toast(e.message, true); }
+  finally { btn.disabled = false; }
+});
+$('prefRefresh').addEventListener('change', (e) => {
+  PREF_REFRESH = e.target.checked;
+  localStorage.setItem('aracs_pref_refresh', PREF_REFRESH ? 'on' : 'off');
+  setupAutoRefresh();
+  toast(PREF_REFRESH ? 'Auto refresh on' : 'Auto refresh off');
+});
+$('prefCompact').addEventListener('change', (e) => {
+  PREF_COMPACT = e.target.checked;
+  localStorage.setItem('aracs_pref_compact', PREF_COMPACT ? 'on' : 'off');
+  applyPrefs();
+});
+$('prefLight').addEventListener('change', (e) => {
+  PREF_LIGHT = e.target.checked;
+  localStorage.setItem('aracs_theme', PREF_LIGHT ? 'light' : 'dark');
+  applyTheme();
+  toast(PREF_LIGHT ? 'Light theme enabled' : 'Dark theme enabled');
+});
+$('sideToggle').addEventListener('click', () => {
+  SIDE_COLLAPSED = !SIDE_COLLAPSED;
+  localStorage.setItem('aracs_sidebar', SIDE_COLLAPSED ? 'collapsed' : 'open');
+  applySidebar();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeDrawer();
+    $('sidebar').classList.remove('open');
+    $('sideScrim').classList.remove('on');
+  }
+  if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) { e.preventDefault(); switchView('inquiries'); $('search').focus(); }
+});
+applyTheme();
+applySidebar();
+restoreSession();
+</script>
+</body>
+</html>
