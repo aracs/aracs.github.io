@@ -823,7 +823,7 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 
       <section class="view" id="view-analytics">
         <div class="page-head">
-          <div><h2>Live <em>analytics</em></h2><p>Grafana-style telemetry from the running bot, Supabase tables, NeoChip members, and the ARACS inbox. Every figure is read from real data.</p></div>
+          <div><h2>Live <em>analytics</em></h2><p>Grafana-style telemetry from the running bot, database tables, NeoChip members, and the ARACS inbox. Every figure is read from real data.</p></div>
           <span class="pill-live" id="anUpdated">—</span>
         </div>
         <div class="an-tabs" id="anTabs">
@@ -852,8 +852,8 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
           </div>
           <div class="setting-card panel">
             <h3><i class="ph ph-cloud-arrow-up"></i> Data sync</h3>
-            <p class="panel-sub">Force the bot to write its current database to Supabase. Use this if the table looks empty after a redeploy.</p>
-            <button class="abtn primary" id="setSync" style="width:100%;margin-top:12px"><i class="ph ph-cloud-arrow-up"></i> Push to Supabase now</button>
+            <p class="panel-sub">Force the bot to write its current data to the database. Use this if the table looks empty after a redeploy.</p>
+            <button class="abtn primary" id="setSync" style="width:100%;margin-top:12px"><i class="ph ph-cloud-arrow-up"></i> Push to database now</button>
           </div>
           <div class="setting-card panel">
             <h3><i class="ph ph-eye"></i> Display</h3>
@@ -863,7 +863,7 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
           </div>
           <div class="setting-card panel" style="grid-column:1/-1">
             <h3><i class="ph ph-list-bullets"></i> NeoChip lists</h3>
-            <p class="panel-sub">The values offered in member Role, Focus, and Status dropdowns. Add or remove values, then save. The bot stores them in its database and syncs them to Supabase. Removing a value never changes existing members; values already on a member stay available in the dropdowns and filters.</p>
+            <p class="panel-sub">The values offered in member Role, Focus, and Status dropdowns. Add or remove values, then save. The bot stores them in the database and syncs them there. Removing a value never changes existing members; values already on a member stay available in the dropdowns and filters.</p>
             <div id="neoDictionaryEditor" style="margin-top:12px"></div>
             <button class="abtn primary" id="neoDictSave" style="margin-top:14px"><i class="ph ph-floppy-disk"></i> Save lists</button>
           </div>
@@ -1146,7 +1146,7 @@ const pick = (...vals) => vals.find((v) => v !== undefined && v !== null && Stri
 const waNumber = (p) => { let d = String(p || '').replace(/\D/g, ''); if (d.startsWith('0')) d = '213' + d.slice(1); else if (!d.startsWith('213') && d.length <= 9) d = '213' + d; return d; };
 
 function toast(msg, err) {
-  $('toastTxt').textContent = msg;
+  $('toastTxt').textContent = dbLabel(msg);
   $('toast').classList.toggle('err', !!err);
   $('toast').classList.add('show');
   clearTimeout(toast._t);
@@ -1163,11 +1163,11 @@ function notify(item) {
   if (existing) {
     existing.read = false;
     existing.at = new Date().toISOString();
-    existing.title = item.title || existing.title;
-    existing.text = item.text || existing.text;
+    existing.title = item.title ? dbLabel(item.title) : existing.title;
+    existing.text = item.text ? dbLabel(item.text) : existing.text;
     existing.view = item.view || existing.view;
   } else {
-    NOTIFICATIONS.unshift({ id, type: item.type || 'info', title: item.title || 'Update', text: item.text || '', at: new Date().toISOString(), view: item.view || '', read: false });
+    NOTIFICATIONS.unshift({ id, type: item.type || 'info', title: item.title ? dbLabel(item.title) : 'Update', text: item.text ? dbLabel(item.text) : '', at: new Date().toISOString(), view: item.view || '', read: false });
   }
   NOTIFICATIONS = NOTIFICATIONS.slice(0, 60);
   saveNotifications();
@@ -1217,7 +1217,7 @@ function renderNotifications() {
   list.innerHTML = NOTIFICATIONS.map((n) => `
     <div class="notify-item ${esc(n.type)} ${n.read ? '' : 'unread'}" data-notify="${esc(n.id)}" data-view="${esc(n.view || '')}">
       <div class="n-ic"><i class="ph ${esc(NOTIFY_ICONS[n.type] || NOTIFY_ICONS.info)}"></i></div>
-      <div><div class="n-title">${esc(n.title)}</div>${n.text ? `<div class="n-text">${esc(n.text)}</div>` : ''}<span class="n-time">${esc(relTime(n.at))}</span></div>
+      <div><div class="n-title">${esc(dbLabel(n.title))}</div>${n.text ? `<div class="n-text">${esc(dbLabel(n.text))}</div>` : ''}<span class="n-time">${esc(relTime(n.at))}</span></div>
     </div>`).join('');
   list.querySelectorAll('[data-notify]').forEach((el) => el.addEventListener('click', () => {
     const item = NOTIFICATIONS.find((n) => n.id === el.dataset.notify);
@@ -1304,6 +1304,20 @@ function relTime(v) {
    Built for Grafana-style stat / gauge / time-series / table panels.
    ============================================================ */
 const AN_COLORS = ['#0aa58f', '#0b7ea8', '#e09b1c', '#d9534f', '#7c6cf0', '#c2419b', '#4f9d69', '#6b7f93'];
+/* The panel uses a vendor-neutral name for the backing database in the UI. */
+function dbLabel(value) {
+  return String(value ?? '').replace(/supabase/gi, (m) => (m[0] === 'S' ? 'Database' : 'database'));
+}
+function dbLabelDeep(value) {
+  if (typeof value === 'string') return dbLabel(value);
+  if (Array.isArray(value)) return value.map(dbLabelDeep);
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) out[dbLabel(k)] = dbLabelDeep(v);
+    return out;
+  }
+  return value;
+}
 let AN_UID = 0;
 
 function anEmpty(message) {
@@ -1502,7 +1516,7 @@ async function loadFromSupabase() {
     headers: authHeaders(true)
   });
   if (res.status === 401 || res.status === 403) throw new Error('Session expired');
-  if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+  if (!res.ok) throw new Error('Database HTTP ' + res.status);
   const rows = await res.json();
   const metaRow = rows.find((r) => r.code === 'ARACS#META');
   META = metaRow ? metaRow.form_data || {} : null;
@@ -1539,7 +1553,7 @@ async function load(showToast) {
     renderSystem();
     loadAnalytics();
     dot.classList.remove('bad');
-    txt.textContent = DATA_SOURCE === 'bot' ? 'Bot live' : 'Supabase only';
+    txt.textContent = DATA_SOURCE === 'bot' ? 'Bot live' : 'Database only';
     $('updatedAt').textContent = 'Updated ' + new Date().toLocaleTimeString();
     render();
     if (showToast) toast('Dashboard updated');
@@ -1549,7 +1563,7 @@ async function load(showToast) {
     txt.textContent = 'Offline';
     $('updatedAt').textContent = 'Connection issue';
     if (!NOTIFICATIONS.some((n) => n.id === 'alert:offline')) notify({ id: 'alert:offline', type: 'alert', title: 'Connection lost', text: e.message, view: 'settings' });
-    if (showToast) toast('Could not reach Supabase: ' + e.message, true);
+    if (showToast) toast('Could not reach database: ' + e.message, true);
   }
 }
 
@@ -1799,7 +1813,7 @@ async function loadNeoMembers(force) {
   try {
     await ensureFreshToken();
     const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 9000);
-    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    if (!res.ok) throw new Error('Database HTTP ' + res.status);
     const rows = await res.json();
     if (Array.isArray(rows)) {
       const next = neoRowsFrom(rows);
@@ -1814,7 +1828,7 @@ async function loadNeoMembers(force) {
       }
       NEO_KNOWN_IDS = new Set(next.map((m) => m.id).filter(Boolean));
       NEO_ROWS = next;
-      NEO_SOURCE = 'Supabase · ' + next.length + ' members';
+      NEO_SOURCE = 'Database · ' + next.length + ' members';
     }
   } catch (e) {
     let botFallback = false;
@@ -1829,7 +1843,7 @@ async function loadNeoMembers(force) {
           created_at: r.createdAt,
           form_data: r.raw,
         })));
-        NEO_SOURCE = 'Bot · ' + (viaBot.source || 'supabase') + ' · ' + NEO_ROWS.length + ' members';
+        NEO_SOURCE = 'Bot · ' + (viaBot.source || 'database') + ' · ' + NEO_ROWS.length + ' members';
       } else {
         botFallback = true;
       }
@@ -1859,7 +1873,7 @@ async function anProbeTable(table, column) {
     const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent(table) + '?select=' + encodeURIComponent(column) + '&limit=0', {
       headers: { ...authHeaders(true), Prefer: 'count=exact' },
     }, 6000);
-    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    if (!res.ok) throw new Error('Database HTTP ' + res.status);
     const range = String(res.headers.get('content-range') || '');
     const count = Number(range.split('/').pop());
     return { table, status: 'ok', latencyMs: Date.now() - started, rowCount: Number.isFinite(count) ? count : null, lastUpdated: null, error: null };
@@ -1892,29 +1906,29 @@ async function loadAnalyticsFallback() {
   let neochip = { available: false, error: 'NeoChip Members rows could not be read', table: 'NeoChip Members', summary: {}, statusCounts: {}, roles: [], focuses: [], education: [], interests: [], wilayas: [], skills: [], days: [], recent: [], emailLog: [] };
   try {
     const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 8000);
-    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    if (!res.ok) throw new Error('Database HTTP ' + res.status);
     const rows = await res.json();
     NEO_ROWS = neoRowsFrom(rows);
-    NEO_SOURCE = 'Supabase · ' + NEO_ROWS.length + ' members';
+    NEO_SOURCE = 'Database · ' + NEO_ROWS.length + ' members';
     if (!NEO_KNOWN_IDS) NEO_KNOWN_IDS = new Set(NEO_ROWS.map((m) => m.id).filter(Boolean));
-    neochip = { ...anLocalNeo(rows), readSource: 'supabase-user-token' };
+    neochip = { ...anLocalNeo(rows), readSource: 'database-user-token' };
     const probe = tables.find((t) => t.table === 'NeoChip Members');
     if (probe && probe.status === 'ok' && probe.rowCount === null) probe.rowCount = rows.length;
   } catch (e) { neochip.error = e.message; }
   const checks = [
     { name: 'Bot process', status: botHealth && botHealth.ok ? 'ok' : 'error', detail: botHealth ? `Online for ${Math.round((botHealth.uptimeSeconds || 0) / 60)} min` : '/health unreachable', latencyMs: null },
-    { name: `Supabase ${CONFIG.table}`, status: tables[0].status, detail: tables[0].status === 'ok' ? `${tables[0].rowCount} rows · ${tables[0].latencyMs} ms` : tables[0].error, latencyMs: tables[0].latencyMs },
-    { name: 'Supabase NeoChip Members', status: tables[1].status, detail: tables[1].status === 'ok' ? `${tables[1].rowCount} rows · ${tables[1].latencyMs} ms` : tables[1].error, latencyMs: tables[1].latencyMs },
+    { name: `Database ${CONFIG.table}`, status: tables[0].status, detail: tables[0].status === 'ok' ? `${tables[0].rowCount} rows · ${tables[0].latencyMs} ms` : tables[0].error, latencyMs: tables[0].latencyMs },
+    { name: 'Database NeoChip Members', status: tables[1].status, detail: tables[1].status === 'ok' ? `${tables[1].rowCount} rows · ${tables[1].latencyMs} ms` : tables[1].error, latencyMs: tables[1].latencyMs },
     { name: 'NeoChip member read', status: neochip.available ? 'ok' : 'warn', detail: neochip.available ? `${neochip.summary.members} members` : neochip.error, latencyMs: null },
-    { name: 'Supabase Auth', status: SESSION ? 'ok' : 'error', detail: 'Panel session loaded', latencyMs: null },
+    { name: 'Database Auth', status: SESSION ? 'ok' : 'error', detail: 'Panel session loaded', latencyMs: null },
     { name: 'Email delivery', status: botHealth && botHealth.emailReplies ? 'ok' : 'warn', detail: botHealth ? botHealth.emailProvider : 'Unknown', latencyMs: null },
-    { name: 'Storage mode', status: botHealth && String(botHealth.storage || '').indexOf('supabase') === 0 ? 'ok' : 'warn', detail: botHealth ? botHealth.storage : 'Unknown', latencyMs: null },
+    { name: 'Storage mode', status: botHealth && String(botHealth.storage || '').indexOf('supabase') === 0 ? 'ok' : 'warn', detail: botHealth ? dbLabel(botHealth.storage) : 'Unknown', latencyMs: null },
   ];
   const bot = botHealth ? { ...botHealth, uptimeHuman: botHealth.uptimeSeconds ? `${Math.round(botHealth.uptimeSeconds / 60)}m` : '—', memory: {}, cpu: {}, loadAvg: [], hostMemory: {}, templates: 0, templatesByChannel: {}, supabaseReady: false } : { uptimeHuman: '—', memory: {}, cpu: {}, loadAvg: [], hostMemory: {}, templatesByChannel: {} };
   return {
     ok: true, source: 'panel-fallback', generatedAt: new Date().toISOString(), timezone: 'UTC',
     aracs: anLocalAracs(), neochip, bot,
-    supabase: { configured: true, ready: tables[0].status === 'ok', auth: { configured: true, verification: 'Supabase Auth', keyType: 'publishable' }, tables },
+    supabase: { configured: true, ready: tables[0].status === 'ok', auth: { configured: true, verification: 'Database Auth', keyType: 'publishable' }, tables },
     system: anSystemFrom(botHealth, checks, tables),
   };
 }
@@ -1922,13 +1936,13 @@ async function loadAnalyticsFallback() {
 async function fetchNeoFromSupabase() {
   try {
     const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 9000);
-    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    if (!res.ok) throw new Error('Database HTTP ' + res.status);
     const rows = await res.json();
     if (!Array.isArray(rows) || !rows.length) return null;
     NEO_ROWS = neoRowsFrom(rows);
-    NEO_SOURCE = 'Supabase · ' + NEO_ROWS.length + ' members';
+    NEO_SOURCE = 'Database · ' + NEO_ROWS.length + ' members';
     if (!NEO_KNOWN_IDS) NEO_KNOWN_IDS = new Set(NEO_ROWS.map((m) => m.id).filter(Boolean));
-    return { ...anLocalNeo(rows), readSource: 'supabase-user-token' };
+    return { ...anLocalNeo(rows), readSource: 'database-user-token' };
   } catch (_) { return null; }
 }
 
@@ -1936,7 +1950,7 @@ async function loadAnalytics(force) {
   if (AN_LOADING && !force) return;
   AN_LOADING = true;
   if (CURRENT_VIEW === 'analytics' && $('anBody') && !ANALYTICS) {
-    $('anBody').innerHTML = '<div class="an-empty"><i class="ph ph-circle-notch"></i>Reading live metrics from the bot and Supabase…</div>';
+    $('anBody').innerHTML = '<div class="an-empty"><i class="ph ph-circle-notch"></i>Reading live metrics from the bot and the database…</div>';
   }
   try {
     await ensureFreshToken();
@@ -1951,7 +1965,7 @@ async function loadAnalytics(force) {
       if (direct && Number(direct.summary.members || 0) > 0) {
         ANALYTICS.neochip = direct;
         const check = ((ANALYTICS.system && ANALYTICS.system.checks) || []).find((c) => c.name === 'NeoChip member read');
-        if (check) { check.status = 'ok'; check.detail = direct.summary.members + ' members · Supabase admin read'; }
+        if (check) { check.status = 'ok'; check.detail = direct.summary.members + ' members · database read'; }
       }
     }
   } catch (_) {
@@ -2089,13 +2103,13 @@ function renderSystem() {
    ANALYTICS VIEWS
    ============================================================ */
 function anRaw(title, object) {
-  return `<details class="raw" style="margin-top:14px"><summary><i class="ph ph-brackets-curly"></i> ${esc(title)}</summary><pre>${esc(JSON.stringify(object || {}, null, 2))}</pre></details>`;
+  return `<details class="raw" style="margin-top:14px"><summary><i class="ph ph-brackets-curly"></i> ${esc(title)}</summary><pre>${esc(JSON.stringify(dbLabelDeep(object || {}), null, 2))}</pre></details>`;
 }
 
 function anHealthList(checks) {
   const list = Array.isArray(checks) ? checks : [];
   if (!list.length) return anEmpty('No health checks available');
-  return `<div class="an-health">${list.map((c) => `<div class="an-check"><span class="an-dot ${esc(c.status)}"></span><div style="flex:1;min-width:0"><div class="name">${esc(c.name)}</div><div class="detail">${esc(c.detail || '')}</div></div>${c.latencyMs !== null && c.latencyMs !== undefined ? `<span class="lat">${esc(c.latencyMs)} ms</span>` : ''}</div>`).join('')}</div>`;
+  return `<div class="an-health">${list.map((c) => `<div class="an-check"><span class="an-dot ${esc(c.status)}"></span><div style="flex:1;min-width:0"><div class="name">${esc(dbLabel(c.name))}</div><div class="detail">${esc(dbLabel(c.detail || ''))}</div></div>${c.latencyMs !== null && c.latencyMs !== undefined ? `<span class="lat">${esc(c.latencyMs)} ms</span>` : ''}</div>`).join('')}</div>`;
 }
 
 function anOverview(A) {
@@ -2109,7 +2123,7 @@ function anOverview(A) {
 
   return `
     <div class="an-grid an-4">
-      ${anStat('Supabase health', (sy.summary ? sy.summary.healthy + '/' + sy.summary.total : '—'), health + ' · ' + tableCount + ' tables probed', null)}
+      ${anStat('Database health', (sy.summary ? sy.summary.healthy + '/' + sy.summary.total : '—'), health + ' · ' + tableCount + ' tables probed', null)}
       ${anStat('Bot uptime', bo.uptimeHuman || '—', bo.inquiries != null ? bo.inquiries + ' active · ' + bo.archived + ' archived' : 'Process telemetry', null)}
       ${anStat('ARACS inquiries', a.total, a.active + ' active · ' + a.archived + ' archived', arVals)}
       ${anStat('NeoChip members', n.members, n.pending + ' pending · ' + n.approved + ' approved', neVals)}
@@ -2141,7 +2155,7 @@ function anOverview(A) {
         `<b>${esc(r.name)}</b>`, anBadge(r.status), esc(r.role), esc(r.focus), esc(relTime(r.submittedAt)),
       ])), 'Live from NeoChip Members')}
     </div>
-    <div class="an-note">Source: ${esc(A.source === 'bot' ? 'Bot analytics API /api/admin/analytics' : 'Panel fallback with live Supabase REST reads')} · generated ${esc(fmtDate(A.generatedAt))} · timezone ${esc(A.timezone || 'UTC')}</div>`;
+    <div class="an-note">Source: ${esc(A.source === 'bot' ? 'Bot analytics API /api/admin/analytics' : 'Panel fallback with live database reads')} · generated ${esc(fmtDate(A.generatedAt))} · timezone ${esc(A.timezone || 'UTC')}</div>`;
 }
 
 function anNeoView(A) {
@@ -2191,12 +2205,12 @@ function anNeoView(A) {
     ${anPanel('users-three', 'Applicant register', anTable(['Name', 'Email', 'Status', 'Role', 'Focus', 'Education', 'Submitted', 'Audit', 'Mail'], (ne.recent || []).map((r) => [
       `<b>${esc(r.name)}</b>`, esc(r.email), anBadge(r.status), esc(r.role), esc(r.focus), esc(r.education),
       esc(relTime(r.submittedAt)), anNum(r.auditEntries), anNum(r.emailEvents),
-    ]), 'No member rows returned by Supabase'))}
+    ]), 'No member rows returned by the database'))}
     ${anPanel('envelope-simple', 'Email event log', anTable(['When', 'Status', 'Recipient', 'Applicant', 'Result'], (ne.emailLog || []).map((r) => [
       esc(relTime(r.at)), anBadge(r.status), esc(r.to), esc(r.name), anBadge(r.sent ? 'sent' : 'failed'),
     ]), 'No email events recorded'), 'Latest 30 events from form_data.email_log')}
-    <div class="an-note">NeoChip table: ${esc(ne.table || 'NeoChip Members')} · source: ${esc(ne.readSource || (ANALYTICS.source === 'bot' ? 'bot analytics API' : 'panel Supabase REST'))}</div>
-    ${ne.error ? `<div class="an-note" style="color:var(--red)">NeoChip read error: ${esc(ne.error)}</div>` : ''}
+    <div class="an-note">NeoChip table: ${esc(ne.table || 'NeoChip Members')} · source: ${esc(dbLabel(ne.readSource || (ANALYTICS.source === 'bot' ? 'bot analytics API' : 'panel database read')))}</div>
+    ${ne.error ? `<div class="an-note" style="color:var(--red)">NeoChip read error: ${esc(dbLabel(ne.error))}</div>` : ''}
     ${anRaw('NeoChip analytics payload — complete', ne)}`;
 }
 
@@ -2249,7 +2263,7 @@ function anSystemView(A) {
   const checks = sy.checks || [];
   const status = String(sy.overall || 'unknown');
   const tableRows = tables.map((t) => [
-    `<b>${esc(t.table)}</b>`, anBadge(t.status), anNum(t.rowCount), anNum(t.latencyMs, ' ms'), esc(fmtDate(t.lastUpdated)), esc(t.error || '—'),
+    `<b>${esc(dbLabel(t.table))}</b>`, anBadge(t.status), anNum(t.rowCount), anNum(t.latencyMs, ' ms'), esc(fmtDate(t.lastUpdated)), esc(dbLabel(t.error || '—')),
   ]);
   const kvRows = [
     ['Service', bo.service], ['Process PID', bo.pid], ['Node', bo.node], ['Platform', bo.platform + ' / ' + bo.arch],
@@ -2265,10 +2279,10 @@ function anSystemView(A) {
   ];
   const auth = sup.auth || {};
   const configRows = [
-    ['Supabase configured', sup.configured ? 'Yes' : 'No'], ['Supabase ready', sup.ready ? 'Yes' : 'No'],
-    ['Admin auth', esc(auth.verification || '—')], ['Publishable key on bot', auth.configured ? 'Present' : 'Missing'],
+    ['Database configured', sup.configured ? 'Yes' : 'No'], ['Database ready', sup.ready ? 'Yes' : 'No'],
+    ['Admin auth', esc(dbLabel(auth.verification || '—'))], ['Publishable key on bot', auth.configured ? 'Present' : 'Missing'],
     ['Key type exposed to browser', esc(auth.keyType || 'publishable')],
-    ['Admin allowlist', auth.allowlistEnabled ? (anNum(auth.allowedAdminCount) + ' email(s)') : 'Any verified Supabase user'],
+    ['Admin allowlist', auth.allowlistEnabled ? (anNum(auth.allowedAdminCount) + ' email(s)') : 'Any verified database user'],
     ['Webhook secret', 'Server-side only — never sent to the browser'],
     ['Mail credentials', 'Server-side only — never sent to the browser'],
     ['Telemetry source', A.source === 'bot' ? 'Authenticated bot API' : 'Panel read-only fallback'],
@@ -2278,7 +2292,7 @@ function anSystemView(A) {
       ${anStat('Overall status', status, (sy.summary ? sy.summary.healthy + ' healthy · ' + sy.summary.warnings + ' warnings · ' + sy.summary.errors + ' errors' : ''), null)}
       ${anStat('Bot uptime', bo.uptimeHuman || '—', 'PID ' + anNum(bo.pid), null)}
       ${anStat('Heap usage', anNum(mem.heapUsagePercent, '%'), anNum(mem.heapUsedMb, ' MB') + ' of ' + anNum(mem.heapTotalMb, ' MB'), null)}
-      ${anStat('Supabase tables', tables.length, tables.filter((t) => t.status === 'ok').length + ' responding', null)}
+      ${anStat('Database tables', tables.length, tables.filter((t) => t.status === 'ok').length + ' responding', null)}
       ${anStat('Memory RSS', anNum(mem.rssMb, ' MB'), anNum(host.freeMb, ' MB') + ' MB host memory free', null)}
       ${anStat('Load average', (bo.loadAvg || []).join(' / ') || '—', '1 / 5 / 15 minute', null)}
       ${anStat('Admins', bo.admins, anNum(bo.rateLimitedIps) + ' rate-limited IPs', null)}
@@ -2291,9 +2305,9 @@ function anSystemView(A) {
         ${anGauge(tables.length ? anRate(tables.filter((t) => t.status === 'ok').length, tables.length) : 0, 'tables', AN_COLORS[0])}
         ${anGauge(bo.emailReplies ? 100 : 0, 'email', AN_COLORS[4])}
         ${anGauge(auth.configured ? 100 : 0, 'auth', AN_COLORS[6])}
-      </div>`, 'Live process + Supabase checks')}
+      </div>`, 'Live process + database checks')}
     </div>
-    <div class="an-section-title"><i class="ph ph-cloud"></i> Supabase probes</div>
+    <div class="an-section-title"><i class="ph ph-cloud"></i> Database probes</div>
     ${anPanel('hard-drives', 'Table health & latency', anTable(['Table', 'Status', 'Rows', 'Latency', 'Last updated', 'Error'], tableRows, 'No probes returned'))}
     <div class="an-section-title"><i class="ph ph-list-bullets"></i> Max details — both systems</div>
     <div class="an-grid an-2">
@@ -2301,7 +2315,7 @@ function anSystemView(A) {
       ${anPanel('shield-check', 'Security & configuration', anTable(['Setting', 'Value'], configRows))}
     </div>
     ${anPanel('checklist', 'Health checks — raw', anTable(['Check', 'Status', 'Detail', 'Latency'], checks.map((c) => [
-      `<b>${esc(c.name)}</b>`, anBadge(c.status), esc(c.detail || ''), c.latencyMs === null || c.latencyMs === undefined ? '—' : anNum(c.latencyMs, ' ms'),
+      `<b>${esc(dbLabel(c.name))}</b>`, anBadge(c.status), esc(dbLabel(c.detail || '')), c.latencyMs === null || c.latencyMs === undefined ? '—' : anNum(c.latencyMs, ' ms'),
     ])))}
     ${anRaw('Complete telemetry payload — both systems', A)}`;
 }
@@ -2609,7 +2623,7 @@ function openDrawer(x) {
       <button class="abtn primary edit-only" id="btnAddNote" style="width:100%"><i class="ph ph-note-pencil"></i> Add note</button>
     </div>
     <div class="d-section edit-zone"><h4><i class="ph ph-brackets-curly"></i> Full record</h4>
-      <p class="section-note">Edit the complete stored record. Code, number, id, and createdAt stay fixed; everything else is yours to change. Saved through the bot and synced to Supabase.</p>
+      <p class="section-note">Edit the complete stored record. Code, number, id, and createdAt stay fixed; everything else is yours to change. Saved through the bot and synced to the database.</p>
       <textarea class="admin-textarea mono" id="edRawJson" style="min-height:220px">${esc(JSON.stringify(x.raw || {}, null, 2))}</textarea>
       <button class="abtn primary edit-only" id="btnSaveRaw" style="width:100%;margin-top:10px"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
     </div>
@@ -2633,7 +2647,7 @@ function openDrawer(x) {
     <div class="d-section"><h4><i class="ph ph-sliders-horizontal"></i> Advanced details</h4>
       <p class="section-note">Extra submitted fields and storage metadata, kept out of the way so the top shows only what this client entered. Open a block to inspect it.</p>
       ${extras ? `<details class="raw"><summary><i class="ph ph-list-bullets"></i> Additional submitted fields (${Object.keys(x.extra || {}).length})</summary><div style="padding:12px 13px">${extras}</div></details>` : ''}
-      <details class="raw"><summary><i class="ph ph-database"></i> Supabase row metadata</summary>
+      <details class="raw"><summary><i class="ph ph-database"></i> Database row metadata</summary>
         <div style="padding:12px 13px">
           <div class="d-field"><div class="k">Row ID</div><div class="v mono">${esc(x.rowId || '—')}</div></div>
           <div class="d-field"><div class="k">Row created</div><div class="v">${fmtDate(x.rowCreated)}</div></div>
@@ -2646,10 +2660,10 @@ function openDrawer(x) {
     </div>
     ${DATA_SOURCE === 'bot' ? `
     <div class="d-section edit-zone"><h4><i class="ph ph-warning-circle"></i> Danger zone</h4>
-      <p class="section-note">Deleting is permanent. The inquiry is removed from the bot and Supabase and cannot be restored.</p>
+      <p class="section-note">Deleting is permanent. The inquiry is removed from the bot and the database and cannot be restored.</p>
       <button class="abtn danger edit-only" id="btnDeleteInquiry" style="width:100%"><i class="ph ph-trash"></i> Delete permanently</button>
     </div>` : ''}
-    <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">${DATA_SOURCE === 'bot' ? 'Managed through the ARACS bot · changes sync to Supabase' : 'Read-only fallback · bot admin API unavailable'}</p>`;
+    <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">${DATA_SOURCE === 'bot' ? 'Managed through the ARACS bot · changes sync to the database' : 'Read-only fallback · bot admin API unavailable'}</p>`;
 
   $('drawer').classList.add('on');
   $('drawerClose').addEventListener('click', () => requestDrawerExit());
@@ -2739,7 +2753,7 @@ function openDrawer(x) {
     if (!DRAWER_EDIT) return;
     openConfirm({
       title: 'Delete this inquiry?',
-      message: "This permanently removes the inquiry from the bot and Supabase. You can't go back. Export anything you need first.",
+      message: "This permanently removes the inquiry from the bot and the database. You can't go back. Export anything you need first.",
       detail: [x.code, x.name, x.email].filter(Boolean).join(' · '),
       confirmLabel: 'Yes, delete permanently',
       icon: 'trash',
@@ -2914,7 +2928,7 @@ function armSave(btn, idleHtml, opts) {
   const o = opts || {};
   openConfirm({
     title: o.title || 'Save changes?',
-    message: o.message || "Saved changes cannot be undone. The record is written through the bot and synced to Supabase.",
+    message: o.message || "Saved changes cannot be undone. The record is written through the bot and synced to the database.",
     detail: o.detail || confirmTargetLabel(),
     confirmLabel: o.confirmLabel || 'Yes, save changes',
     danger: o.danger !== false,
@@ -2998,7 +3012,7 @@ function openNeoDrawer(m) {
       <p class="section-note">Deleting is permanent. The member row is removed from NeoChip Members and cannot be restored.</p>
       <button class="abtn danger edit-only" id="neoDeleteMember" style="width:100%"><i class="ph ph-trash"></i> Delete member</button>
     </div>
-    <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">Managed through the ARACS bot · changes sync to Supabase, analytics, and notifications</p>`;
+    <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">Managed through the ARACS bot · changes sync to the database, analytics, and notifications</p>`;
 
   $('drawer').classList.add('on');
   $('drawerClose').addEventListener('click', () => requestDrawerExit());
@@ -3110,7 +3124,7 @@ function openInquiryCreate() {
   $('drawerCard').innerHTML = `
     <div class="drawer-head"><div><span class="code">NEW INQUIRY</span><h3>Add ARACS inquiry</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
     <div class="d-section"><h4><i class="ph ph-inbox"></i> Inquiry details</h4>
-      <p class="section-note">Creates a record in the bot database and Supabase with a new reference code.</p>
+      <p class="section-note">Creates a record in the bot and the database with a new reference code.</p>
       <div class="edit-grid">
         <div class="form-row"><label>First name</label><input class="admin-input" id="newInqFirst"></div>
         <div class="form-row"><label>Last name</label><input class="admin-input" id="newInqLast"></div>
@@ -3531,12 +3545,12 @@ function renderSettings() {
   const s = (META && META.settings) || {};
   const kv = (k, v) => `<div class="kv-line"><span>${esc(k)}</span><b>${esc(v == null || v === '' ? '—' : v)}</b></div>`;
   $('setConnection').innerHTML =
-    kv('Live status', DATA_SOURCE === 'bot' ? 'Bot admin API' : 'Supabase read-only') +
+    kv('Live status', DATA_SOURCE === 'bot' ? 'Bot admin API' : 'Database read-only') +
     kv('Email sending', BOT_STATE ? (BOT_STATE.emailEnabled ? 'Ready' : 'Not configured') : 'Unknown') +
-    kv('Storage', DATA_SOURCE === 'bot' ? 'Bot database + Supabase' : 'Supabase REST') +
+    kv('Storage', DATA_SOURCE === 'bot' ? 'Bot database + cloud database' : 'Database REST') +
     kv('Last update', $('updatedAt').textContent);
   $('setMute').checked = Boolean(s.muted);
-  $('setSession').innerHTML = kv('Signed in as', SESSION ? SESSION.email : '—') + kv('Access', 'Supabase Auth user token');
+  $('setSession').innerHTML = kv('Signed in as', SESSION ? SESSION.email : '—') + kv('Access', 'Database sign-in token');
   renderNeoDictionaryEditor();
 }
 
@@ -3855,8 +3869,8 @@ $('setSync').addEventListener('click', async () => {
   btn.disabled = true;
   try {
     const r = await adminApi('/api/admin/sync', {});
-    toast('Pushed ' + r.rows + ' rows to Supabase');
-    notify({ id: 'change:sync:' + Date.now(), type: 'change', title: 'Database synced', text: r.rows + ' rows pushed to Supabase', view: 'system' });
+    toast('Pushed ' + r.rows + ' rows to the database');
+    notify({ id: 'change:sync:' + Date.now(), type: 'change', title: 'Database synced', text: r.rows + ' rows pushed to the database', view: 'system' });
     load(true);
   } catch (e) { toast(e.message, true); }
   finally { btn.disabled = false; }
