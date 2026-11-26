@@ -193,6 +193,12 @@ select.sort{padding:10px 13px;border-radius:12px;background:var(--navy3);border:
 .quick{display:flex;gap:6px}
 .qbtn{width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-3);display:flex;align-items:center;justify-content:center;font-size:15px;transition:.2s}
 .qbtn:hover{background:var(--brand-soft);color:var(--mint);border-color:var(--brand-line)}
+.expand-qbtn.on{background:var(--brand-soft);color:var(--mint);border-color:var(--brand-line)}
+.card-more{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.card-more-title{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--mint);font-weight:700;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.card-more .d-field{margin:6px 0}
+.card-more .d-field .k{font-size:9px}
+.card-more .d-field .v{font-size:12px}
 
 /* ---------- CHARTS ---------- */
 .insights{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:22px}
@@ -270,6 +276,30 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 .status-row select{flex:1}
 .check-line{display:flex;align-items:flex-start;gap:8px;margin-top:9px;color:var(--ink-5);font-size:11px;line-height:1.5;cursor:pointer}
 .check-line input{accent-color:var(--mint);margin-top:2px;flex:none}
+.edit-banner{margin-bottom:16px;padding:11px 13px;border-radius:12px;background:var(--surface-2);border:1px solid var(--border)}
+.edit-banner .abtn{font-size:11px;padding:10px}
+.edit-live{display:flex;align-items:center;gap:7px;color:var(--amber);font-size:11px;font-weight:700}
+.edit-live i{font-size:16px;flex:none}
+.viewonly .edit-zone input,.viewonly .edit-zone select,.viewonly .edit-zone textarea{opacity:.65;cursor:default}
+.abtn.armed{background:var(--red-soft);border-color:var(--red-line);color:var(--red)}
+#exitGuard{position:fixed;inset:0;z-index:95;display:none;align-items:center;justify-content:center;padding:18px}
+#exitGuard.on{display:flex}
+.guard-bg{position:absolute;inset:0;background:var(--scrim);backdrop-filter:blur(4px)}
+.guard-card{position:relative;width:min(100%,430px);background:var(--navy2);border:1px solid var(--border-strong);border-radius:18px;padding:24px;box-shadow:var(--shadow-deep);text-align:center}
+.guard-ic{width:46px;height:46px;border-radius:14px;background:var(--amber-soft);color:var(--amber);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+.guard-card h3{margin:0 0 8px;font-size:19px;color:var(--ink)}
+.guard-card p{margin:0 0 18px;color:var(--ink-5);font-size:12px;line-height:1.6}
+.guard-actions{display:grid;gap:8px}
+.guard-actions .abtn{width:100%}
+#confirmModal{position:fixed;inset:0;z-index:97;display:none;align-items:center;justify-content:center;padding:18px}
+#confirmModal.on{display:flex}
+.confirm-card{position:relative;width:min(100%,420px);background:var(--navy2);border:1px solid var(--border-strong);border-radius:18px;padding:24px;box-shadow:var(--shadow-deep);text-align:center}
+.confirm-ic{width:46px;height:46px;border-radius:14px;background:var(--red-soft);color:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+.confirm-card h3{margin:0 0 8px;font-size:19px;color:var(--ink)}
+.confirm-card p{margin:0 0 14px;color:var(--ink-5);font-size:12px;line-height:1.6}
+.confirm-target{margin:0 0 16px;padding:10px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);font-size:12px;color:var(--ink-3);word-break:break-word}
+.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.confirm-actions .abtn{width:100%}
 
 /* ---------- VIEWS: CRM, TEMPLATES, SETTINGS ---------- */
 .split{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:16px;align-items:start}
@@ -864,6 +894,32 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 
 <!-- DRAWER -->
 <div id="drawer"><div class="drawer-bg" id="drawerBg"></div><div class="drawer" id="drawerCard"></div></div>
+<div id="exitGuard">
+  <div class="guard-bg" id="guardBg"></div>
+  <div class="guard-card">
+    <div class="guard-ic"><i class="ph ph-warning-circle"></i></div>
+    <h3>You're editing</h3>
+    <p>You have unsaved changes. Save them, discard them, or keep editing. Nothing is lost until you choose.</p>
+    <div class="guard-actions">
+      <button class="abtn primary" id="guardSave"><i class="ph ph-floppy-disk"></i> Save changes</button>
+      <button class="abtn danger" id="guardDiscard"><i class="ph ph-trash"></i> Discard changes</button>
+      <button class="abtn" id="guardStay"><i class="ph ph-arrow-left"></i> Keep editing</button>
+    </div>
+  </div>
+</div>
+<div id="confirmModal">
+  <div class="guard-bg" id="confirmBg"></div>
+  <div class="confirm-card">
+    <div class="confirm-ic" id="confirmIcon"><i class="ph ph-warning-circle"></i></div>
+    <h3 id="confirmTitle">Please confirm</h3>
+    <p id="confirmMsg"></p>
+    <div class="confirm-target" id="confirmTarget"></div>
+    <div class="confirm-actions">
+      <button class="abtn" id="confirmCancel"><i class="ph ph-x"></i> Cancel</button>
+      <button class="abtn danger" id="confirmOk"><i class="ph ph-check"></i> Confirm</button>
+    </div>
+  </div>
+</div>
 <div id="toast"><i class="ph ph-check-circle"></i><span id="toastTxt"></span></div>
 
 <script>
@@ -904,6 +960,9 @@ let ANALYTICS = null, AN_TAB = 'overview', AN_LOADING = false;
 let NEO_ROWS = [], NEO_SOURCE = '', NEO_KNOWN_IDS = null, NEO_LOADING = false;
 let NEO_QUERY = '', NEO_STATUS = 'all', NEO_ROLE = 'all', NEO_FOCUS = 'all', NEO_WILAYA = 'all', NEO_RANGE = 'all', NEO_SORT = 'new';
 let NEO_SELECTED = null, NEO_DELETE_ARMED = false, ARACS_DELETE_ARMED = false;
+let DRAWER_EDIT = false, DRAWER_SAVE_ARMED = null, DRAWER_SAVE_TIMER = null;
+let DRAWER_SNAPSHOT = {}, EXIT_RESOLVE = null, GUARD_SAVE_ARMED = false, GUARD_SAVE_TIMER = null;
+let CONFIRM_ACTION = null, CONFIRM_BYPASS = null;
 let NOTIFICATIONS = [], NOTIFY_READY = false, LAST_ALERT_SIGNATURE = '';
 try { NOTIFICATIONS = JSON.parse(localStorage.getItem('aracs_notifications') || '[]'); if (!Array.isArray(NOTIFICATIONS)) NOTIFICATIONS = []; } catch (_) { NOTIFICATIONS = []; }
 
@@ -2279,6 +2338,13 @@ function initials(name) {
 }
 
 function cardHtml(x) {
+  const extraFields = Object.entries(x.extra || {}).map(([k, v]) =>
+    `<div class="d-field"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`).join('');
+  const more = [
+    extraFields,
+    `<div class="d-field"><div class="k">Full description</div><div class="v">${esc(x.description || '—')}</div></div>`,
+    x.source ? `<div class="d-field"><div class="k">Source</div><div class="v">${esc(x.source)}${x.page ? ' · ' + esc(x.page) : ''}</div></div>` : ''
+  ].filter(Boolean).join('');
   return `
     <article class="card${x.archived ? ' archived' : ''}" data-i="${DATA.indexOf(x)}">
       <div class="card-top"><span class="code">${esc(x.code)}</span><span><span class="status ${esc(x.status.toLowerCase())}">${esc(x.status)}</span>${x.archived ? '<span class="arch-tag"><i class="ph ph-archive"></i> Archived</span>' : ''}</span></div>
@@ -2290,17 +2356,30 @@ function cardHtml(x) {
       <p class="card-desc">${esc(x.description || 'No description')}</p>
       <div class="card-foot"><span class="time">${relTime(x.created)}</span>
         <span class="quick">
+          <button class="qbtn expand-qbtn" data-expand="${esc(x.code)}" title="See more infos" aria-label="See more infos"><i class="ph ph-caret-right"></i></button>
           ${x.email ? `<a class="qbtn" href="mailto:${encodeURIComponent(x.email)}" title="Email" onclick="event.stopPropagation()"><i class="ph ph-envelope"></i></a>` : ''}
           ${x.phone ? `<a class="qbtn" href="https://wa.me/${esc(waNumber(x.phone))}" target="_blank" rel="noopener" title="WhatsApp" onclick="event.stopPropagation()"><i class="ph ph-whatsapp-logo"></i></a>` : ''}
           <button class="qbtn" data-copy="${esc(x.code)}" title="Copy code" onclick="event.stopPropagation()"><i class="ph ph-copy"></i></button>
         </span>
       </div>
+      <div class="card-more" style="display:none"><div class="card-more-title"><i class="ph ph-list-bullets"></i> More infos</div>${more}</div>
     </article>`;
 }
 
 function bindCards(container) {
   if (!container) return;
   container.querySelectorAll('.card').forEach((c) => c.addEventListener('click', () => openDrawer(DATA[+c.dataset.i])));
+  container.querySelectorAll('[data-expand]').forEach((b) => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const card = b.closest('.card');
+    const more = card && card.querySelector('.card-more');
+    if (!more) return;
+    const closing = more.style.display !== 'none';
+    more.style.display = closing ? 'none' : 'block';
+    b.innerHTML = '<i class="ph ph-caret-' + (closing ? 'right' : 'down') + '"></i>';
+    b.classList.toggle('on', !closing);
+    b.title = closing ? 'See more infos' : 'Hide more infos';
+  }));
   container.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(b.dataset.copy); toast('Code copied'); } catch (_) { toast('Copy failed', true); }
   }));
@@ -2457,6 +2536,7 @@ function render() {
 function openDrawer(x) {
   if (!x) return;
   SELECTED = x;
+  resetDrawerActions();
   ARACS_DELETE_ARMED = false;
   const actions = [
     x.email ? `<a class="abtn primary" href="mailto:${encodeURIComponent(x.email)}?subject=Re:%20${encodeURIComponent(x.code)}%20-%20ARACS"><i class="ph ph-envelope"></i> Email</a>` : '',
@@ -2484,6 +2564,11 @@ function openDrawer(x) {
 
   $('drawerCard').innerHTML = `
     <div class="drawer-head"><div><span class="code">${esc(x.code)}</span>${x.archived ? '<span class="arch-tag"><i class="ph ph-archive"></i> Archived</span>' : ''}<h3>${esc(x.name)}</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
+    ${DATA_SOURCE === 'bot' ? `
+    <div class="edit-banner">
+      <div class="view-only"><button class="abtn primary" id="drawerEdit" style="width:100%"><i class="ph ph-pencil-simple"></i> Edit infos</button><p class="section-note" style="margin-top:8px">Read-only view. Press Edit infos to change this record. Saved changes cannot be undone.</p></div>
+      <div class="edit-only" style="display:none"><div class="edit-live"><i class="ph ph-warning-circle"></i> Edit mode — saved changes cannot be undone</div><button class="abtn" id="drawerCancel" style="width:100%;margin-top:8px"><i class="ph ph-arrow-counter-clockwise"></i> Cancel editing</button></div>
+    </div>` : ''}
     <div class="d-section"><h4><i class="ph ph-lightning"></i> Quick actions</h4><div class="actions-grid">${actions}</div></div>
     <div class="d-section"><h4><i class="ph ph-user"></i> Contact</h4>
       <div class="d-field"><div class="k">Email</div><div class="v">${esc(x.email || '—')}</div></div>
@@ -2495,10 +2580,10 @@ function openDrawer(x) {
     <div class="d-section"><h4><i class="ph ph-briefcase"></i> Project</h4>
       <div class="d-field"><div class="k">Type</div><div class="v">${esc(x.type)}</div></div>
       <div class="d-field"><div class="k">Description</div><div class="d-desc">${esc(x.description || '—')}</div></div>
-      ${extras ? `<div class="d-field" style="margin-top:12px"><div class="k">Additional details</div>${extras}</div>` : ''}
+      ${extras ? '<p class="section-note" style="margin-top:10px">Additional submitted fields are at the bottom under Advanced details.</p>' : ''}
     </div>
     ${DATA_SOURCE === 'bot' ? `
-    <div class="d-section"><h4><i class="ph ph-pencil-simple"></i> Manage inquiry</h4>
+    <div class="d-section edit-zone"><h4><i class="ph ph-pencil-simple"></i> Manage inquiry</h4>
       <p class="section-note">Saved through the bot so its archive stays the single source of truth.</p>
       <div class="edit-grid">
         <div class="form-row"><label>First name</label><input class="admin-input" id="edFirstName" value="${esc(x.first)}"></div>
@@ -2519,23 +2604,20 @@ function openDrawer(x) {
         <div class="form-row"><label>Heard about us</label><input class="admin-input" id="edHeard" value="${esc(x.heard)}"></div>
       </div>
       <div class="form-row"><label>Description</label><textarea class="admin-textarea" id="edDescription">${esc(x.description)}</textarea></div>
-      <div class="form-row"><label>Status</label><div class="status-row"><select class="admin-select" id="edStatus">${statusOptions(x.status)}</select><button class="abtn" id="btnStatus"><i class="ph ph-check"></i> Set</button></div></div>
+      <div class="form-row"><label>Status</label><div class="status-row"><select class="admin-select" id="edStatus">${statusOptions(x.status)}</select><button class="abtn edit-only" id="btnStatus"><i class="ph ph-check"></i> Set</button></div></div>
       <label class="check-line"><input type="checkbox" id="aracsEmailClient" checked><span>Email this client when the status changes. The bot sends a status-specific message from its ARACS mailbox and records it in the reply history.</span></label>
       <div class="actions-grid">
-        <button class="abtn primary" id="btnSaveInquiry"><i class="ph ph-floppy-disk"></i> Save changes</button>
+        <button class="abtn primary edit-only" id="btnSaveInquiry"><i class="ph ph-floppy-disk"></i> Save changes</button>
         <button class="abtn" id="btnResend"><i class="ph ph-paper-plane-tilt"></i> Resend confirmation</button>
-        <button class="abtn" id="btnArchive">${x.archived ? '<i class="ph ph-arrow-counter-clockwise"></i> Restore to active' : '<i class="ph ph-archive"></i> Archive'}</button>
+        <button class="abtn edit-only" id="btnArchive">${x.archived ? '<i class="ph ph-arrow-counter-clockwise"></i> Restore to active' : '<i class="ph ph-archive"></i> Archive'}</button>
       </div>
       <div class="form-row" style="margin-top:14px"><label>Internal note</label><textarea class="admin-textarea" id="noteText" placeholder="Write a note for the team…"></textarea></div>
-      <button class="abtn primary" id="btnAddNote" style="width:100%"><i class="ph ph-note-pencil"></i> Add note</button>
+      <button class="abtn primary edit-only" id="btnAddNote" style="width:100%"><i class="ph ph-note-pencil"></i> Add note</button>
     </div>
-    <div class="d-section"><h4><i class="ph ph-brackets-curly"></i> Full record</h4>
+    <div class="d-section edit-zone"><h4><i class="ph ph-brackets-curly"></i> Full record</h4>
       <p class="section-note">Edit the complete stored record. Code, number, id, and createdAt stay fixed; everything else is yours to change. Saved through the bot and synced to Supabase.</p>
       <textarea class="admin-textarea mono" id="edRawJson" style="min-height:220px">${esc(JSON.stringify(x.raw || {}, null, 2))}</textarea>
-      <div class="actions-grid" style="margin-top:10px">
-        <button class="abtn primary" id="btnSaveRaw"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
-        <button class="abtn danger" id="btnDeleteInquiry"><i class="ph ph-trash"></i> Delete permanently</button>
-      </div>
+      <button class="abtn primary edit-only" id="btnSaveRaw" style="width:100%;margin-top:10px"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
     </div>
     <div class="d-section"><h4><i class="ph ph-paper-plane-tilt"></i> Compose email</h4>
       <p class="section-note">Variables are replaced with this inquiry's details in the preview and in the email that is sent.</p>
@@ -2554,18 +2636,31 @@ function openDrawer(x) {
     <div class="d-section"><h4><i class="ph ph-clock-counter-clockwise"></i> Activity (${x.audit.length})</h4><div class="timeline">${timeline}</div></div>
     <div class="d-section"><h4><i class="ph ph-envelope-open"></i> Email replies (${x.replies.length})</h4><div class="timeline">${replies}</div></div>
     <div class="d-section"><h4><i class="ph ph-note"></i> Internal notes (${x.notes.length})</h4><div class="timeline">${notes}</div></div>
-    <div class="d-section"><h4><i class="ph ph-database"></i> Supabase row</h4>
-      <div class="d-field"><div class="k">Row ID</div><div class="v mono">${esc(x.rowId || '—')}</div></div>
-      <div class="d-field"><div class="k">Row created</div><div class="v">${fmtDate(x.rowCreated)}</div></div>
-      <div class="d-field"><div class="k">Row updated</div><div class="v">${fmtDate(x.updated)}</div></div>
-      <div class="d-field"><div class="k">Archive flag</div><div class="v">${x.archived ? 'Yes — kept permanently in the archive' : 'No — active inquiry'}</div></div>
-      <div class="d-field"><div class="k">Source</div><div class="v">${esc(x.source || '—')}${x.page ? ' · ' + esc(x.page) : ''}</div></div>
+    <div class="d-section"><h4><i class="ph ph-sliders-horizontal"></i> Advanced details</h4>
+      <p class="section-note">Extra submitted fields and storage metadata, kept out of the way so the top shows only what this client entered. Open a block to inspect it.</p>
+      ${extras ? `<details class="raw"><summary><i class="ph ph-list-bullets"></i> Additional submitted fields (${Object.keys(x.extra || {}).length})</summary><div style="padding:12px 13px">${extras}</div></details>` : ''}
+      <details class="raw"><summary><i class="ph ph-database"></i> Supabase row metadata</summary>
+        <div style="padding:12px 13px">
+          <div class="d-field"><div class="k">Row ID</div><div class="v mono">${esc(x.rowId || '—')}</div></div>
+          <div class="d-field"><div class="k">Row created</div><div class="v">${fmtDate(x.rowCreated)}</div></div>
+          <div class="d-field"><div class="k">Row updated</div><div class="v">${fmtDate(x.updated)}</div></div>
+          <div class="d-field"><div class="k">Archive flag</div><div class="v">${x.archived ? 'Yes — kept permanently in the archive' : 'No — active inquiry'}</div></div>
+          <div class="d-field"><div class="k">Source</div><div class="v">${esc(x.source || '—')}${x.page ? ' · ' + esc(x.page) : ''}</div></div>
+        </div>
+      </details>
       <details class="raw"><summary><i class="ph ph-brackets-curly"></i> Full raw form_data (JSON)</summary><pre>${esc(JSON.stringify(x.raw, null, 2))}</pre></details>
     </div>
+    ${DATA_SOURCE === 'bot' ? `
+    <div class="d-section edit-zone"><h4><i class="ph ph-warning-circle"></i> Danger zone</h4>
+      <p class="section-note">Deleting is permanent. The inquiry is removed from the bot and Supabase and cannot be restored.</p>
+      <button class="abtn danger edit-only" id="btnDeleteInquiry" style="width:100%"><i class="ph ph-trash"></i> Delete permanently</button>
+    </div>` : ''}
     <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">${DATA_SOURCE === 'bot' ? 'Managed through the ARACS bot · changes sync to Supabase' : 'Read-only fallback · bot admin API unavailable'}</p>`;
 
   $('drawer').classList.add('on');
-  $('drawerClose').addEventListener('click', closeDrawer);
+  $('drawerClose').addEventListener('click', () => requestDrawerExit());
+  bindDrawerEdit(() => openDrawer(x));
+  setDrawerEdit(false);
   $('drawerCard').querySelectorAll('[data-cd],[data-ce]').forEach((b) => b.addEventListener('click', async () => {
     const v = b.dataset.cd || b.dataset.ce;
     try { await navigator.clipboard.writeText(v); toast('Copied'); } catch (_) { toast('Copy failed', true); }
@@ -2573,18 +2668,19 @@ function openDrawer(x) {
   $('drawerCard').querySelectorAll('[data-crm]').forEach((b) => b.addEventListener('click', () => {
     CRM_SELECTED = [b.dataset.crm];
     CRM_CONFIRM = false;
-    closeDrawer();
-    switchView('crm');
+    requestDrawerExit(() => switchView('crm'));
   }));
 
   const val = (id) => { const el = $(id); return el ? String(el.value || '').trim() : ''; };
 
   on('btnSaveInquiry', 'click', () => {
+    if (!DRAWER_EDIT) return;
     const email = val('edEmail');
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast('Enter a valid email address', true);
       return;
     }
+    if (!armSave($('btnSaveInquiry'), '<i class="ph ph-floppy-disk"></i> Save changes')) return;
     mutate('/api/admin/inquiry', {
       code: x.code,
       firstName: val('edFirstName'),
@@ -2602,46 +2698,59 @@ function openDrawer(x) {
   });
 
   on('btnStatus', 'click', () => {
+    if (!DRAWER_EDIT) return;
+    if (!armSave($('btnStatus'), '<i class="ph ph-check"></i> Set')) return;
     const emailClient = !$('aracsEmailClient') || $('aracsEmailClient').checked;
     mutate('/api/admin/status', { code: x.code, status: val('edStatus'), emailClient }, 'Status updated');
   });
 
   on('btnResend', 'click', () => {
-    mutate('/api/admin/confirmation', { code: x.code }, 'Confirmation email sent');
+    openConfirm({
+      title: 'Resend confirmation email?',
+      message: 'This sends another confirmation message to the client now. Use it when the original was missed.',
+      detail: [x.code, x.email].filter(Boolean).join(' · '),
+      confirmLabel: 'Yes, send again',
+      danger: false,
+      icon: 'paper-plane-tilt',
+      onConfirm: () => mutate('/api/admin/confirmation', { code: x.code }, 'Confirmation email sent')
+    });
   });
 
   on('btnArchive', 'click', () => {
+    if (!DRAWER_EDIT) return;
+    const idle = x.archived ? '<i class="ph ph-arrow-counter-clockwise"></i> Restore to active' : '<i class="ph ph-archive"></i> Archive';
+    if (!armSave($('btnArchive'), idle)) return;
     const path = x.archived ? '/api/admin/unarchive' : '/api/admin/archive';
     mutate(path, { code: x.code }, x.archived ? 'Restored to active' : 'Inquiry archived');
   });
 
   on('btnAddNote', 'click', () => {
+    if (!DRAWER_EDIT) return;
     const text = val('noteText');
     if (!text) { toast('Write a note first', true); return; }
+    if (!armSave($('btnAddNote'), '<i class="ph ph-note-pencil"></i> Add note')) return;
     mutate('/api/admin/note', { code: x.code, text }, 'Note saved');
   });
 
   on('btnSaveRaw', 'click', async () => {
+    if (!DRAWER_EDIT) return;
     let parsed;
     try { parsed = JSON.parse(val('edRawJson')); } catch (err) { toast('Invalid JSON: ' + err.message, true); return; }
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) { toast('The record must be a JSON object', true); return; }
+    if (!armSave($('btnSaveRaw'), '<i class="ph ph-floppy-disk"></i> Save full JSON')) return;
     await mutate('/api/admin/inquiry/raw', { code: x.code, form_data: parsed }, 'Full record saved', true);
   });
 
   on('btnDeleteInquiry', 'click', async () => {
-    const btn = $('btnDeleteInquiry');
-    if (!ARACS_DELETE_ARMED) {
-      ARACS_DELETE_ARMED = true;
-      btn.innerHTML = '<i class="ph ph-warning-circle"></i> Click again to delete';
-      toast('Click again to permanently delete ' + x.code, true);
-      setTimeout(() => {
-        ARACS_DELETE_ARMED = false;
-        if ($('btnDeleteInquiry')) $('btnDeleteInquiry').innerHTML = '<i class="ph ph-trash"></i> Delete permanently';
-      }, 5000);
-      return;
-    }
-    ARACS_DELETE_ARMED = false;
-    await mutate('/api/admin/inquiry/delete', { code: x.code, confirm: true }, 'Inquiry deleted', true);
+    if (!DRAWER_EDIT) return;
+    openConfirm({
+      title: 'Delete this inquiry?',
+      message: "This permanently removes the inquiry from the bot and Supabase. You can't go back. Export anything you need first.",
+      detail: [x.code, x.name, x.email].filter(Boolean).join(' · '),
+      confirmLabel: 'Yes, delete permanently',
+      icon: 'trash',
+      onConfirm: () => mutate('/api/admin/inquiry/delete', { code: x.code, confirm: true }, 'Inquiry deleted', true)
+    });
   });
 
   on('btnPreview', 'click', updatePreview);
@@ -2695,11 +2804,148 @@ function openDrawer(x) {
     await mutate('/api/admin/reply', { code: x.code, subject, message }, 'Email sent');
   });
 }
-function closeDrawer() { $('drawer').classList.remove('on'); }
+/* A selected record is read-only until Edit infos is pressed. Every save in
+   edit mode needs a second click so an accidental click cannot change a record. */
+function resetDrawerActions() {
+  DRAWER_EDIT = false;
+  DRAWER_SAVE_ARMED = null;
+  if (DRAWER_SAVE_TIMER) { clearTimeout(DRAWER_SAVE_TIMER); DRAWER_SAVE_TIMER = null; }
+}
+
+function setDrawerEdit(editing) {
+  DRAWER_EDIT = Boolean(editing);
+  DRAWER_SAVE_ARMED = null;
+  if (DRAWER_SAVE_TIMER) { clearTimeout(DRAWER_SAVE_TIMER); DRAWER_SAVE_TIMER = null; }
+  const card = $('drawerCard');
+  if (!card) return;
+  card.classList.toggle('viewonly', !DRAWER_EDIT);
+  card.querySelectorAll('.edit-zone input, .edit-zone select, .edit-zone textarea').forEach((el) => { el.disabled = !DRAWER_EDIT; });
+  card.querySelectorAll('.edit-only').forEach((el) => { el.style.display = DRAWER_EDIT ? '' : 'none'; });
+  card.querySelectorAll('.view-only').forEach((el) => { el.style.display = DRAWER_EDIT ? 'none' : ''; });
+  if (DRAWER_EDIT) captureDrawerSnapshot();
+}
+
+/* Compare live edit fields with the values captured when Edit infos was pressed.
+   An unchanged form can be closed freely; a changed one must be resolved. */
+function captureDrawerSnapshot() {
+  DRAWER_SNAPSHOT = {};
+  const card = $('drawerCard');
+  if (!card) return;
+  card.querySelectorAll('.edit-zone input, .edit-zone select, .edit-zone textarea').forEach((el) => {
+    if (el.id) DRAWER_SNAPSHOT[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+}
+
+function isDrawerDirty() {
+  if (!DRAWER_EDIT) return false;
+  const card = $('drawerCard');
+  if (!card) return false;
+  for (const el of card.querySelectorAll('.edit-zone input, .edit-zone select, .edit-zone textarea')) {
+    if (!el.id || !(el.id in DRAWER_SNAPSHOT)) continue;
+    const now = el.type === 'checkbox' ? el.checked : el.value;
+    if (now !== DRAWER_SNAPSHOT[el.id]) return true;
+  }
+  return false;
+}
+
+function hideExitGuard() {
+  $('exitGuard').classList.remove('on');
+  GUARD_SAVE_ARMED = false;
+  if (GUARD_SAVE_TIMER) { clearTimeout(GUARD_SAVE_TIMER); GUARD_SAVE_TIMER = null; }
+  EXIT_RESOLVE = null;
+}
+
+function showExitGuard(resolve) {
+  EXIT_RESOLVE = typeof resolve === 'function' ? resolve : closeDrawer;
+  GUARD_SAVE_ARMED = false;
+  if (GUARD_SAVE_TIMER) { clearTimeout(GUARD_SAVE_TIMER); GUARD_SAVE_TIMER = null; }
+  const btn = $('guardSave');
+  btn.innerHTML = '<i class="ph ph-floppy-disk"></i> Save changes';
+  btn.classList.remove('armed');
+  $('exitGuard').classList.add('on');
+}
+
+/* Any exit attempt while a changed form is open lands here instead of closing. */
+function requestDrawerExit(resolve) {
+  if (isDrawerDirty()) { showExitGuard(resolve); return false; }
+  if (typeof resolve === 'function') resolve(); else closeDrawer();
+  return true;
+}
+
+/* Prefer the editor that actually changed: raw JSON replaces the whole record. */
+function guardSaveTarget() {
+  for (const [jsonId, saveId] of [['edRawJson', 'btnSaveRaw'], ['neoRawJson', 'neoSaveRaw']]) {
+    const el = $(jsonId);
+    if (el && el.id in DRAWER_SNAPSHOT && el.value !== DRAWER_SNAPSHOT[jsonId]) return $(saveId) || el;
+  }
+  return $('btnSaveInquiry') || $('neoSaveMember') || null;
+}
+
+/* One dialog for every irreversible action. The buttons are explicit, so
+   nothing happens from a second click on the control underneath. */
+function openConfirm(opts) {
+  const o = opts || {};
+  CONFIRM_ACTION = typeof o.onConfirm === 'function' ? o.onConfirm : null;
+  $('confirmTitle').textContent = o.title || 'Please confirm';
+  $('confirmMsg').textContent = o.message || '';
+  const target = $('confirmTarget');
+  target.textContent = o.detail || '';
+  target.style.display = o.detail ? '' : 'none';
+  const icon = o.icon || 'warning-circle';
+  const danger = o.danger !== false;
+  $('confirmIcon').innerHTML = '<i class="ph ph-' + icon + '"></i>';
+  $('confirmIcon').style.background = danger ? 'var(--red-soft)' : 'var(--amber-soft)';
+  $('confirmIcon').style.color = danger ? 'var(--red)' : 'var(--amber)';
+  const ok = $('confirmOk');
+  ok.innerHTML = '<i class="ph ph-' + (danger ? 'trash' : 'check') + '"></i> ' + (o.confirmLabel || 'Confirm');
+  ok.className = 'abtn ' + (danger ? 'danger' : 'primary');
+  $('confirmModal').classList.add('on');
+}
+
+function closeConfirm() {
+  $('confirmModal').classList.remove('on');
+  CONFIRM_ACTION = null;
+}
+
+function confirmTargetLabel() {
+  const rec = $('neoEdStatus') ? NEO_SELECTED : SELECTED;
+  return rec ? [rec.code || rec.id, rec.name].filter(Boolean).join(' · ') : '';
+}
+
+/* Replaces the old two-click arm. Clicking the real button opens the dialog;
+   confirming re-clicks it once with a one-time bypass so normal validation runs. */
+function armSave(btn, idleHtml, opts) {
+  if (!btn) return false;
+  if (CONFIRM_BYPASS === btn.id) { CONFIRM_BYPASS = null; return true; }
+  const o = opts || {};
+  openConfirm({
+    title: o.title || 'Save changes?',
+    message: o.message || "Saved changes cannot be undone. The record is written through the bot and synced to Supabase.",
+    detail: o.detail || confirmTargetLabel(),
+    confirmLabel: o.confirmLabel || 'Yes, save changes',
+    danger: o.danger !== false,
+    icon: 'floppy-disk',
+    onConfirm: () => { CONFIRM_BYPASS = btn.id; btn.click(); }
+  });
+  return false;
+}
+
+function bindDrawerEdit(reopen) {
+  on('drawerEdit', 'click', () => setDrawerEdit(true));
+  on('drawerCancel', 'click', () => requestDrawerExit(reopen));
+}
+
+function closeDrawer() {
+  $('drawer').classList.remove('on');
+  if ($('exitGuard')) $('exitGuard').classList.remove('on');
+  EXIT_RESOLVE = null;
+  resetDrawerActions();
+}
 
 function openNeoDrawer(m) {
   if (!m) return;
   NEO_SELECTED = m;
+  resetDrawerActions();
   NEO_DELETE_ARMED = false;
   const audit = Array.isArray(m.raw && m.raw.audit_log) ? m.raw.audit_log : [];
   const mail = Array.isArray(m.raw && m.raw.email_log) ? m.raw.email_log : [];
@@ -2712,6 +2958,10 @@ function openNeoDrawer(m) {
 
   $('drawerCard').innerHTML = `
     <div class="drawer-head"><div><span class="code">${esc(m.id)}</span><h3>${esc(m.name)}</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
+    <div class="edit-banner">
+      <div class="view-only"><button class="abtn primary" id="drawerEdit" style="width:100%"><i class="ph ph-pencil-simple"></i> Edit infos</button><p class="section-note" style="margin-top:8px">Read-only view. Press Edit infos to change this member. Saved changes cannot be undone.</p></div>
+      <div class="edit-only" style="display:none"><div class="edit-live"><i class="ph ph-warning-circle"></i> Edit mode — saved changes cannot be undone</div><button class="abtn" id="drawerCancel" style="width:100%;margin-top:8px"><i class="ph ph-arrow-counter-clockwise"></i> Cancel editing</button></div>
+    </div>
     <div class="d-section"><h4><i class="ph ph-lightning"></i> Quick actions</h4><div class="actions-grid">
       ${m.email ? `<a class="abtn primary" href="mailto:${encodeURIComponent(m.email)}"><i class="ph ph-envelope"></i> Email</a>` : ''}
       ${m.phone ? `<a class="abtn" href="tel:${encodeURIComponent(m.phone)}"><i class="ph ph-phone"></i> Call</a>` : ''}
@@ -2727,7 +2977,7 @@ function openNeoDrawer(m) {
       <div class="d-field"><div class="k">Skills</div><div class="v">${esc((m.skills || []).join(', ') || '—')}</div></div>
       <div class="d-field"><div class="k">Submitted</div><div class="v">${fmtDate(m.submittedAt)}</div></div>
     </div>
-    <div class="d-section"><h4><i class="ph ph-pencil-simple"></i> Manage member</h4>
+    <div class="d-section edit-zone"><h4><i class="ph ph-pencil-simple"></i> Manage member</h4>
       <p class="section-note">Saved through the bot to NeoChip Members. The bot re-reads that table on every command, so status and role changes reach Telegram too.</p>
       <div class="form-row"><label>Status</label><select class="admin-select" id="neoEdStatus">${[...new Set(NEO_STATUSES.concat([m.status].filter(Boolean)))].map((s) => `<option value="${s}"${s === m.status ? ' selected' : ''}>${s}</option>`).join('')}</select></div>
       <div class="edit-grid">
@@ -2740,23 +2990,26 @@ function openNeoDrawer(m) {
       </div>
       <div class="form-row"><label>Admin notes</label><textarea class="admin-textarea" id="neoEdNotes">${esc(m.notes)}</textarea></div>
       <label class="check-line"><input type="checkbox" id="neoEmailClient" checked><span>Email this applicant when the status changes. The bot uses the matching NeoChip template and sends only once per status.</span></label>
-      <div class="actions-grid">
-        <button class="abtn primary" id="neoSaveMember"><i class="ph ph-floppy-disk"></i> Save member</button>
-        <button class="abtn danger" id="neoDeleteMember"><i class="ph ph-trash"></i> Delete member</button>
-      </div>
+      <button class="abtn primary edit-only" id="neoSaveMember" style="width:100%"><i class="ph ph-floppy-disk"></i> Save member</button>
       <p class="section-note" style="margin-top:10px">An audit entry is appended to the member record for every change.</p>
-    </div>
-    <div class="d-section"><h4><i class="ph ph-brackets-curly"></i> Full record</h4>
-      <p class="section-note">Edit every field in form_data. Row id and createdAt are never changed.</p>
-      <textarea class="admin-textarea mono" id="neoRawJson" style="min-height:220px">${esc(JSON.stringify(m.raw || {}, null, 2))}</textarea>
-      <button class="abtn primary" id="neoSaveRaw" style="width:100%;margin-top:10px"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
     </div>
     <div class="d-section"><h4><i class="ph ph-clock-counter-clockwise"></i> Status history (${audit.length})</h4><div class="timeline">${timeline}</div></div>
     <div class="d-section"><h4><i class="ph ph-envelope-open"></i> Email events (${mail.length})</h4><div class="timeline">${mailTimeline}</div></div>
+    <div class="d-section edit-zone"><h4><i class="ph ph-sliders-horizontal"></i> Advanced details — full record</h4>
+      <p class="section-note">The complete stored form_data. Row id and createdAt are never changed.</p>
+      <textarea class="admin-textarea mono" id="neoRawJson" style="min-height:220px">${esc(JSON.stringify(m.raw || {}, null, 2))}</textarea>
+      <button class="abtn primary edit-only" id="neoSaveRaw" style="width:100%;margin-top:10px"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
+    </div>
+    <div class="d-section edit-zone"><h4><i class="ph ph-warning-circle"></i> Danger zone</h4>
+      <p class="section-note">Deleting is permanent. The member row is removed from NeoChip Members and cannot be restored.</p>
+      <button class="abtn danger edit-only" id="neoDeleteMember" style="width:100%"><i class="ph ph-trash"></i> Delete member</button>
+    </div>
     <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">Managed through the ARACS bot · changes sync to Supabase, analytics, and notifications</p>`;
 
   $('drawer').classList.add('on');
-  $('drawerClose').addEventListener('click', closeDrawer);
+  $('drawerClose').addEventListener('click', () => requestDrawerExit());
+  bindDrawerEdit(() => openNeoDrawer(m));
+  setDrawerEdit(false);
   $('drawerCard').querySelectorAll('[data-neo-copy]').forEach((b) => b.addEventListener('click', async () => {
     try { await navigator.clipboard.writeText(b.dataset.neoCopy); toast('Copied'); } catch (_) { toast('Copy failed', true); }
   }));
@@ -2766,9 +3019,11 @@ function openNeoDrawer(m) {
   bindNeoOther('neoEdFocus', 'neoEdFocusCustom');
 
   on('neoSaveMember', 'click', () => {
+    if (!DRAWER_EDIT) return;
     const role = resolveNeoSelect('neoEdRole', 'neoEdRoleCustom', 'role');
     const focus = resolveNeoSelect('neoEdFocus', 'neoEdFocusCustom', 'focus');
     if (!role || !focus) return;
+    if (!armSave($('neoSaveMember'), '<i class="ph ph-floppy-disk"></i> Save member')) return;
     neoMutate('/api/admin/neochip/member', {
       id: m.id,
       emailClient: neoEmailClient(),
@@ -2784,30 +3039,29 @@ function openNeoDrawer(m) {
   });
 
   on('neoSaveRaw', 'click', async () => {
+    if (!DRAWER_EDIT) return;
     let parsed;
     try { parsed = JSON.parse(neoVal('neoRawJson')); } catch (err) { toast('Invalid JSON: ' + err.message, true); return; }
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) { toast('form_data must be a JSON object', true); return; }
+    if (!armSave($('neoSaveRaw'), '<i class="ph ph-floppy-disk"></i> Save full JSON')) return;
     await neoMutate('/api/admin/neochip/member', { id: m.id, form_data: parsed, emailClient: neoEmailClient() }, 'NeoChip record saved');
   });
 
   on('neoDeleteMember', 'click', async () => {
-    const btn = $('neoDeleteMember');
-    if (!NEO_DELETE_ARMED) {
-      NEO_DELETE_ARMED = true;
-      btn.innerHTML = '<i class="ph ph-warning-circle"></i> Click again to delete';
-      toast('Click again to permanently delete ' + m.name, true);
-      setTimeout(() => {
-        NEO_DELETE_ARMED = false;
-        if ($('neoDeleteMember')) $('neoDeleteMember').innerHTML = '<i class="ph ph-trash"></i> Delete member';
-      }, 5000);
-      return;
-    }
-    NEO_DELETE_ARMED = false;
-    await neoMutate('/api/admin/neochip/delete', { id: m.id, confirm: true }, 'NeoChip member deleted');
+    if (!DRAWER_EDIT) return;
+    openConfirm({
+      title: 'Delete this member?',
+      message: "This permanently removes the row from NeoChip Members. You can't go back. Telegram commands will stop seeing this applicant.",
+      detail: [m.id, m.name, m.email].filter(Boolean).join(' · '),
+      confirmLabel: 'Yes, delete member',
+      icon: 'trash',
+      onConfirm: () => neoMutate('/api/admin/neochip/delete', { id: m.id, confirm: true }, 'NeoChip member deleted')
+    });
   });
 }
 
 function openNeoCreate() {
+  resetDrawerActions();
   NEO_DELETE_ARMED = false;
   $('drawerCard').innerHTML = `
     <div class="drawer-head"><div><span class="code">NEW MEMBER</span><h3>Add NeoChip member</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
@@ -2834,7 +3088,7 @@ function openNeoCreate() {
       <button class="abtn primary" id="neoCreateSave" style="width:100%"><i class="ph ph-plus"></i> Create member</button>
     </div>`;
   $('drawer').classList.add('on');
-  $('drawerClose').addEventListener('click', closeDrawer);
+  $('drawerClose').addEventListener('click', () => requestDrawerExit());
   bindNeoOther('neoNewRole', 'neoNewRoleCustom');
   bindNeoOther('neoNewFocus', 'neoNewFocusCustom');
   on('neoCreateSave', 'click', () => {
@@ -2857,6 +3111,7 @@ function openNeoCreate() {
 }
 
 function openInquiryCreate() {
+  resetDrawerActions();
   ARACS_DELETE_ARMED = false;
   $('drawerCard').innerHTML = `
     <div class="drawer-head"><div><span class="code">NEW INQUIRY</span><h3>Add ARACS inquiry</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
@@ -2877,7 +3132,7 @@ function openInquiryCreate() {
       <button class="abtn primary" id="inquiryCreateSave" style="width:100%"><i class="ph ph-plus"></i> Create inquiry</button>
     </div>`;
   $('drawer').classList.add('on');
-  $('drawerClose').addEventListener('click', closeDrawer);
+  $('drawerClose').addEventListener('click', () => requestDrawerExit());
   on('inquiryCreateSave', 'click', () => {
     const v = (id) => String($(id).value || '').trim();
     const email = v('newInqEmail');
@@ -3317,10 +3572,8 @@ async function signIn() {
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) {
-      const msg = data.msg || data.error_description || data.error || 'Sign in failed';
-      if (/invalid login credentials/i.test(msg)) {
-        $('loginHint').textContent = 'No Supabase user matches those credentials. Create one in Supabase → Authentication → Users → Add user.';
-      }
+      const msg = 'Wrong email or password. Please try again.';
+      $('loginHint').textContent = msg;
       throw new Error(msg);
     }
     if (!data.access_token) throw new Error('No access token returned');
@@ -3379,7 +3632,46 @@ $('exportBtn').addEventListener('click', exportCsv);
 $('sideExport').addEventListener('click', exportCsv);
 $('sideSignOut').addEventListener('click', signOut);
 $('setSignOut').addEventListener('click', signOut);
-$('drawerBg').addEventListener('click', closeDrawer);
+$('drawerBg').addEventListener('click', () => requestDrawerExit());
+$('guardBg').addEventListener('click', hideExitGuard);
+$('guardStay').addEventListener('click', hideExitGuard);
+$('confirmBg').addEventListener('click', closeConfirm);
+$('confirmCancel').addEventListener('click', closeConfirm);
+$('confirmOk').addEventListener('click', () => {
+  const action = CONFIRM_ACTION;
+  closeConfirm();
+  if (action) action();
+});
+$('guardDiscard').addEventListener('click', () => {
+  const resolve = EXIT_RESOLVE;
+  hideExitGuard();
+  if (resolve) resolve();
+});
+$('guardSave').addEventListener('click', () => {
+  let target = null;
+  for (const [jsonId, saveId] of [['edRawJson', 'btnSaveRaw'], ['neoRawJson', 'neoSaveRaw']]) {
+    const el = $(jsonId);
+    if (!el || !(jsonId in DRAWER_SNAPSHOT) || el.value === DRAWER_SNAPSHOT[jsonId]) continue;
+    try {
+      const parsed = JSON.parse(el.value);
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('object');
+    } catch (_) { toast('Fix the JSON before saving', true); return; }
+    target = $(saveId) || el;
+    break;
+  }
+  if (!target) target = $('btnSaveInquiry') || $('neoSaveMember');
+  if (!target) { toast('Nothing to save', true); return; }
+  if (target.id === 'btnSaveInquiry') {
+    const emailEl = $('edEmail');
+    const email = emailEl ? String(emailEl.value || '').trim() : '';
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Enter a valid email address', true); return; }
+  }
+  const resolve = EXIT_RESOLVE;
+  hideExitGuard();
+  CONFIRM_BYPASS = target.id;
+  target.click();
+  if (resolve) resolve();
+});
 
 /* ---------- SIDEBAR NAVIGATION ---------- */
 document.querySelectorAll('.nav-item').forEach((b) => b.addEventListener('click', () => switchView(b.dataset.view)));
@@ -3605,7 +3897,9 @@ $('sideToggle').addEventListener('click', () => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    closeDrawer();
+    if ($('confirmModal').classList.contains('on')) { closeConfirm(); return; }
+    if ($('exitGuard').classList.contains('on')) { hideExitGuard(); return; }
+    if ($('drawer').classList.contains('on')) requestDrawerExit(); else closeDrawer();
     $('notifyPanel').classList.remove('on');
     $('sidebar').classList.remove('open');
     $('sideScrim').classList.remove('on');
@@ -3619,4 +3913,3 @@ restoreSession();
 </script>
 </body>
 </html>
-
