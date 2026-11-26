@@ -76,14 +76,14 @@ a{color:inherit;text-decoration:none}
 /* ---------- LOGIN ---------- */
 #login{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--login-bg);backdrop-filter:blur(14px)}
 .login-card{width:min(100%,420px);background:var(--login-card);border:1px solid var(--brand-line);border-radius:26px;padding:36px 30px;text-align:center;box-shadow:var(--shadow)}
-.login-icon{width:68px;height:68px;margin:0 auto 20px;border-radius:20px;background:var(--brand-soft);border:1px solid var(--brand-line);color:var(--mint);display:flex;align-items:center;justify-content:center;font-size:32px}
+.login-icon{width:84px;height:84px;margin:0 auto 18px;border-radius:24px;background:#fff;border:1px solid var(--brand-line);display:flex;align-items:center;justify-content:center;padding:12px;box-shadow:0 10px 24px rgba(16,43,59,.08)}
+.login-icon img{width:100%;height:100%;object-fit:contain;display:block}
 .login-card h1{margin:0 0 8px;font-size:24px;font-weight:800;letter-spacing:-.02em}
 .login-card p{margin:0 0 24px;color:var(--muted);font-size:14px;line-height:1.6}
 .login-input{width:100%;padding:14px 16px;border-radius:14px;background:var(--hover);border:1px solid var(--border);color:var(--ink);font-size:15px;outline:none;transition:.2s}
 .login-input:focus{border-color:var(--mint);box-shadow:0 0 0 3px var(--brand-soft)}
 .login-btn{width:100%;margin-top:14px;padding:14px;border:0;border-radius:999px;background:linear-gradient(100deg,var(--teal),var(--mint));color:var(--on-primary);font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:9px;transition:.2s}
 .login-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px var(--brand-line)}
-.login-note{margin-top:20px;color:var(--ink-7);font-size:11px;line-height:1.6}
 .field-label{display:block;text-align:left;margin:14px 0 6px;color:var(--ink-4);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .login-btn:disabled{opacity:.7;cursor:wait;transform:none}
 .login-hint{margin:14px 0 0!important;color:var(--amber)!important;font-size:11px!important;line-height:1.5!important;min-height:0}
@@ -149,6 +149,9 @@ a{color:inherit;text-decoration:none}
 .stat .lab{color:var(--muted);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 .stat .val{font-size:30px;font-weight:800;line-height:1.2;margin-top:2px;letter-spacing:-.03em}
 .stat .sub{font-size:11px;color:var(--ink-7);margin-top:3px}
+.stat .ic.live{position:relative}
+.stat .ic.live::after{content:'';position:absolute;top:-3px;right:-3px;width:9px;height:9px;border-radius:50%;background:var(--green);border:2px solid var(--surface);animation:livePulse 1.8s infinite}
+@keyframes livePulse{0%{box-shadow:0 0 0 0 rgba(10,143,122,.45)}70%{box-shadow:0 0 0 7px rgba(10,143,122,0)}100%{box-shadow:0 0 0 0 rgba(10,143,122,0)}}
 
 /* ---------- TOOLBAR ---------- */
 .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
@@ -242,6 +245,7 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 .abtn{padding:11px;border-radius:11px;border:1px solid var(--border);background:var(--surface-2);color:var(--ink-2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:7px;transition:.2s}
 .abtn:hover{background:var(--brand-soft);border-color:var(--brand-line);color:var(--mint)}
 .abtn.primary{background:linear-gradient(100deg,var(--teal),var(--mint));color:var(--on-primary);border:0;font-weight:800}
+.abtn.danger:hover{background:var(--red-soft);border-color:var(--red-line);color:var(--red)}
 .timeline{position:relative;padding-left:20px}
 .timeline::before{content:'';position:absolute;left:5px;top:4px;bottom:4px;width:1px;background:var(--brand-line)}
 .t-item{position:relative;margin:12px 0;font-size:12px;color:var(--ink-4)}
@@ -264,6 +268,8 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 .section-note{color:var(--ink-7);font-size:11px;line-height:1.5;margin:0 0 10px}
 .status-row{display:flex;gap:8px;align-items:center}
 .status-row select{flex:1}
+.check-line{display:flex;align-items:flex-start;gap:8px;margin-top:9px;color:var(--ink-5);font-size:11px;line-height:1.5;cursor:pointer}
+.check-line input{accent-color:var(--mint);margin-top:2px;flex:none}
 
 /* ---------- VIEWS: CRM, TEMPLATES, SETTINGS ---------- */
 .split{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:16px;align-items:start}
@@ -313,6 +319,17 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 .tpl-editor{margin-bottom:18px;border-color:var(--brand-line)}
 .settings-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
 .setting-card h3{margin:0 0 14px}
+.dict-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.dict-group{border:1px solid var(--border);border-radius:12px;padding:11px;background:var(--surface-2)}
+.dict-head{display:flex;justify-content:space-between;color:var(--ink-5);font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;margin-bottom:9px}
+.dict-head span{color:var(--mint)}
+.dict-items{display:flex;flex-wrap:wrap;gap:6px;min-height:34px;align-content:flex-start}
+.dict-item{display:inline-flex;align-items:center;gap:5px;padding:5px 6px 5px 10px;border-radius:999px;background:var(--brand-tint);border:1px solid var(--brand-line);color:var(--ink-3);font-size:11px;font-weight:600}
+.dict-item button{width:18px;height:18px;border:0;border-radius:50%;background:transparent;color:var(--ink-7);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:0}
+.dict-item button:hover{background:var(--red-soft);color:var(--red)}
+.dict-add{display:flex;gap:6px;margin-top:10px}
+.dict-add .admin-input{flex:1;min-width:0;padding:8px 10px;font-size:11px}
+.dict-add .abtn{padding:8px 10px;font-size:11px;flex:none}
 .setting-line{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
 .setting-line:last-child{border-bottom:0}
 .setting-line .k{font-size:12px;color:var(--ink-2);font-weight:600}
@@ -414,6 +431,7 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 .an-table td{padding:9px 12px;border-bottom:1px solid var(--line);color:var(--ink-4);max-width:230px;overflow:hidden;text-overflow:ellipsis}
 .an-table tr:last-child td{border-bottom:0}
 .an-table tr:hover td{background:var(--hover)}
+.an-table tbody tr[data-neo-id]{cursor:pointer}
 .an-table td b{color:var(--ink-2);font-weight:600}
 .an-table td.mono{font-family:'JetBrains Mono',monospace;font-size:10px}
 .an-badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;background:var(--hover-2);color:var(--ink-5)}
@@ -437,6 +455,33 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 @media(max-width:1250px){.an-4{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){.an-3,.an-2{grid-template-columns:1fr}.an-chart{height:175px}}
 @media(max-width:600px){.an-4{grid-template-columns:1fr}.an-stat{min-height:96px}.an-chart{height:160px}.an-gauge{width:100px;height:100px}.an-table{font-size:10px}}
+
+/* ---------- NOTIFICATIONS ---------- */
+.notify-wrap{position:relative;display:inline-flex}
+.notify-btn{position:relative}
+.notify-badge{position:absolute;top:-6px;right:-6px;min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:var(--red);color:var(--light);font-size:10px;font-weight:800;line-height:17px;text-align:center;display:none}
+.notify-badge.on{display:block}
+.notify-btn.ping i{animation:bellPing .9s ease}
+@keyframes bellPing{0%,100%{transform:rotate(0)}25%{transform:rotate(14deg)}75%{transform:rotate(-10deg)}}
+.notify-panel{display:none;position:absolute;right:0;top:calc(100% + 10px);width:min(370px,calc(100vw - 32px));max-height:min(430px,70vh);overflow:auto;z-index:95;background:var(--toast-bg);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-deep);padding:10px}
+.notify-panel.on{display:block}
+.notify-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 4px 10px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.notify-head strong{display:flex;align-items:center;gap:7px;font-size:13px}
+.notify-head strong i{color:var(--mint);font-size:17px}
+.notify-list{display:flex;flex-direction:column;gap:4px}
+.notify-item{display:grid;grid-template-columns:30px minmax(0,1fr);gap:9px;padding:10px 8px;border-radius:11px;cursor:pointer;transition:.2s}
+.notify-item:hover{background:var(--hover)}
+.notify-item.unread{background:var(--brand-softest)}
+.notify-item .n-ic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--brand-soft);color:var(--mint);font-size:15px}
+.notify-item.addition .n-ic{background:var(--green-soft);color:var(--green)}
+.notify-item.alert .n-ic{background:var(--amber-soft);color:var(--amber)}
+.notify-item.change .n-ic{background:var(--accent-blue-soft);color:var(--accent-blue)}
+.notify-item .n-title{font-size:12px;font-weight:700;color:var(--ink-2);line-height:1.35}
+.notify-item .n-text{font-size:11px;color:var(--ink-6);line-height:1.45;margin-top:2px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.notify-item .n-time{font-size:9px;color:var(--ink-8);margin-top:4px;display:block}
+.notify-empty{padding:24px 10px;text-align:center;color:var(--ink-7);font-size:11px}
+.notify-empty i{display:block;font-size:24px;margin-bottom:6px;color:var(--brand-line)}
+@media(max-width:600px){.notify-panel{position:fixed;top:64px;left:12px;right:12px;width:auto}}
 
 /* ---------- TOAST ---------- */
 #toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);z-index:200;background:var(--toast-bg);border:1px solid var(--brand-line);color:var(--ink-2);padding:12px 18px;border-radius:12px;font-size:13px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.3s;display:flex;align-items:center;gap:9px}
@@ -482,16 +527,15 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 <!-- LOGIN -->
 <div id="login">
   <div class="login-card">
-    <div class="login-icon"><i class="ph ph-shield-check"></i></div>
+    <div class="login-icon"><img src="https://i.ibb.co/TxTcbQ27/Design-sans-titre.png" alt="ARACS Technologies logo"></div>
     <h1>ARACS Control Center</h1>
     <p>Private access to website inquiries and lead activity.</p>
     <label class="field-label" for="email">Admin email</label>
     <input id="email" class="login-input" type="email" placeholder="admin@your-domain.com" autocomplete="username" spellcheck="false">
     <label class="field-label" for="pw">Password</label>
-    <input id="pw" class="login-input" type="password" placeholder="Supabase account password" autocomplete="current-password">
+    <input id="pw" class="login-input" type="password" placeholder="Password" autocomplete="current-password">
     <button id="unlock" class="login-btn"><i class="ph ph-lock-key"></i> Sign in securely</button>
     <p class="login-hint" id="loginHint"></p>
-    <p class="login-note">Credentials are verified by Supabase Auth, not stored in this page. Admin users are created in Supabase → Authentication → Users.</p>
   </div>
 </div>
 
@@ -509,6 +553,7 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
         <button class="nav-item on" data-view="overview"><i class="ph ph-squares-four"></i> <span class="nav-text">Overview</span></button>
         <button class="nav-item" data-view="inquiries"><i class="ph ph-inbox"></i> <span class="nav-text">Inquiries</span> <span class="nav-count" id="navActive">0</span></button>
         <button class="nav-item" data-view="archive"><i class="ph ph-archive"></i> <span class="nav-text">Archive</span> <span class="nav-count" id="navArchived">0</span></button>
+        <button class="nav-item" data-view="neochip"><i class="ph ph-users-three"></i> <span class="nav-text">NeoChip members</span> <span class="nav-count" id="navNeo">0</span></button>
       </div>
       <div class="nav-group">
         <span class="nav-label">CRM</span>
@@ -545,6 +590,13 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
         <div class="brand-txt"><strong>ARACS</strong><span>Control Center</span></div>
       </div>
       <span class="pill-live"><span class="dot" id="liveDot"></span><span id="liveTxt">Connecting</span></span>
+      <div class="notify-wrap">
+        <button class="tb-btn notify-btn" id="notifyBtn" title="Notifications"><i class="ph ph-bell-simple"></i><span class="notify-badge" id="notifyBadge">0</span></button>
+        <div class="notify-panel" id="notifyPanel">
+          <div class="notify-head"><strong><i class="ph ph-bell-simple"></i> Notifications</strong><button class="mini-btn" id="notifyClear">Mark all read</button></div>
+          <div class="notify-list" id="notifyList"></div>
+        </div>
+      </div>
       <span class="user-chip" id="userChip"><i class="ph ph-user-circle"></i><span id="userEmail"></span></span>
       <button class="tb-btn" id="refresh"><i class="ph ph-arrow-clockwise"></i> Refresh</button>
       <button class="tb-btn" id="exportBtn"><i class="ph ph-download-simple"></i> Export CSV</button>
@@ -563,7 +615,7 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
 
         <div class="stats">
           <div class="stat"><div class="ic"><i class="ph ph-files"></i></div><div class="lab">Total records</div><div class="val" id="sTotal">0</div><div class="sub">all rows</div></div>
-          <div class="stat"><div class="ic"><i class="ph ph-inbox"></i></div><div class="lab">Active</div><div class="val" id="sActive">0</div><div class="sub">live inquiries</div></div>
+          <div class="stat"><div class="ic live"><i class="ph ph-envelope-open"></i></div><div class="lab">Active</div><div class="val" id="sActive">0</div><div class="sub">live inquiries</div></div>
           <div class="stat"><div class="ic blue"><i class="ph ph-archive"></i></div><div class="lab">Archived</div><div class="val" id="sArchived">0</div><div class="sub">permanent record</div></div>
           <div class="stat"><div class="ic amber"><i class="ph ph-warning-circle"></i></div><div class="lab">New leads</div><div class="val" id="sNew">0</div><div class="sub">awaiting reply</div></div>
           <div class="stat"><div class="ic blue"><i class="ph ph-clock"></i></div><div class="lab">Last 7 days</div><div class="val" id="sWeek">0</div><div class="sub">incoming pace</div></div>
@@ -607,13 +659,67 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
             <button class="chip" data-status="approved">Approved</button>
             <button class="chip" data-status="rejected">Rejected</button>
           </div>
+          <select class="sort" id="aracsRange">
+            <option value="all">Any time</option>
+            <option value="today">Today</option>
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+          <select class="sort" id="aracsWilaya"><option value="all">All wilayas</option></select>
+          <select class="sort" id="aracsType"><option value="all">All project types</option></select>
+          <select class="sort" id="aracsContact">
+            <option value="all">Any contact</option>
+            <option value="email">Has email</option>
+            <option value="phone">Has phone</option>
+            <option value="none">No contact details</option>
+          </select>
           <select class="sort" id="sort">
             <option value="new">Newest first</option>
             <option value="old">Oldest first</option>
             <option value="name">Name A–Z</option>
           </select>
+          <button class="mini-btn" id="newInquiry"><i class="ph ph-plus"></i> New inquiry</button>
         </div>
         <div class="grid" id="grid"></div>
+      </section>
+
+      <section class="view" id="view-neochip">
+        <div class="page-head">
+          <div><h2>NeoChip <em>members</em></h2><p>Applicants from the NeoChip Members table. Search and filter every record.</p></div>
+          <span class="pill-live" id="neoCount">0 members</span>
+        </div>
+        <div class="toolbar">
+          <div class="search"><i class="ph ph-magnifying-glass"></i><input id="neoSearch" placeholder="Search name, email, phone, role, focus, wilaya, skill…"></div>
+          <div class="chips" id="neoChips">
+            <button class="chip on" data-neo-status="all">All</button>
+            <button class="chip" data-neo-status="pending">Pending</button>
+            <button class="chip" data-neo-status="interview">Interview</button>
+            <button class="chip" data-neo-status="waitlist">Waitlist</button>
+            <button class="chip" data-neo-status="approved">Approved</button>
+            <button class="chip" data-neo-status="rejected">Rejected</button>
+            <button class="chip" data-neo-status="other">Other</button>
+          </div>
+          <select class="sort" id="neoRole"><option value="all">All roles</option></select>
+          <select class="sort" id="neoFocus"><option value="all">All focuses</option></select>
+          <select class="sort" id="neoWilaya"><option value="all">All wilayas</option></select>
+          <select class="sort" id="neoRange">
+            <option value="all">Any time</option>
+            <option value="today">Today</option>
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+          </select>
+          <select class="sort" id="neoSort">
+            <option value="new">Newest first</option>
+            <option value="old">Oldest first</option>
+            <option value="name">Name A–Z</option>
+          </select>
+          <button class="mini-btn" id="neoRefresh"><i class="ph ph-arrow-clockwise"></i> Refresh</button>
+          <button class="mini-btn" id="newNeoMember"><i class="ph ph-plus"></i> New member</button>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3><i class="ph ph-users-three"></i> Applicant register</h3><span class="panel-sub" id="neoSource">Loading members…</span></div>
+          <div class="an-table-wrap" id="neoRows"></div>
+        </div>
       </section>
 
       <section class="view" id="view-archive">
@@ -731,6 +837,12 @@ details.raw pre{margin:0;padding:13px;max-height:320px;overflow:auto;font-family
             <div class="setting-line"><div><div class="k">Auto refresh</div><span class="s">Reload data every 30 seconds</span></div><label class="switch"><input type="checkbox" id="prefRefresh" checked><span></span></label></div>
             <div class="setting-line"><div><div class="k">Compact cards</div><span class="s">Hide descriptions in grids</span></div><label class="switch"><input type="checkbox" id="prefCompact"><span></span></label></div>
           </div>
+          <div class="setting-card panel" style="grid-column:1/-1">
+            <h3><i class="ph ph-list-bullets"></i> NeoChip lists</h3>
+            <p class="panel-sub">The values offered in member Role, Focus, and Status dropdowns. Add or remove values, then save. The bot stores them in its database and syncs them to Supabase. Removing a value never changes existing members; values already on a member stay available in the dropdowns and filters.</p>
+            <div id="neoDictionaryEditor" style="margin-top:12px"></div>
+            <button class="abtn primary" id="neoDictSave" style="margin-top:14px"><i class="ph ph-floppy-disk"></i> Save lists</button>
+          </div>
           <div class="setting-card panel">
             <h3><i class="ph ph-user-circle"></i> Session</h3>
             <div id="setSession"></div>
@@ -778,6 +890,7 @@ const BOT_URL = 'https://neochip-bot.onrender.com';
 const $ = (id) => document.getElementById(id);
 const on = (id, event, fn) => { const el = $(id); if (el) el.addEventListener(event, fn); };
 let DATA = [], FILTER = 'all', QUERY = '', SORT = 'new', TIMER = null, SESSION = null;
+let ARACS_RANGE = 'all', ARACS_WILAYA = 'all', ARACS_TYPE = 'all', ARACS_CONTACT = 'all';
 let META = null, META_UPDATED = '', ALL_ROWS = [];
 let BOT_STATE = null, DATA_SOURCE = 'supabase', SELECTED = null, TEMPLATES = [];
 let CURRENT_VIEW = 'overview', CRM_SELECTED = [], CRM_CHANNEL = 'email', CRM_QUERY = '';
@@ -788,6 +901,11 @@ let PREF_COMPACT = localStorage.getItem('aracs_pref_compact') === 'on';
 let PREF_LIGHT = localStorage.getItem('aracs_theme') !== 'dark';
 let SIDE_COLLAPSED = localStorage.getItem('aracs_sidebar') === 'collapsed';
 let ANALYTICS = null, AN_TAB = 'overview', AN_LOADING = false;
+let NEO_ROWS = [], NEO_SOURCE = '', NEO_KNOWN_IDS = null, NEO_LOADING = false;
+let NEO_QUERY = '', NEO_STATUS = 'all', NEO_ROLE = 'all', NEO_FOCUS = 'all', NEO_WILAYA = 'all', NEO_RANGE = 'all', NEO_SORT = 'new';
+let NEO_SELECTED = null, NEO_DELETE_ARMED = false, ARACS_DELETE_ARMED = false;
+let NOTIFICATIONS = [], NOTIFY_READY = false, LAST_ALERT_SIGNATURE = '';
+try { NOTIFICATIONS = JSON.parse(localStorage.getItem('aracs_notifications') || '[]'); if (!Array.isArray(NOTIFICATIONS)) NOTIFICATIONS = []; } catch (_) { NOTIFICATIONS = []; }
 
 /* All writes go through the bot. It owns the in-memory database and
    upserts whole rows to Supabase, so writing from a static page directly
@@ -804,6 +922,14 @@ async function adminApi(path, body) {
 }
 
 const STATUSES = ['new', 'read', 'contacted', 'waitlist', 'approved', 'rejected', 'won', 'lost'];
+/* Mirrors bot.js ROLES and FOCUSES. The bot sends its live dictionaries in
+   /api/admin/state; these are the fallback when only Supabase is reachable. */
+const BOT_ROLES = ['Unassigned', 'Member', 'Department Leader', 'Leader', 'Co-Founder'];
+const BOT_FOCUSES = ['Unassigned', 'Robotics', 'AI & ML', 'Energy', 'IoT & Smart', 'Business', 'Design', 'Programming', 'Marketing'];
+const BOT_STATUSES = ['pending', 'interview', 'waitlist', 'waitlisted', 'approved', 'rejected', 'contacted'];
+const OTHER_VALUE = '__other__';
+let NEO_ROLES = BOT_ROLES.slice(), NEO_FOCUSES = BOT_FOCUSES.slice(), NEO_STATUSES = BOT_STATUSES.slice();
+let DICT_DRAFT = null;
 const VARIABLES = ['name','first_name','last_name','email','phone','wilaya','code','project_type','description','promo_code','invited_by','heard_about','site_name'];
 const CHANNELS = { email: 'Email', whatsapp: 'WhatsApp', call: 'Call script' };
 const DEFAULT_TEMPLATES = [
@@ -913,14 +1039,46 @@ function insertVar(variable) {
   updatePreview();
 }
 
-async function mutate(path, body, message) {
+async function refreshAllData() {
+  await Promise.allSettled([loadNeoMembers(true), loadAnalytics(true)]);
+  render();
+}
+
+function emailFeedback(result) {
+  const info = result && result.email;
+  if (!info) return { text: '', error: false };
+  if (info.sent) return { text: 'Client emailed', error: false };
+  return { text: 'Email failed' + (info.error ? ': ' + info.error : ''), error: true };
+}
+
+async function mutate(path, body, message, syncAll) {
   try {
-    await adminApi(path, body);
-    toast(message || 'Saved');
+    const result = await adminApi(path, body);
+    const feedback = emailFeedback(result);
+    notifyChange(path, message, body, feedback.text);
+    toast([message || 'Saved', feedback.text].filter(Boolean).join(' · '), feedback.error);
     closeDrawer();
     await load(false);
+    if (syncAll) await refreshAllData();
+    return true;
   } catch (e) {
     toast(e.message, true);
+    return false;
+  }
+}
+
+async function neoMutate(path, body, message) {
+  try {
+    const result = await adminApi(path, body);
+    const feedback = emailFeedback(result);
+    notifyChange(path, message, body, feedback.text);
+    toast([message || 'Saved', feedback.text].filter(Boolean).join(' · '), feedback.error);
+    closeDrawer();
+    await refreshAllData();
+    return true;
+  } catch (e) {
+    toast(e.message, true);
+    return false;
   }
 }
 
@@ -940,6 +1098,82 @@ function toast(msg, err) {
   $('toast').classList.add('show');
   clearTimeout(toast._t);
   toast._t = setTimeout(() => $('toast').classList.remove('show'), 3200);
+}
+
+const NOTIFY_ICONS = { addition: 'ph-plus-circle', change: 'ph-note-pencil', alert: 'ph-warning-circle', info: 'ph-info' };
+function saveNotifications() {
+  try { localStorage.setItem('aracs_notifications', JSON.stringify(NOTIFICATIONS.slice(0, 60))); } catch (_) {}
+}
+function notify(item) {
+  const id = String(item.id || ('n-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7)));
+  const existing = NOTIFICATIONS.find((n) => n.id === id);
+  if (existing) {
+    existing.read = false;
+    existing.at = new Date().toISOString();
+    existing.title = item.title || existing.title;
+    existing.text = item.text || existing.text;
+    existing.view = item.view || existing.view;
+  } else {
+    NOTIFICATIONS.unshift({ id, type: item.type || 'info', title: item.title || 'Update', text: item.text || '', at: new Date().toISOString(), view: item.view || '', read: false });
+  }
+  NOTIFICATIONS = NOTIFICATIONS.slice(0, 60);
+  saveNotifications();
+  renderNotifications();
+  const btn = $('notifyBtn');
+  if (btn && !existing) { btn.classList.remove('ping'); void btn.offsetWidth; btn.classList.add('ping'); }
+}
+function notifyChange(path, message, body, extra) {
+  const names = {
+    '/api/admin/inquiry': 'Inquiry updated',
+    '/api/admin/status': 'Status changed',
+    '/api/admin/confirmation': 'Confirmation resent',
+    '/api/admin/archive': 'Inquiry archived',
+    '/api/admin/unarchive': 'Inquiry restored',
+    '/api/admin/note': 'Note added',
+    '/api/admin/reply': 'Reply sent',
+    '/api/admin/inquiry/raw': 'Full record updated',
+    '/api/admin/inquiry/create': 'Inquiry created',
+    '/api/admin/inquiry/delete': 'Inquiry deleted',
+    '/api/admin/neochip/member': 'NeoChip member updated',
+    '/api/admin/neochip/create': 'NeoChip member added',
+    '/api/admin/neochip/delete': 'NeoChip member removed',
+    '/api/admin/templates': 'Template saved',
+    '/api/admin/templates/delete': 'Template removed'
+  };
+  const key = String(path || '');
+  const ref = body && (body.code || body.id || body.email || body.name) ? String(body.code || body.id || body.email || body.name) : '';
+  const form = body && body.form_data ? (body.form_data.firstName || body.form_data.email || '') : '';
+  notify({
+    id: 'change:' + key + ':' + ref + ':' + Date.now(),
+    type: 'change',
+    title: names[key] || 'Record updated',
+    text: [ref, form, message || '', extra || ''].filter(Boolean).join(' · '),
+    view: key.indexOf('neochip') >= 0 ? 'neochip' : (key.indexOf('template') >= 0 ? 'templates' : 'inquiries')
+  });
+}
+function renderNotifications() {
+  const list = $('notifyList');
+  if (!list) return;
+  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
+  const badge = $('notifyBadge');
+  if (badge) { badge.textContent = unread > 9 ? '9+' : String(unread); badge.classList.toggle('on', unread > 0); }
+  if (!NOTIFICATIONS.length) {
+    list.innerHTML = '<div class="notify-empty"><i class="ph ph-bell-simple"></i>No notifications yet.<br>Updates appear here as they happen.</div>';
+    return;
+  }
+  list.innerHTML = NOTIFICATIONS.map((n) => `
+    <div class="notify-item ${esc(n.type)} ${n.read ? '' : 'unread'}" data-notify="${esc(n.id)}" data-view="${esc(n.view || '')}">
+      <div class="n-ic"><i class="ph ${esc(NOTIFY_ICONS[n.type] || NOTIFY_ICONS.info)}"></i></div>
+      <div><div class="n-title">${esc(n.title)}</div>${n.text ? `<div class="n-text">${esc(n.text)}</div>` : ''}<span class="n-time">${esc(relTime(n.at))}</span></div>
+    </div>`).join('');
+  list.querySelectorAll('[data-notify]').forEach((el) => el.addEventListener('click', () => {
+    const item = NOTIFICATIONS.find((n) => n.id === el.dataset.notify);
+    if (item) item.read = true;
+    saveNotifications();
+    renderNotifications();
+    $('notifyPanel').classList.remove('on');
+    if (el.dataset.view) switchView(el.dataset.view);
+  }));
 }
 
 function parseExtra(desc) {
@@ -1204,6 +1438,9 @@ async function loadFromBot() {
   };
   META_UPDATED = state.time;
   TEMPLATES = Array.isArray(state.settings && state.settings.emailTemplates) ? state.settings.emailTemplates : [];
+  if (Array.isArray(state.neoRoles) && state.neoRoles.length) NEO_ROLES = state.neoRoles.map(String);
+  if (Array.isArray(state.neoFocuses) && state.neoFocuses.length) NEO_FOCUSES = state.neoFocuses.map(String);
+  if (Array.isArray(state.neoStatuses) && state.neoStatuses.length) NEO_STATUSES = state.neoStatuses.map(String);
 }
 
 async function loadFromSupabase() {
@@ -1226,6 +1463,7 @@ async function loadFromSupabase() {
 
 async function load(showToast) {
   const dot = $('liveDot'), txt = $('liveTxt');
+  const before = NOTIFY_READY ? new Set(DATA.map((x) => x.code)) : null;
   try {
     await ensureFreshToken();
     try {
@@ -1233,6 +1471,18 @@ async function load(showToast) {
     } catch (_) {
       await loadFromSupabase();
     }
+    if (before) {
+      DATA.filter((x) => x.code && !before.has(x.code)).slice(0, 5).forEach((x) => notify({
+        id: 'addition:inquiry:' + x.code,
+        type: 'addition',
+        title: 'New inquiry',
+        text: [x.name, x.code, x.type].filter(Boolean).join(' · '),
+        view: 'inquiries'
+      }));
+    }
+    NOTIFY_READY = true;
+    const offline = NOTIFICATIONS.find((n) => n.id === 'alert:offline' && !n.read);
+    if (offline) { offline.read = true; saveNotifications(); renderNotifications(); }
     renderSystem();
     loadAnalytics();
     dot.classList.remove('bad');
@@ -1245,6 +1495,7 @@ async function load(showToast) {
     dot.classList.add('bad');
     txt.textContent = 'Offline';
     $('updatedAt').textContent = 'Connection issue';
+    if (!NOTIFICATIONS.some((n) => n.id === 'alert:offline')) notify({ id: 'alert:offline', type: 'alert', title: 'Connection lost', text: e.message, view: 'settings' });
     if (showToast) toast('Could not reach Supabase: ' + e.message, true);
   }
 }
@@ -1449,6 +1700,106 @@ function anLocalNeo(rows) {
   };
 }
 
+function neoMember(row) {
+  let fd = row && row.form_data;
+  if (typeof fd === 'string') { try { fd = JSON.parse(fd); } catch (_) { fd = {}; } }
+  fd = fd && typeof fd === 'object' ? fd : {};
+  const raw = String(fd.admin_status || 'pending').trim().toLowerCase() || 'pending';
+  const skills = Array.isArray(fd.skills) ? fd.skills : String(fd.skills || '').split(/[,;|]/);
+  return {
+    id: String(row.id || ''),
+    name: `${fd.firstName || ''} ${fd.lastName || ''}`.trim() || String(fd.full_name || 'Unknown'),
+    email: String(fd.email || ''),
+    phone: String(fd.phone || ''),
+    wilaya: String(fd.willaya || ''),
+    education: String(fd.education || ''),
+    interest: String(fd.interest || ''),
+    skills: skills.map((s) => String(s || '').trim()).filter(Boolean),
+    status: raw === 'waitlisted' ? 'waitlist' : raw,
+    role: String(fd.admin_role || 'Unassigned').trim() || 'Unassigned',
+    focus: String(fd.admin_focus || 'Unassigned').trim() || 'Unassigned',
+    interviewDate: String(fd.interview_date || ''),
+    notes: String(fd.admin_notes || ''),
+    auditEntries: Array.isArray(fd.audit_log) ? fd.audit_log.length : 0,
+    emailEvents: Array.isArray(fd.email_log) ? fd.email_log.length : 0,
+    submittedAt: row.created_at || fd.createdAt || null,
+    raw: fd
+  };
+}
+
+function neoRowsFrom(rows) {
+  return (Array.isArray(rows) ? rows : [])
+    .filter((row) => {
+      let fd = row && row.form_data;
+      if (typeof fd === 'string') { try { fd = JSON.parse(fd); } catch (_) { fd = {}; } }
+      fd = fd && typeof fd === 'object' ? fd : {};
+      return fd.is_bot_config !== true && String(fd.firstName || '') !== 'SYSTEM_CONFIG';
+    })
+    .map(neoMember)
+    .sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+}
+
+async function loadNeoMembers(force) {
+  if (NEO_LOADING && !force) return NEO_ROWS;
+  if (NEO_ROWS.length && !force) return NEO_ROWS;
+  NEO_LOADING = true;
+  try {
+    await ensureFreshToken();
+    const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 9000);
+    if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
+    const rows = await res.json();
+    if (Array.isArray(rows)) {
+      const next = neoRowsFrom(rows);
+      if (NEO_KNOWN_IDS) {
+        next.filter((m) => m.id && !NEO_KNOWN_IDS.has(m.id)).slice(0, 5).forEach((m) => notify({
+          id: 'addition:neochip:' + m.id,
+          type: 'addition',
+          title: 'New NeoChip member',
+          text: [m.name, m.status].filter(Boolean).join(' · '),
+          view: 'neochip'
+        }));
+      }
+      NEO_KNOWN_IDS = new Set(next.map((m) => m.id).filter(Boolean));
+      NEO_ROWS = next;
+      NEO_SOURCE = 'Supabase · ' + next.length + ' members';
+    }
+  } catch (e) {
+    let botFallback = false;
+    try {
+      const viaBot = await adminApi('/api/admin/neochip/members');
+      if (viaBot && Array.isArray(viaBot.rows)) {
+        if (Array.isArray(viaBot.roles) && viaBot.roles.length) NEO_ROLES = viaBot.roles.map(String);
+        if (Array.isArray(viaBot.focuses) && viaBot.focuses.length) NEO_FOCUSES = viaBot.focuses.map(String);
+        if (Array.isArray(viaBot.statuses) && viaBot.statuses.length) NEO_STATUSES = viaBot.statuses.map(String);
+        NEO_ROWS = neoRowsFrom(viaBot.rows.map((r) => ({
+          id: r.id,
+          created_at: r.createdAt,
+          form_data: r.raw,
+        })));
+        NEO_SOURCE = 'Bot · ' + (viaBot.source || 'supabase') + ' · ' + NEO_ROWS.length + ' members';
+      } else {
+        botFallback = true;
+      }
+    } catch (_) {
+      botFallback = true;
+    }
+    if (!NEO_ROWS.length && botFallback && ANALYTICS && ANALYTICS.neochip && Array.isArray(ANALYTICS.neochip.recent)) {
+      NEO_ROWS = ANALYTICS.neochip.recent.map((r) => ({
+        ...r, wilaya: '', education: r.education || '', interest: '', skills: [],
+        role: r.role || 'Unassigned', focus: r.focus || 'Unassigned', notes: '',
+        auditEntries: r.auditEntries || 0, emailEvents: r.emailEvents || 0
+      }));
+      NEO_SOURCE = 'Analytics sample · ' + NEO_ROWS.length + ' rows';
+    } else if (!NEO_ROWS.length) {
+      NEO_SOURCE = 'Unavailable · ' + e.message;
+    }
+  } finally {
+    NEO_LOADING = false;
+    renderNeo();
+  }
+  return NEO_ROWS;
+}
+
 async function anProbeTable(table, column) {
   const started = Date.now();
   try {
@@ -1490,6 +1841,9 @@ async function loadAnalyticsFallback() {
     const res = await anFetch(CONFIG.url + '/rest/v1/' + encodeURIComponent('NeoChip Members') + '?select=*&limit=5000', { headers: authHeaders(true) }, 8000);
     if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
     const rows = await res.json();
+    NEO_ROWS = neoRowsFrom(rows);
+    NEO_SOURCE = 'Supabase · ' + NEO_ROWS.length + ' members';
+    if (!NEO_KNOWN_IDS) NEO_KNOWN_IDS = new Set(NEO_ROWS.map((m) => m.id).filter(Boolean));
     neochip = { ...anLocalNeo(rows), readSource: 'supabase-user-token' };
     const probe = tables.find((t) => t.table === 'NeoChip Members');
     if (probe && probe.status === 'ok' && probe.rowCount === null) probe.rowCount = rows.length;
@@ -1518,6 +1872,9 @@ async function fetchNeoFromSupabase() {
     if (!res.ok) throw new Error('Supabase HTTP ' + res.status);
     const rows = await res.json();
     if (!Array.isArray(rows) || !rows.length) return null;
+    NEO_ROWS = neoRowsFrom(rows);
+    NEO_SOURCE = 'Supabase · ' + NEO_ROWS.length + ' members';
+    if (!NEO_KNOWN_IDS) NEO_KNOWN_IDS = new Set(NEO_ROWS.map((m) => m.id).filter(Boolean));
     return { ...anLocalNeo(rows), readSource: 'supabase-user-token' };
   } catch (_) { return null; }
 }
@@ -1550,8 +1907,66 @@ async function loadAnalytics(force) {
     AN_LOADING = false;
     if ($('anUpdated')) $('anUpdated').textContent = 'Metrics ' + new Date().toLocaleTimeString();
     if ($('navAnalytics')) $('navAnalytics').textContent = ANALYTICS && ANALYTICS.system ? String(ANALYTICS.system.overall || 'LIVE').toUpperCase() : 'LIVE';
+    const failed = ((ANALYTICS && ANALYTICS.system && ANALYTICS.system.checks) || []).filter((c) => c.status === 'error');
+    const signature = failed.map((c) => c.name).sort().join('|');
+    if (signature && signature !== LAST_ALERT_SIGNATURE) {
+      notify({ id: 'alert:system:' + signature, type: 'alert', title: 'System alert', text: failed.slice(0, 2).map((c) => c.name).join(', ') + ' needs attention', view: 'analytics' });
+    } else if (!signature && LAST_ALERT_SIGNATURE) {
+      notify({ id: 'info:system-recovered', type: 'info', title: 'System healthy', text: 'All monitored checks are responding', view: 'analytics' });
+    }
+    LAST_ALERT_SIGNATURE = signature;
     if (CURRENT_VIEW === 'analytics') renderAnalytics();
   }
+}
+
+function setSelectOptions(id, values, label) {
+  const el = $(id);
+  if (!el) return 'all';
+  const current = el.value || 'all';
+  el.innerHTML = `<option value="all">${esc(label)}</option>` + values.map((v) => `<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  const kept = current === 'all' || values.includes(current);
+  el.value = kept ? current : 'all';
+  return el.value;
+}
+
+/* Bot dictionaries first, then any custom value already stored in a member,
+   then the value being edited. Custom values stay available after a reload. */
+function neoOptionValues(field, current) {
+  const source = field === 'role' ? NEO_ROLES : NEO_FOCUSES;
+  const observed = NEO_ROWS.map((m) => m[field]).filter(Boolean);
+  return [...new Set(source.concat(observed, current ? [current] : []).filter(Boolean).map(String))];
+}
+
+function neoSelectOptions(field, current, allowOther) {
+  const value = String(current || '');
+  const options = neoOptionValues(field, value)
+    .map((v) => `<option value="${esc(v)}"${v === value ? ' selected' : ''}>${esc(v)}</option>`)
+    .join('');
+  return options + (allowOther ? `<option value="${OTHER_VALUE}">Other - type a custom value</option>` : '');
+}
+
+function bindNeoOther(selectId, customId) {
+  const select = $(selectId), custom = $(customId);
+  if (!select || !custom) return;
+  const sync = () => { custom.style.display = select.value === OTHER_VALUE ? 'block' : 'none'; };
+  select.addEventListener('change', () => { sync(); if (select.value === OTHER_VALUE) custom.focus(); });
+  sync();
+}
+
+function resolveNeoSelect(selectId, customId, label) {
+  const select = $(selectId);
+  if (!select) return '';
+  if (select.value !== OTHER_VALUE) return String(select.value);
+  const custom = $(customId);
+  const value = custom ? String(custom.value || '').trim() : '';
+  if (!value) toast('Enter a custom ' + label, true);
+  return value;
+}
+
+function populateAracsFilters() {
+  const unique = (field) => [...new Set(DATA.map((x) => x[field]).filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b)));
+  ARACS_WILAYA = setSelectOptions('aracsWilaya', unique('wilaya'), 'All wilayas');
+  ARACS_TYPE = setSelectOptions('aracsType', unique('type'), 'All project types');
 }
 
 function filtered() {
@@ -1559,10 +1974,22 @@ function filtered() {
   if (FILTER === 'active') list = list.filter((x) => !x.archived);
   else if (FILTER === 'archived') list = list.filter((x) => x.archived);
   else if (FILTER !== 'all') list = list.filter((x) => x.status.toLowerCase() === FILTER);
+  if (ARACS_RANGE !== 'all') {
+    const now = Date.now();
+    const since = ARACS_RANGE === 'today' ? new Date().setHours(0, 0, 0, 0) : now - Number(ARACS_RANGE) * 864e5;
+    list = list.filter((x) => new Date(x.created).getTime() >= since);
+  }
+  if (ARACS_WILAYA !== 'all') list = list.filter((x) => x.wilaya === ARACS_WILAYA);
+  if (ARACS_TYPE !== 'all') list = list.filter((x) => x.type === ARACS_TYPE);
+  if (ARACS_CONTACT === 'email') list = list.filter((x) => !!x.email);
+  else if (ARACS_CONTACT === 'phone') list = list.filter((x) => !!x.phone);
+  else if (ARACS_CONTACT === 'none') list = list.filter((x) => !x.email && !x.phone);
   if (QUERY) {
     const q = QUERY.toLowerCase();
-    list = list.filter((x) => [x.name,x.email,x.code,x.type,x.description,x.phone,x.wilaya,x.promo,x.invitor,x.heard]
-      .join(' ').toLowerCase().includes(q));
+    list = list.filter((x) => [x.name,x.email,x.code,x.type,x.description,x.phone,x.wilaya,x.promo,x.invitor,x.heard,x.status,
+      ...(x.notes || []).map((n) => n.text || n.body || ''),
+      ...Object.values(x.extra || {}).map((v) => String(v))
+    ].join(' ').toLowerCase().includes(q));
   }
   if (SORT === 'old') list.sort((a,b) => new Date(a.created) - new Date(b.created));
   else if (SORT === 'name') list.sort((a,b) => a.name.localeCompare(b.name));
@@ -1929,15 +2356,92 @@ function updateNavCounts() {
   set('navArchived', archived);
   set('navContacts', DATA.length);
   set('navTemplates', allTemplates().length);
+  set('navNeo', NEO_ROWS.length);
   set('crmCount', CRM_SELECTED.length + ' selected');
   set('tplCount', allTemplates().length + ' templates');
   set('crmTemplateCount', allTemplates().length + ' templates');
 }
 
+function populateNeoFilters() {
+  const unique = (field) => [...new Set(NEO_ROWS.map((m) => m[field]).filter(Boolean))].sort((a, b) => String(a).localeCompare(String(b)));
+  NEO_ROLE = setSelectOptions('neoRole', neoOptionValues('role'), 'All roles');
+  NEO_FOCUS = setSelectOptions('neoFocus', neoOptionValues('focus'), 'All focuses');
+  NEO_WILAYA = setSelectOptions('neoWilaya', unique('wilaya'), 'All wilayas');
+}
+
+function renderNeoStatusChips() {
+  const host = $('neoChips');
+  if (!host) return;
+  const labels = { pending: 'Pending', interview: 'Interview', waitlist: 'Waitlist', waitlisted: 'Waitlisted', approved: 'Approved', rejected: 'Rejected', contacted: 'Contacted' };
+  const values = [...new Set(['all'].concat(NEO_STATUSES).concat(['other']))];
+  if (!values.includes(NEO_STATUS)) NEO_STATUS = 'all';
+  host.innerHTML = values.map((v) => `<button class="chip${NEO_STATUS === v ? ' on' : ''}" data-neo-status="${esc(v)}">${esc(v === 'all' ? 'All' : v === 'other' ? 'Other' : (labels[v] || v))}</button>`).join('');
+}
+
+function filteredNeo() {
+  let list = NEO_ROWS.slice();
+  if (NEO_STATUS !== 'all') {
+    list = list.filter((m) => NEO_STATUS === 'other'
+      ? !['pending', 'interview', 'waitlist', 'approved', 'rejected'].includes(m.status)
+      : m.status === NEO_STATUS);
+  }
+  if (NEO_ROLE !== 'all') list = list.filter((m) => m.role === NEO_ROLE);
+  if (NEO_FOCUS !== 'all') list = list.filter((m) => m.focus === NEO_FOCUS);
+  if (NEO_WILAYA !== 'all') list = list.filter((m) => m.wilaya === NEO_WILAYA);
+  if (NEO_RANGE !== 'all') {
+    const now = Date.now();
+    const since = NEO_RANGE === 'today' ? new Date().setHours(0, 0, 0, 0) : now - Number(NEO_RANGE) * 864e5;
+    list = list.filter((m) => new Date(m.submittedAt || 0).getTime() >= since);
+  }
+  if (NEO_QUERY) {
+    const q = NEO_QUERY.toLowerCase();
+    list = list.filter((m) => [m.name, m.email, m.phone, m.role, m.focus, m.wilaya, m.education, m.interest, m.status, m.notes, ...m.skills]
+      .join(' ').toLowerCase().includes(q));
+  }
+  if (NEO_SORT === 'old') list.sort((a, b) => new Date(a.submittedAt || 0) - new Date(b.submittedAt || 0));
+  else if (NEO_SORT === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+  else list.sort((a, b) => new Date(b.submittedAt || 0) - new Date(a.submittedAt || 0));
+  return list;
+}
+
+function renderNeo() {
+  const box = $('neoRows');
+  if (!box) return;
+  populateNeoFilters();
+  renderNeoStatusChips();
+  const list = filteredNeo();
+  if ($('neoCount')) $('neoCount').textContent = list.length + ' of ' + NEO_ROWS.length + ' members';
+  if ($('neoSource')) $('neoSource').textContent = NEO_SOURCE || 'Loading members…';
+  if (!list.length) {
+    box.innerHTML = '<div class="an-empty"><i class="ph ph-magnifying-glass"></i>' + (NEO_ROWS.length ? 'No members match these filters' : (NEO_LOADING ? 'Loading members…' : 'No members available')) + '</div>';
+    return;
+  }
+  box.innerHTML = `<table class="an-table"><thead><tr>
+    <th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Role</th><th>Focus</th>
+    <th>Wilaya</th><th>Education</th><th>Skills</th><th>Submitted</th><th>Audit</th><th>Mail</th>
+  </tr></thead><tbody>${list.map((m) => `
+    <tr data-neo-id="${esc(m.id)}">
+      <td><b>${esc(m.name)}</b></td>
+      <td class="mono">${esc(m.email)}</td>
+      <td class="mono">${esc(m.phone)}</td>
+      <td><span class="an-badge ${esc(m.status)}">${esc(m.status)}</span></td>
+      <td>${esc(m.role)}</td>
+      <td>${esc(m.focus)}</td>
+      <td>${esc(m.wilaya)}</td>
+      <td>${esc(m.education)}</td>
+      <td>${esc(m.skills.slice(0, 3).join(', '))}${m.skills.length > 3 ? ' +' + (m.skills.length - 3) : ''}</td>
+      <td>${esc(fmtDate(m.submittedAt))}</td>
+      <td>${m.auditEntries}</td>
+      <td>${m.emailEvents}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
 function render() {
   stats();
   renderSystem();
+  populateAracsFilters();
   renderInquiries();
+  renderNeo();
   renderArchive();
   renderRecent();
   renderCharts();
@@ -1953,6 +2457,7 @@ function render() {
 function openDrawer(x) {
   if (!x) return;
   SELECTED = x;
+  ARACS_DELETE_ARMED = false;
   const actions = [
     x.email ? `<a class="abtn primary" href="mailto:${encodeURIComponent(x.email)}?subject=Re:%20${encodeURIComponent(x.code)}%20-%20ARACS"><i class="ph ph-envelope"></i> Email</a>` : '',
     x.phone ? `<a class="abtn" href="tel:${encodeURIComponent(x.phone)}"><i class="ph ph-phone"></i> Call</a>` : '',
@@ -2015,6 +2520,7 @@ function openDrawer(x) {
       </div>
       <div class="form-row"><label>Description</label><textarea class="admin-textarea" id="edDescription">${esc(x.description)}</textarea></div>
       <div class="form-row"><label>Status</label><div class="status-row"><select class="admin-select" id="edStatus">${statusOptions(x.status)}</select><button class="abtn" id="btnStatus"><i class="ph ph-check"></i> Set</button></div></div>
+      <label class="check-line"><input type="checkbox" id="aracsEmailClient" checked><span>Email this client when the status changes. The bot sends a status-specific message from its ARACS mailbox and records it in the reply history.</span></label>
       <div class="actions-grid">
         <button class="abtn primary" id="btnSaveInquiry"><i class="ph ph-floppy-disk"></i> Save changes</button>
         <button class="abtn" id="btnResend"><i class="ph ph-paper-plane-tilt"></i> Resend confirmation</button>
@@ -2022,6 +2528,14 @@ function openDrawer(x) {
       </div>
       <div class="form-row" style="margin-top:14px"><label>Internal note</label><textarea class="admin-textarea" id="noteText" placeholder="Write a note for the team…"></textarea></div>
       <button class="abtn primary" id="btnAddNote" style="width:100%"><i class="ph ph-note-pencil"></i> Add note</button>
+    </div>
+    <div class="d-section"><h4><i class="ph ph-brackets-curly"></i> Full record</h4>
+      <p class="section-note">Edit the complete stored record. Code, number, id, and createdAt stay fixed; everything else is yours to change. Saved through the bot and synced to Supabase.</p>
+      <textarea class="admin-textarea mono" id="edRawJson" style="min-height:220px">${esc(JSON.stringify(x.raw || {}, null, 2))}</textarea>
+      <div class="actions-grid" style="margin-top:10px">
+        <button class="abtn primary" id="btnSaveRaw"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
+        <button class="abtn danger" id="btnDeleteInquiry"><i class="ph ph-trash"></i> Delete permanently</button>
+      </div>
     </div>
     <div class="d-section"><h4><i class="ph ph-paper-plane-tilt"></i> Compose email</h4>
       <p class="section-note">Variables are replaced with this inquiry's details in the preview and in the email that is sent.</p>
@@ -2088,7 +2602,8 @@ function openDrawer(x) {
   });
 
   on('btnStatus', 'click', () => {
-    mutate('/api/admin/status', { code: x.code, status: val('edStatus') }, 'Status updated');
+    const emailClient = !$('aracsEmailClient') || $('aracsEmailClient').checked;
+    mutate('/api/admin/status', { code: x.code, status: val('edStatus'), emailClient }, 'Status updated');
   });
 
   on('btnResend', 'click', () => {
@@ -2104,6 +2619,29 @@ function openDrawer(x) {
     const text = val('noteText');
     if (!text) { toast('Write a note first', true); return; }
     mutate('/api/admin/note', { code: x.code, text }, 'Note saved');
+  });
+
+  on('btnSaveRaw', 'click', async () => {
+    let parsed;
+    try { parsed = JSON.parse(val('edRawJson')); } catch (err) { toast('Invalid JSON: ' + err.message, true); return; }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) { toast('The record must be a JSON object', true); return; }
+    await mutate('/api/admin/inquiry/raw', { code: x.code, form_data: parsed }, 'Full record saved', true);
+  });
+
+  on('btnDeleteInquiry', 'click', async () => {
+    const btn = $('btnDeleteInquiry');
+    if (!ARACS_DELETE_ARMED) {
+      ARACS_DELETE_ARMED = true;
+      btn.innerHTML = '<i class="ph ph-warning-circle"></i> Click again to delete';
+      toast('Click again to permanently delete ' + x.code, true);
+      setTimeout(() => {
+        ARACS_DELETE_ARMED = false;
+        if ($('btnDeleteInquiry')) $('btnDeleteInquiry').innerHTML = '<i class="ph ph-trash"></i> Delete permanently';
+      }, 5000);
+      return;
+    }
+    ARACS_DELETE_ARMED = false;
+    await mutate('/api/admin/inquiry/delete', { code: x.code, confirm: true }, 'Inquiry deleted', true);
   });
 
   on('btnPreview', 'click', updatePreview);
@@ -2159,6 +2697,200 @@ function openDrawer(x) {
 }
 function closeDrawer() { $('drawer').classList.remove('on'); }
 
+function openNeoDrawer(m) {
+  if (!m) return;
+  NEO_SELECTED = m;
+  NEO_DELETE_ARMED = false;
+  const audit = Array.isArray(m.raw && m.raw.audit_log) ? m.raw.audit_log : [];
+  const mail = Array.isArray(m.raw && m.raw.email_log) ? m.raw.email_log : [];
+  const timeline = audit.length ? audit.slice().reverse().map((a) =>
+    `<div class="t-item"><b>${esc(a.action || 'Status update')}</b>${a.by ? ' by ' + esc(a.by) : ''}<time>${fmtDate(a.at)}</time></div>`
+  ).join('') : '<div style="color:#6f8796;font-size:12px">No status history recorded</div>';
+  const mailTimeline = mail.length ? mail.slice().reverse().map((e) =>
+    `<div class="t-item"><b>${esc(e.status || 'Email event')}</b>${e.to ? ' to ' + esc(e.to) : ''}<time>${fmtDate(e.at)}</time></div>`
+  ).join('') : '<div style="color:#6f8796;font-size:12px">No email events recorded</div>';
+
+  $('drawerCard').innerHTML = `
+    <div class="drawer-head"><div><span class="code">${esc(m.id)}</span><h3>${esc(m.name)}</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
+    <div class="d-section"><h4><i class="ph ph-lightning"></i> Quick actions</h4><div class="actions-grid">
+      ${m.email ? `<a class="abtn primary" href="mailto:${encodeURIComponent(m.email)}"><i class="ph ph-envelope"></i> Email</a>` : ''}
+      ${m.phone ? `<a class="abtn" href="tel:${encodeURIComponent(m.phone)}"><i class="ph ph-phone"></i> Call</a>` : ''}
+      <button class="abtn" data-neo-copy="${esc(m.id)}"><i class="ph ph-copy"></i> Copy ID</button>
+      ${m.email ? `<button class="abtn" data-neo-copy="${esc(m.email)}"><i class="ph ph-copy"></i> Copy email</button>` : ''}
+    </div></div>
+    <div class="d-section"><h4><i class="ph ph-user"></i> Applicant</h4>
+      <div class="d-field"><div class="k">Email</div><div class="v">${esc(m.email || '—')}</div></div>
+      <div class="d-field"><div class="k">Phone</div><div class="v">${esc(m.phone || '—')}</div></div>
+      <div class="d-field"><div class="k">Wilaya</div><div class="v">${esc(m.wilaya || '—')}</div></div>
+      <div class="d-field"><div class="k">Education</div><div class="v">${esc(m.education || '—')}</div></div>
+      <div class="d-field"><div class="k">Interests</div><div class="v">${esc(m.interest || '—')}</div></div>
+      <div class="d-field"><div class="k">Skills</div><div class="v">${esc((m.skills || []).join(', ') || '—')}</div></div>
+      <div class="d-field"><div class="k">Submitted</div><div class="v">${fmtDate(m.submittedAt)}</div></div>
+    </div>
+    <div class="d-section"><h4><i class="ph ph-pencil-simple"></i> Manage member</h4>
+      <p class="section-note">Saved through the bot to NeoChip Members. The bot re-reads that table on every command, so status and role changes reach Telegram too.</p>
+      <div class="form-row"><label>Status</label><select class="admin-select" id="neoEdStatus">${[...new Set(NEO_STATUSES.concat([m.status].filter(Boolean)))].map((s) => `<option value="${s}"${s === m.status ? ' selected' : ''}>${s}</option>`).join('')}</select></div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Role</label><select class="admin-select" id="neoEdRole">${neoSelectOptions('role', m.role, true)}</select><input class="admin-input" id="neoEdRoleCustom" placeholder="Enter custom role" style="display:none;margin-top:8px"></div>
+        <div class="form-row"><label>Focus</label><select class="admin-select" id="neoEdFocus">${neoSelectOptions('focus', m.focus, true)}</select><input class="admin-input" id="neoEdFocusCustom" placeholder="Enter custom focus" style="display:none;margin-top:8px"></div>
+      </div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Interview date</label><input class="admin-input" id="neoEdInterview" value="${esc(m.interviewDate)}" placeholder="e.g. 2026-12-02"></div>
+        <div class="form-row"><label>Wilaya</label><input class="admin-input" id="neoEdWilaya" value="${esc(m.wilaya)}"></div>
+      </div>
+      <div class="form-row"><label>Admin notes</label><textarea class="admin-textarea" id="neoEdNotes">${esc(m.notes)}</textarea></div>
+      <label class="check-line"><input type="checkbox" id="neoEmailClient" checked><span>Email this applicant when the status changes. The bot uses the matching NeoChip template and sends only once per status.</span></label>
+      <div class="actions-grid">
+        <button class="abtn primary" id="neoSaveMember"><i class="ph ph-floppy-disk"></i> Save member</button>
+        <button class="abtn danger" id="neoDeleteMember"><i class="ph ph-trash"></i> Delete member</button>
+      </div>
+      <p class="section-note" style="margin-top:10px">An audit entry is appended to the member record for every change.</p>
+    </div>
+    <div class="d-section"><h4><i class="ph ph-brackets-curly"></i> Full record</h4>
+      <p class="section-note">Edit every field in form_data. Row id and createdAt are never changed.</p>
+      <textarea class="admin-textarea mono" id="neoRawJson" style="min-height:220px">${esc(JSON.stringify(m.raw || {}, null, 2))}</textarea>
+      <button class="abtn primary" id="neoSaveRaw" style="width:100%;margin-top:10px"><i class="ph ph-floppy-disk"></i> Save full JSON</button>
+    </div>
+    <div class="d-section"><h4><i class="ph ph-clock-counter-clockwise"></i> Status history (${audit.length})</h4><div class="timeline">${timeline}</div></div>
+    <div class="d-section"><h4><i class="ph ph-envelope-open"></i> Email events (${mail.length})</h4><div class="timeline">${mailTimeline}</div></div>
+    <p style="color:#6f8796;font-size:11px;text-align:center;margin-top:24px">Managed through the ARACS bot · changes sync to Supabase, analytics, and notifications</p>`;
+
+  $('drawer').classList.add('on');
+  $('drawerClose').addEventListener('click', closeDrawer);
+  $('drawerCard').querySelectorAll('[data-neo-copy]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.neoCopy); toast('Copied'); } catch (_) { toast('Copy failed', true); }
+  }));
+  const neoVal = (id) => { const el = $(id); return el ? String(el.value || '').trim() : ''; };
+  const neoEmailClient = () => !$('neoEmailClient') || $('neoEmailClient').checked;
+  bindNeoOther('neoEdRole', 'neoEdRoleCustom');
+  bindNeoOther('neoEdFocus', 'neoEdFocusCustom');
+
+  on('neoSaveMember', 'click', () => {
+    const role = resolveNeoSelect('neoEdRole', 'neoEdRoleCustom', 'role');
+    const focus = resolveNeoSelect('neoEdFocus', 'neoEdFocusCustom', 'focus');
+    if (!role || !focus) return;
+    neoMutate('/api/admin/neochip/member', {
+      id: m.id,
+      emailClient: neoEmailClient(),
+      fields: {
+        admin_status: neoVal('neoEdStatus'),
+        admin_role: role,
+        admin_focus: focus,
+        interview_date: neoVal('neoEdInterview'),
+        willaya: neoVal('neoEdWilaya'),
+        admin_notes: neoVal('neoEdNotes'),
+      },
+    }, 'NeoChip member saved');
+  });
+
+  on('neoSaveRaw', 'click', async () => {
+    let parsed;
+    try { parsed = JSON.parse(neoVal('neoRawJson')); } catch (err) { toast('Invalid JSON: ' + err.message, true); return; }
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) { toast('form_data must be a JSON object', true); return; }
+    await neoMutate('/api/admin/neochip/member', { id: m.id, form_data: parsed, emailClient: neoEmailClient() }, 'NeoChip record saved');
+  });
+
+  on('neoDeleteMember', 'click', async () => {
+    const btn = $('neoDeleteMember');
+    if (!NEO_DELETE_ARMED) {
+      NEO_DELETE_ARMED = true;
+      btn.innerHTML = '<i class="ph ph-warning-circle"></i> Click again to delete';
+      toast('Click again to permanently delete ' + m.name, true);
+      setTimeout(() => {
+        NEO_DELETE_ARMED = false;
+        if ($('neoDeleteMember')) $('neoDeleteMember').innerHTML = '<i class="ph ph-trash"></i> Delete member';
+      }, 5000);
+      return;
+    }
+    NEO_DELETE_ARMED = false;
+    await neoMutate('/api/admin/neochip/delete', { id: m.id, confirm: true }, 'NeoChip member deleted');
+  });
+}
+
+function openNeoCreate() {
+  NEO_DELETE_ARMED = false;
+  $('drawerCard').innerHTML = `
+    <div class="drawer-head"><div><span class="code">NEW MEMBER</span><h3>Add NeoChip member</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
+    <div class="d-section"><h4><i class="ph ph-user-plus"></i> Member details</h4>
+      <p class="section-note">Creates a row in NeoChip Members through the bot. Bot commands will see it on their next read.</p>
+      <div class="edit-grid">
+        <div class="form-row"><label>First name</label><input class="admin-input" id="neoNewFirst"></div>
+        <div class="form-row"><label>Last name</label><input class="admin-input" id="neoNewLast"></div>
+      </div>
+      <div class="form-row"><label>Email</label><input class="admin-input" id="neoNewEmail"></div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Phone</label><input class="admin-input" id="neoNewPhone"></div>
+        <div class="form-row"><label>Wilaya</label><input class="admin-input" id="neoNewWilaya"></div>
+      </div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Status</label><select class="admin-select" id="neoNewStatus">${NEO_STATUSES.map((s) => `<option value="${s}">${s}</option>`).join('')}</select></div>
+        <div class="form-row"><label>Interview date</label><input class="admin-input" id="neoNewInterview"></div>
+      </div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Role</label><select class="admin-select" id="neoNewRole">${neoSelectOptions('role', 'Unassigned', true)}</select><input class="admin-input" id="neoNewRoleCustom" placeholder="Enter custom role" style="display:none;margin-top:8px"></div>
+        <div class="form-row"><label>Focus</label><select class="admin-select" id="neoNewFocus">${neoSelectOptions('focus', 'Unassigned', true)}</select><input class="admin-input" id="neoNewFocusCustom" placeholder="Enter custom focus" style="display:none;margin-top:8px"></div>
+      </div>
+      <div class="form-row"><label>Admin notes</label><textarea class="admin-textarea" id="neoNewNotes"></textarea></div>
+      <button class="abtn primary" id="neoCreateSave" style="width:100%"><i class="ph ph-plus"></i> Create member</button>
+    </div>`;
+  $('drawer').classList.add('on');
+  $('drawerClose').addEventListener('click', closeDrawer);
+  bindNeoOther('neoNewRole', 'neoNewRoleCustom');
+  bindNeoOther('neoNewFocus', 'neoNewFocusCustom');
+  on('neoCreateSave', 'click', () => {
+    const v = (id) => String($(id).value || '').trim();
+    const email = v('neoNewEmail');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Enter a valid email address', true); return; }
+    const role = resolveNeoSelect('neoNewRole', 'neoNewRoleCustom', 'role');
+    const focus = resolveNeoSelect('neoNewFocus', 'neoNewFocusCustom', 'focus');
+    if (!role || !focus) return;
+    neoMutate('/api/admin/neochip/create', {
+      form_data: {
+        firstName: v('neoNewFirst'), lastName: v('neoNewLast'), email,
+        phone: v('neoNewPhone'), willaya: v('neoNewWilaya'),
+        admin_status: v('neoNewStatus'), interview_date: v('neoNewInterview'),
+        admin_role: role, admin_focus: focus,
+        admin_notes: v('neoNewNotes'), education: '', interest: '', skills: [],
+      },
+    }, 'NeoChip member created');
+  });
+}
+
+function openInquiryCreate() {
+  ARACS_DELETE_ARMED = false;
+  $('drawerCard').innerHTML = `
+    <div class="drawer-head"><div><span class="code">NEW INQUIRY</span><h3>Add ARACS inquiry</h3></div><button class="xbtn" id="drawerClose"><i class="ph ph-x"></i></button></div>
+    <div class="d-section"><h4><i class="ph ph-inbox"></i> Inquiry details</h4>
+      <p class="section-note">Creates a record in the bot database and Supabase with a new reference code.</p>
+      <div class="edit-grid">
+        <div class="form-row"><label>First name</label><input class="admin-input" id="newInqFirst"></div>
+        <div class="form-row"><label>Last name</label><input class="admin-input" id="newInqLast"></div>
+      </div>
+      <div class="form-row"><label>Email</label><input class="admin-input" id="newInqEmail"></div>
+      <div class="edit-grid">
+        <div class="form-row"><label>Phone</label><input class="admin-input" id="newInqPhone"></div>
+        <div class="form-row"><label>Wilaya</label><input class="admin-input" id="newInqWilaya"></div>
+      </div>
+      <div class="form-row"><label>Project type</label><input class="admin-input" id="newInqType"></div>
+      <div class="form-row"><label>Description</label><textarea class="admin-textarea" id="newInqDescription"></textarea></div>
+      <div class="form-row"><label>Status</label><select class="admin-select" id="newInqStatus">${statusOptions('new')}</select></div>
+      <button class="abtn primary" id="inquiryCreateSave" style="width:100%"><i class="ph ph-plus"></i> Create inquiry</button>
+    </div>`;
+  $('drawer').classList.add('on');
+  $('drawerClose').addEventListener('click', closeDrawer);
+  on('inquiryCreateSave', 'click', () => {
+    const v = (id) => String($(id).value || '').trim();
+    const email = v('newInqEmail');
+    if (!v('newInqFirst') || !email || !v('newInqType')) { toast('First name, email, and project type are required', true); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { toast('Enter a valid email address', true); return; }
+    mutate('/api/admin/inquiry/create', {
+      firstName: v('newInqFirst'), lastName: v('newInqLast'), email,
+      phone: v('newInqPhone'), wilaya: v('newInqWilaya'),
+      projectType: v('newInqType'), description: v('newInqDescription'), status: v('newInqStatus'),
+    }, 'Inquiry created', true);
+  });
+}
+
 function exportCsv() {
   const list = filtered();
   if (!list.length) { toast('Nothing to export', true); return; }
@@ -2183,6 +2915,7 @@ function switchView(view) {
   $('sideScrim').classList.remove('on');
   $('sidebar').classList.remove('open');
   if (view === 'crm') { renderCrmContacts(); renderComposer(); }
+  if (view === 'neochip') { renderNeo(); if (!NEO_ROWS.length) loadNeoMembers(true); }
   if (view === 'templates') renderTemplateList();
   if (view === 'activity') renderActivity();
   if (view === 'settings') renderSettings();
@@ -2386,6 +3119,7 @@ async function sendCrmEmail() {
       sent += 1;
     }
     toast('Sent ' + sent + ' email(s)');
+    notify({ id: 'change:outreach:' + Date.now(), type: 'change', title: 'Outreach sent', text: sent + ' email(s) sent from the CRM desk', view: 'crm' });
     renderComposer();
     load(false);
   } catch (e) {
@@ -2429,6 +3163,7 @@ async function saveCrmTemplate() {
     renderTemplateList();
     updateNavCounts();
     toast('Template saved');
+    notify({ id: 'change:template:' + Date.now(), type: 'change', title: 'Template saved', text: name, view: 'templates' });
   } catch (e) { toast(e.message, true); }
 }
 
@@ -2480,6 +3215,7 @@ function renderTemplateList() {
       renderTemplateList();
       updateNavCounts();
       toast('Template deleted');
+      notify({ id: 'change:template-delete:' + Date.now(), type: 'change', title: 'Template removed', text: b.dataset.tplDel, view: 'templates' });
     } catch (e) { toast(e.message, true); }
   }));
   document.querySelectorAll('[data-tpl-channel]').forEach((b) => b.classList.toggle('on', b.dataset.tplChannel === TPL_FILTER));
@@ -2510,6 +3246,7 @@ async function saveTemplateEditor() {
     renderTemplateList();
     updateNavCounts();
     toast('Template saved');
+    notify({ id: 'change:template:' + Date.now(), type: 'change', title: 'Template saved', text: name, view: 'templates' });
   } catch (e) { toast(e.message, true); }
 }
 
@@ -2526,6 +3263,21 @@ function renderActivity() {
   $('activityCount').textContent = events.length + ' events';
 }
 
+function renderNeoDictionaryEditor() {
+  const host = $('neoDictionaryEditor');
+  if (!host) return;
+  if (!DICT_DRAFT) DICT_DRAFT = { roles: NEO_ROLES.slice(), focuses: NEO_FOCUSES.slice(), statuses: NEO_STATUSES.slice() };
+  if (host.dataset.built === '1') return;
+  host.dataset.built = '1';
+  const groups = [['roles', 'Roles'], ['focuses', 'Focuses'], ['statuses', 'Statuses']];
+  host.innerHTML = '<div class="dict-grid">' + groups.map(([key, label]) => `
+    <div class="dict-group">
+      <div class="dict-head"><span>${label}</span><span>${DICT_DRAFT[key].length}</span></div>
+      <div class="dict-items">${DICT_DRAFT[key].map((value, i) => `<span class="dict-item">${esc(value)}<button type="button" data-dict-remove="${key}" data-index="${i}" title="Remove ${esc(value)}"><i class="ph ph-x"></i></button></span>`).join('')}</div>
+      <div class="dict-add"><input class="admin-input" id="dictInput_${key}" placeholder="Add ${label.toLowerCase()}"><button class="abtn" data-dict-add="${key}" data-input="dictInput_${key}"><i class="ph ph-plus"></i> Add</button></div>
+    </div>`).join('') + '</div>';
+}
+
 function renderSettings() {
   const s = (META && META.settings) || {};
   const kv = (k, v) => `<div class="kv-line"><span>${esc(k)}</span><b>${esc(v == null || v === '' ? '—' : v)}</b></div>`;
@@ -2536,6 +3288,7 @@ function renderSettings() {
     kv('Last update', $('updatedAt').textContent);
   $('setMute').checked = Boolean(s.muted);
   $('setSession').innerHTML = kv('Signed in as', SESSION ? SESSION.email : '—') + kv('Access', 'Supabase Auth user token');
+  renderNeoDictionaryEditor();
 }
 
 function showApp() {
@@ -2658,6 +3411,58 @@ $('chips').addEventListener('click', (e) => {
   render();
 });
 $('archiveSearch').addEventListener('input', renderArchive);
+on('aracsRange', 'change', (e) => { ARACS_RANGE = e.target.value; render(); });
+on('aracsWilaya', 'change', (e) => { ARACS_WILAYA = e.target.value; render(); });
+on('aracsType', 'change', (e) => { ARACS_TYPE = e.target.value; render(); });
+on('aracsContact', 'change', (e) => { ARACS_CONTACT = e.target.value; render(); });
+
+/* ---------- NEOCHIP MEMBER FILTERS ---------- */
+on('neoSearch', 'input', (e) => { NEO_QUERY = e.target.value.trim(); renderNeo(); });
+$('neoChips').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-neo-status]');
+  if (!b) return;
+  NEO_STATUS = b.dataset.neoStatus;
+  $('neoChips').querySelectorAll('.chip').forEach((c) => c.classList.toggle('on', c === b));
+  renderNeo();
+});
+on('neoRole', 'change', (e) => { NEO_ROLE = e.target.value; renderNeo(); });
+on('neoFocus', 'change', (e) => { NEO_FOCUS = e.target.value; renderNeo(); });
+on('neoWilaya', 'change', (e) => { NEO_WILAYA = e.target.value; renderNeo(); });
+on('neoRange', 'change', (e) => { NEO_RANGE = e.target.value; renderNeo(); });
+on('neoSort', 'change', (e) => { NEO_SORT = e.target.value; renderNeo(); });
+on('neoRefresh', 'click', async () => {
+  toast('Refreshing members…');
+  await Promise.allSettled([loadNeoMembers(true), loadAnalytics(true)]);
+  render();
+  toast('Members refreshed');
+});
+
+/* ---------- FULL MANAGEMENT ---------- */
+on('newInquiry', 'click', () => {
+  if (DATA_SOURCE !== 'bot') { toast('Creating records needs the live bot admin API', true); return; }
+  openInquiryCreate();
+});
+on('newNeoMember', 'click', () => {
+  if (DATA_SOURCE !== 'bot') { toast('Creating records needs the live bot admin API', true); return; }
+  openNeoCreate();
+});
+$('neoRows').addEventListener('click', (e) => {
+  const tr = e.target.closest('tr[data-neo-id]');
+  if (!tr) return;
+  const member = NEO_ROWS.find((m) => m.id === tr.dataset.neoId);
+  if (member) openNeoDrawer(member);
+});
+
+/* ---------- NOTIFICATIONS ---------- */
+on('notifyBtn', 'click', (e) => { e.stopPropagation(); $('notifyPanel').classList.toggle('on'); renderNotifications(); });
+on('notifyClear', 'click', (e) => {
+  e.stopPropagation();
+  NOTIFICATIONS.forEach((n) => { n.read = true; });
+  saveNotifications();
+  renderNotifications();
+  toast('Notifications marked read');
+});
+document.addEventListener('click', (e) => { if (!e.target.closest('.notify-wrap')) $('notifyPanel').classList.remove('on'); });
 
 /* ---------- CRM OUTREACH DESK ---------- */
 $('crmSearch').addEventListener('input', (e) => { CRM_QUERY = e.target.value; renderCrmContacts(); });
@@ -2702,12 +3507,63 @@ $('tplTabs').addEventListener('click', (e) => {
 $('tplEditSave').addEventListener('click', saveTemplateEditor);
 $('tplEditCancel').addEventListener('click', clearTemplateEditor);
 
+/* ---------- SETTINGS: NEOCHIP LISTS ---------- */
+$('neoDictionaryEditor').addEventListener('click', (e) => {
+  const add = e.target.closest('[data-dict-add]');
+  if (add) {
+    const key = add.dataset.dictAdd;
+    const input = $(add.dataset.input);
+    const value = input ? String(input.value || '').trim() : '';
+    if (!value) { toast('Type a value to add', true); return; }
+    if (DICT_DRAFT[key].some((x) => String(x).toLowerCase() === value.toLowerCase())) { toast('That value is already in the list', true); return; }
+    DICT_DRAFT[key].push(value);
+    $('neoDictionaryEditor').dataset.built = '0';
+    renderNeoDictionaryEditor();
+    return;
+  }
+  const remove = e.target.closest('[data-dict-remove]');
+  if (remove) {
+    const key = remove.dataset.dictRemove;
+    DICT_DRAFT[key].splice(Number(remove.dataset.index), 1);
+    $('neoDictionaryEditor').dataset.built = '0';
+    renderNeoDictionaryEditor();
+  }
+});
+$('neoDictionaryEditor').addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter') return;
+  const wrap = e.target.closest('.dict-add');
+  const button = wrap && wrap.querySelector('[data-dict-add]');
+  if (button) button.click();
+});
+$('neoDictSave').addEventListener('click', async () => {
+  if (!DICT_DRAFT) return;
+  if (!['roles', 'focuses', 'statuses'].every((key) => DICT_DRAFT[key].length)) { toast('Each list needs at least one value', true); return; }
+  const btn = $('neoDictSave');
+  btn.disabled = true;
+  try {
+    const result = await adminApi('/api/admin/neo/dictionaries', DICT_DRAFT);
+    NEO_ROLES = result.roles.slice();
+    NEO_FOCUSES = result.focuses.slice();
+    NEO_STATUSES = result.statuses.slice();
+    DICT_DRAFT = null;
+    $('neoDictionaryEditor').dataset.built = '0';
+    toast('NeoChip lists saved');
+    notify({ id: 'change:lists:' + Date.now(), type: 'change', title: 'Lists updated', text: 'Roles, focuses and statuses saved to the bot', view: 'settings' });
+    render();
+  } catch (err) {
+    toast(err.message, true);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
 /* ---------- SETTINGS ---------- */
 on('setMute', 'change', async (e) => {
   const muted = e.target.checked;
   try {
     await adminApi('/api/admin/settings', { muted });
     toast(muted ? 'Admin alerts muted' : 'Admin alerts active');
+    notify({ id: 'change:alerts:' + Date.now(), type: 'change', title: muted ? 'Alerts muted' : 'Alerts active', text: 'Telegram admin alerts preference updated', view: 'settings' });
   } catch (err) {
     e.target.checked = !muted;
     toast(err.message, true);
@@ -2719,6 +3575,7 @@ $('setSync').addEventListener('click', async () => {
   try {
     const r = await adminApi('/api/admin/sync', {});
     toast('Pushed ' + r.rows + ' rows to Supabase');
+    notify({ id: 'change:sync:' + Date.now(), type: 'change', title: 'Database synced', text: r.rows + ' rows pushed to Supabase', view: 'system' });
     load(true);
   } catch (e) { toast(e.message, true); }
   finally { btn.disabled = false; }
@@ -2749,14 +3606,17 @@ $('sideToggle').addEventListener('click', () => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     closeDrawer();
+    $('notifyPanel').classList.remove('on');
     $('sidebar').classList.remove('open');
     $('sideScrim').classList.remove('on');
   }
   if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) { e.preventDefault(); switchView('inquiries'); $('search').focus(); }
 });
+renderNotifications();
 applyTheme();
 applySidebar();
 restoreSession();
 </script>
 </body>
 </html>
+
