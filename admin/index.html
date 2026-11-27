@@ -2612,7 +2612,7 @@ function openDrawer(x) {
         <div class="form-row"><label>Heard about us</label><input class="admin-input" id="edHeard" value="${esc(x.heard)}"></div>
       </div>
       <div class="form-row"><label>Description</label><textarea class="admin-textarea" id="edDescription">${esc(x.description)}</textarea></div>
-      <div class="form-row"><label>Status</label><div class="status-row"><select class="admin-select" id="edStatus">${statusOptions(x.status)}</select><button class="abtn edit-only" id="btnStatus"><i class="ph ph-check"></i> Set</button></div></div>
+      <div class="form-row"><label>Status</label><div class="status-row"><select class="admin-select" id="edStatus">${statusOptions(x.status)}</select><button class="abtn edit-only" id="btnStatus"><i class="ph ph-check"></i> Set / unset</button></div></div>
       <label class="check-line"><input type="checkbox" id="aracsEmailClient" checked><span>Email this client when the status changes. The bot sends a status-specific message from its ARACS mailbox and records it in the reply history.</span></label>
       <div class="actions-grid">
         <button class="abtn primary edit-only" id="btnSaveInquiry"><i class="ph ph-floppy-disk"></i> Save changes</button>
@@ -2709,7 +2709,7 @@ function openDrawer(x) {
     if (!DRAWER_EDIT) return;
     if (!armSave($('btnStatus'), '<i class="ph ph-check"></i> Set')) return;
     const emailClient = !$('aracsEmailClient') || $('aracsEmailClient').checked;
-    mutate('/api/admin/status', { code: x.code, status: val('edStatus'), emailClient }, 'Status updated');
+    mutate('/api/admin/status', { code: x.code, status: val('edStatus'), emailClient, toggle: true }, 'Status updated');
   });
 
   on('btnResend', 'click', () => {
